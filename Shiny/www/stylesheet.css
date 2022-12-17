@@ -1,0 +1,1115 @@
+/* Global */
+body {
+    -moz-transform: scale(1, 1); /* Moz-browsers */
+    zoom: 1; /* Other non-webkit browsers */
+    zoom: 100%; /* Webkit browsers */
+	font-family: "Poppins";
+	
+}
+
+header {
+	position: absolute;
+	left: 0;
+	height: 100%;
+	width: 100%;
+    top: 0;
+    z-index: -999;
+	background-size: cover;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	list-style: none;
+}
+
+.tab-pane {
+	margin-top: 100px;
+}
+
+/* Paragraph*/
+h1, h2 {
+    text-align: center;
+    margin: 20px;
+    font-family: Bell MT;
+}
+
+p, pre {
+	text-align: center;
+    font-family: Bell MT;
+    font-size: 22px;
+    background-color: rgb(255 255 255 / 70%);
+    backdrop-filter: blur(8px);
+	color: black;
+    line-height: 35px;
+    padding: 20px;
+    border: 2px solid black;
+}
+
+/*data table design*/
+.shiny-datatable-output tfoot {
+ display: none;
+}
+
+.display.dataTable.no-footer {
+	text-align: center;
+}
+
+.display.dataTable.no-footer > thead {
+	color: white;
+    background: rgba(0, 0, 0, 0.4);
+	backdrop-filter: blur(8px);
+}
+
+.display.dataTable.no-footer > tbody {
+	color: white;
+}
+
+.display.dataTable.no-footer > tbody > .odd {
+	background-color: rgba(201, 8, 33, 0.3);
+	backdrop-filter: blur(8px);
+}
+
+.display.dataTable.no-footer > tbody > .even {
+	background-color: rgba(23, 64, 139, 0.3);
+	backdrop-filter: blur(8px);
+}
+
+.dataTables_paginate.paging_simple_numbers {
+	background-color: rgba(255, 255, 255, 0.4);
+	backdrop-filter: blur(8px);
+}
+
+.dataTables_wrapper.dataTables_paginate {
+	padding-top: 0px;
+}
+
+th, th.dt-right, td.dt-right {
+	text-align: center;
+}
+
+/* Graph background*/
+.plot-container.plotly {
+	height: 100%;
+}
+
+.user-select-none.svg-container {
+	height: 100%;
+	backdrop-filter: blur(8px);
+	background: rgba(255, 255, 255, 0.15);
+}
+
+.user-select-none.svg-container > .main-svg:nth-of-type(1) {
+    top: 5%;
+	height: 95%;
+}
+
+.user-select-none.svg-container > .main-svg:nth-of-type(2) {
+    padding-top: 10px;
+}
+
+.user-select-none.svg-container > .main-svg:nth-of-type(3) {
+    top: 5%;
+	height: 95%;
+}
+
+/* Nav Bar */
+.hamb {
+	display: none;
+}
+
+.navbar.navbar-default.navbar-static-top {
+	position: unset;
+	background-color: transparent;
+	border: 0;
+}
+
+.navbar-header {
+	float: none;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	margin: 10px;
+	height: 50px;
+	width: 200px;
+	display: flex;
+	justify-content: center;
+}
+
+.navbar-brand {
+	font-size: 45px;
+    font-weight: 600;
+	background-image: linear-gradient(to right, #17408B 0%, #FFFFFF 50%, #C90821 100%);
+	-webkit-text-fill-color: transparent;
+	-moz-text-fill-color: transparent;
+	-webkit-background-clip: text;
+    -moz-background-clip: text;
+}
+
+.nav.navbar-nav {
+	display: flex;
+	float: none;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	height: 50px;
+	margin: 10px;
+	padding: 0;
+}
+
+.nav.navbar-nav > li > a {
+	font-size: 20px;
+    background-color: transparent;
+    color: white;
+}
+
+.nav.navbar-nav > li > a.active {
+    background-color: white;
+    color: black;
+	font-weight: 600;
+}
+
+/*
+@media screen and (max-width: 1460px) {
+	.nav.navbar-nav {
+		right: 100px;
+	}
+}
+
+
+@media screen and (max-width: 1300px) {
+	.navbar-header {
+		width: 200px;
+	}
+}
+*/
+
+@media screen and (max-width: 1120px) {
+	.navbar-header {
+		width: 200px;
+	}
+	
+	/*
+	.nav.navbar-nav {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.8);
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+	margin: 0;
+	margin-right:-100%;
+	margin-left: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	}
+	*/
+	
+	.nav.navbar-nav  {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+    background-color: rgba(23, 64, 139, 0.8);
+	backdrop-filter: blur(5px);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+	margin: 0;
+	margin-left:-100%;
+	margin-right: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	transition: all 0.5s ease;
+	}
+	
+	
+	.nav.navbar-nav.menu-mobile {
+		margin-left: 0;
+	}
+	
+	.hamb {
+		width: 100px;
+		margin: 0;
+		position: absolute;
+		top: 0;
+		right: 10px;
+		display: block;
+		z-index: 1000;
+	}
+}
+
+/* 1st tab */
+.introText, #confirmationText1 {
+	margin:auto;
+}
+
+.introText {
+	max-width: 1200px;
+}
+
+#confirmationText1 {
+	max-width: 600px;
+	margin-top: 40px;
+}
+
+.container {
+	display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+    grid-column-gap: 30px;
+}
+
+.container::before {
+	display: none;
+}
+
+.container > .form-group.shiny-input-container:nth-of-type(1) { 
+    width: 200px;
+    margin-left: auto;
+}
+
+.container > .form-group.shiny-input-container:nth-of-type(2) { 
+    width: 200px;
+    margin-right: auto;
+}
+
+/*
+#goButton1 {
+	margin-left: auto;
+	width: 200px;
+}
+*/
+
+/*
+#resetButton {
+	margin-right: auto;
+	width: 200px;
+}
+*/
+
+@media screen and (max-width: 800px) {
+	.container {
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	
+	.container > .form-group.shiny-input-container:nth-of-type(1) { 
+		width: 200px;
+		margin: auto;
+	}
+
+	.container > .form-group.shiny-input-container:nth-of-type(2) { 
+		width: 200px;
+		margin: auto;
+	}
+
+	#goButton1 {
+		margin: auto;
+		width: 200px;
+	}
+
+	#resetButton {
+		margin: auto;
+		width: 200px;
+	}
+}
+
+/* 2nd tab */
+#usmap2 {
+	padding: 20px;
+	position: relative;
+	background-color: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(8px);
+	margin: 20px auto;
+	border-radius: 20px 20px 0 20px;
+	transition: all .2s ease-in-out;
+	max-width: 1000px; 
+}
+
+@media screen and (min-width: 1245px) {
+	#usmap2:hover {
+	 transform: scale(1.2);
+	}
+}
+
+.leaflet-top.leaflet-left {
+	display: none;
+}
+
+.leaflet-control-attribution.leaflet-control {
+	display: none;
+}
+
+#selectedTeamText2 {
+	max-width: 1000px;
+    margin: 10px auto;
+	border: 0px solid black;
+}
+
+[data-value = "teamDash"] > .row {
+	margin: 20px;
+}
+
+[data-value = "teamDash"] > .paramCharts {
+    display: flex;
+    margin: 20px;
+    justify-content: space-evenly;
+	margin-bottom: 0px;
+}
+
+[data-value = "teamDash"] > .row:nth-of-type(2) {
+    display: flex;
+    margin: 20px;
+    justify-content: space-evenly;
+	margin-bottom: 0px;
+	align-items: center;
+}
+
+[data-value = "teamDash"] > .row:nth-of-type(2) > #teamRank2 {
+	max-width: 750px;
+	min-width: 600px;
+}	
+
+@media screen and (max-width: 1410px) {
+	[data-value = "teamDash"] > .row:nth-of-type(2) {
+		display: block;
+	}
+	
+	[data-value = "teamDash"] > .row:nth-of-type(2) > #logo2 {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	[data-value = "teamDash"] > .row:nth-of-type(2) > #teamRank2 {
+		margin: auto;
+	}
+	
+}
+
+[data-value = "teamDash"] > .row:nth-of-type(4) {
+	display: flex;
+    justify-content: space-between;
+	align-items: center;
+	margin: 10px;
+	margin-top: 0px;
+}
+
+[data-value = "teamDash"] > .row:nth-of-type(4) > .col-sm-6 {
+    max-width: 800px;
+	min-width: 650px;
+	margin: 10px;
+	padding:0px;
+}
+
+@media screen and (max-width: 1710px) {
+	[data-value = "teamDash"] > .row:nth-of-type(4) {
+		display: block;
+		margin:10px;
+	}
+
+	[data-value = "teamDash"] > .row:nth-of-type(4) > .col-sm-6 {
+		width: 100%;
+		max-width: 900px;
+		min-width: 600px;
+		float: unset;
+		margin: auto;
+	}
+	
+	[data-value = "teamDash"] > .row:nth-of-type(4) > .col-sm-6:nth-of-type(2) {
+		margin-top: 20px;
+	}
+}
+
+[data-value = "teamDash"] > .row:nth-of-type(4) > .col-sm-6 > #teamPieChart2 > .plot-container.plotly > .user-select-none.svg-container {
+	border-radius: 20px 0px 20px 0px;
+}
+
+[data-value = "teamDash"] > .row:nth-of-type(4) > .col-sm-6 > #teamBarChart2 > .plot-container.plotly> .user-select-none.svg-container {
+	border-radius: 0px 20px 0px 20px;
+}
+
+[data-value = "teamDash"] > .row:nth-of-type(5) {
+	display: flex;
+    justify-content: center;
+	margin: 10px;
+}
+
+[data-value = "teamDash"] > .row:nth-of-type(5) > #bestGames2 {
+	max-width: 900px;
+	min-width: 600px;
+	margin: 10px;
+	padding:0px;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 3rd tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+[data-value = "teamPlayer"] > .param3container {
+	width: 300px;
+    margin: auto;
+    padding: 1px;
+    background-color: black;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+[data-value = "teamPlayer"] > .param3container > div {
+	text-align:center;
+	margin-top: 0px;
+	margin-bottom:0px;
+}
+
+[data-value = "teamPlayer"] > .param3container > div:nth-of-type(1) {
+	margin-top: 10px;
+}
+
+[data-value = "teamPlayer"] > .param3container label {
+	background-color: red;
+    color: white;
+    font-size: 17px;
+    padding-bottom: 2px;
+}
+
+[data-value = "teamPlayer"] > .param3container .selectize-input.full {
+	background-color: black;
+    color: springgreen;
+    font-family: Digital Dream;
+    font-size: 18px;
+	min-height: 0px;
+	padding-top:10px;
+	padding-bottom:10px;
+	border: 0px;
+}
+
+[data-value = "teamPlayer"] > .param3container .selectize-control {
+	margin-bottom: 0px;
+}
+
+[data-value = "teamPlayer"] > .param3container .form-control {
+	background-color: black;
+    font-family: Digital Dream;
+    color: white;
+    border: 0px solid white;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+[data-value = "teamPlayer"] > .param3container .input-group {
+	margin-bottom: 10px;
+}
+
+[data-value = "teamPlayer"] > .param3container .input-group-addon {
+	background-color: black;
+    border: 0px;
+    font-family: Digital Dream;
+    color: white;
+}
+
+[data-value = "teamPlayer"] > .row:nth-of-type(2) {
+	display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px;
+    flex-wrap: wrap;
+}
+
+[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6 > #spiderChart3 > .plot-container.plotly > .user-select-none.svg-container {
+	background-color: transparent;	
+	backdrop-filter: none;
+}
+
+[data-value = "teamPlayer"] > .row:nth-of-type(2) {
+	display: flex;
+    justify-content: space-between;
+	align-items: center;
+	margin: 10px;
+	margin-top: 0px;
+}
+
+[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6 {
+    max-width: 800px;
+	min-width: 650px;
+	margin: 10px;
+	padding:0px;
+}
+
+@media screen and (max-width: 1710px) {
+	[data-value = "teamPlayer"] > .row:nth-of-type(2) {
+		display: block;
+		margin: 10px;
+	}
+
+	[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6 {
+		width: 100%;
+		max-width: 900px;
+		min-width: 600px;
+		float: unset;
+		margin: auto;
+	}
+	
+	[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6:nth-of-type(1) {
+		margin-top: 50px;
+	}
+	
+	[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6:nth-of-type(2) {
+		margin-top: 20px;
+	}
+	
+	[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6:nth-of-type(2) > #spiderChart3 {
+		margin: auto;
+	}
+}
+
+[data-value = "teamPlayer"] > #allItems3 > .row {
+	display: flex;
+    justify-content: space-between;
+	align-items: center;
+	margin: 10px;
+	margin-top: 0px;
+}
+
+[data-value = "teamPlayer"] > #allItems3 > .row > .col-sm-6 {
+    max-width: 800px;
+	min-width: 650px;
+	margin: 10px;
+	padding:0px;
+}
+
+@media screen and (max-width: 1710px) {
+	[data-value = "teamPlayer"] > #allItems3 > .row {
+		display: block;
+		margin:10px;
+	}
+
+	[data-value = "teamPlayer"] > #allItems3 > .row > .col-sm-6 {
+		width: 100%;
+		max-width: 900px;
+		min-width: 600px;
+		float: unset;
+		margin: auto;
+	}
+	
+	[data-value = "teamPlayer"] > #allItems3 > .row > .col-sm-6:nth-of-type(2) {
+		margin-top: 20px;
+	}
+}
+
+[data-value = "teamPlayer"] > #allItems3 > .row:nth-of-type(2) > .col-sm-6 > #dateBarChart3 > .plot-container.plotly > .user-select-none.svg-container {
+	border-radius: 20px 0px 20px 0px;
+}
+
+[data-value = "teamPlayer"] > #allItems3 > .row:nth-of-type(3) > .col-sm-6 > #periodBarChart3 > .plot-container.plotly > .user-select-none.svg-container {
+	border-radius: 0px 20px 0px 20px;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 4th tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+/*-------------- Parameters Containers --------------*/
+[data-value = "kingCourt"] > .param4container {
+	width: 300px;
+    margin: auto;
+    padding: 1px;
+    background-color: black;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+[data-value = "kingCourt"] > .param4container > div {
+	text-align:center;
+	margin-top: 0px;
+	margin-bottom:0px;
+}
+
+[data-value = "kingCourt"] > .param4container > div:nth-of-type(1) {
+	margin-top: 10px;
+}
+
+[data-value = "kingCourt"] > .param4container label {
+	background-color: red;
+    color: white;
+    font-size: 17px;
+    padding-bottom: 2px;
+}
+
+[data-value = "kingCourt"] > .param4container .selectize-input.full {
+	background-color: black;
+    color: springgreen;
+    font-family: Digital Dream;
+    font-size: 18px;
+	min-height: 0px;
+	padding-top:10px;
+	padding-bottom:10px;
+	border: 0px;
+}
+
+[data-value = "kingCourt"] > .param4container .selectize-control {
+	margin-bottom: 0px;
+}
+
+[data-value = "kingCourt"] > .param4container .form-control {
+	background-color: black;
+    font-family: Digital Dream;
+    color: white;
+    border: 0px solid white;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+[data-value = "kingCourt"] > .param4container .input-group {
+	margin-bottom: 10px;
+}
+
+[data-value = "kingCourt"] > .param4container .input-group-addon {
+	background-color: black;
+    border: 0px;
+    font-family: Digital Dream;
+    color: white;
+}
+
+/* -------------- First Row Custom --------------*/
+[data-value = "kingCourt"] > .row {
+	display: flex;
+    justify-content: space-between;
+	align-items: center;
+	margin: 10px;
+	margin-top: 0px;
+}
+
+[data-value = "kingCourt"] > .row:nth-of-type(2) > .col-sm-6 {
+    max-width: 800px;
+	min-width: 650px;
+	margin: 10px;
+	padding:0px;
+}
+
+[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(1) {
+	padding: 0px;
+}
+
+[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(1) > #selectedChart4 {
+	text-align: center;
+}
+
+[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(1) > #playerShotsChart4 {
+	margin: auto;
+}
+
+[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(2) {
+    max-width: 800px;
+	min-width: 650px;
+	margin: 10px;
+	padding:0px;
+}
+
+@media screen and (max-width: 1710px) {
+	[data-value = "kingCourt"] > .row:nth-of-type(2) {
+		display: block;
+		margin: 10px;
+	}
+
+	[data-value = "kingCourt"] > .row:nth-of-type(2) > .col-sm-6 {
+		width: 100%;
+		max-width: 900px;
+		min-width: 600px;
+		float: unset;
+		margin: auto;
+	}
+	
+	[data-value = "kingCourt"] > .row:nth-of-type(2) > .col-sm-6:nth-of-type(2) {
+		margin-top: 20px;
+	}
+}
+
+@media screen and (max-width: 1755px) {
+	[data-value = "kingCourt"] > .row:nth-of-type(3) {
+		display: block;
+		margin: 10px;
+	}
+
+	[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(1) {
+		width: 100%;
+		float: unset;
+		margin: auto;
+	}
+	
+	[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(2) {
+		width: 100%;
+		max-width: 900px;
+		min-width: 600px;
+		float: unset;
+		margin: auto;
+		margin-top: 20px;
+	}
+}
+
+[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(2) > #selectedChart4 {
+	text-align: center;
+}
+
+[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(2) > #areaSelected4 > .form-group.shiny-input-container {
+	margin: auto;
+}
+
+[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(2) > #globalAssist4 {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6 > #playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(1) {
+    top: 0;
+	height: 100%;
+}
+
+[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6 > #playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(2) {
+    padding-top: 0px;
+}
+
+[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6 > #playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(3) {
+    top: 0%;
+	height: 100%;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 5th tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+/*--------- Parameters Container ---------*/ 
+[data-value = "moneyball"] > .param5container {
+	display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-left: auto;
+	margin-right: auto;
+    grid-column-gap: 30px;
+	padding: 1px;
+    background-color: black;
+    border-radius: 10px;
+    border: 2px solid white;
+	width: 500px;
+}
+
+[data-value = "moneyball"] > .param5container::before {
+	display: none;
+}
+
+[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n+1) { 
+    width: 200px;
+    margin-left: auto;
+}
+
+[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n) { 
+    width: 200px;
+    margin-right: auto;
+}
+
+[data-value = "moneyball"] > .param5container > div {
+	text-align:center;
+	margin-top: 0px;
+	margin-bottom:0px;
+}
+
+[data-value = "moneyball"] > .param5container > div:nth-of-type(1) {
+	margin-top: 10px;
+}
+
+[data-value = "moneyball"] > .param5container > div:nth-of-type(2) {
+	margin-top: 10px;
+}
+
+[data-value = "moneyball"] > .param5container > div:nth-of-type(6) {
+	margin-bottom: 10px;
+}
+
+[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n)> label { 
+    background-color: red;
+}
+
+[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n+1)> label { 
+    background-color: green;
+}
+
+[data-value = "moneyball"] > .param5container label {
+    color: white;
+    font-size: 17px;
+    padding-bottom: 2px;
+}
+
+[data-value = "moneyball"] > .param5container .selectize-input.full {
+	background-color: black;
+    color: springgreen;
+    font-family: Digital Dream;
+    font-size: 18px;
+	min-height: 0px;
+	padding-top:10px;
+	padding-bottom:10px;
+	border: 0px;
+}
+
+[data-value = "moneyball"] > .param5container .selectize-input {
+    background-color: black;
+	font-family: Digital Dream;
+    font-size: 18px;
+	min-height: 0px;
+	padding-top:10px;
+	padding-bottom:10px;
+	border: 0px;
+}
+
+[data-value = "moneyball"] > .param5container .selectize-input > div {
+	background-color: black;
+    color: springgreen;
+}
+
+[data-value = "moneyball"] > .param5container .selectize-control {
+	margin-bottom: 0px;
+}
+
+[data-value = "moneyball"] > .param5container .form-control {
+	background-color: black;
+    font-family: Digital Dream;
+    color: white;
+    border: 0px solid white;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+[data-value = "moneyball"] > .param5container .input-group {
+	margin-bottom: 10px;
+}
+
+[data-value = "moneyball"] > .param5container .input-group-addon {
+	background-color: black;
+    border: 0px;
+    font-family: Digital Dream;
+    color: white;
+}
+
+[data-value = "moneyball"] > .param5container .irs-grid-text {
+	color: white;
+	font-family: Digital Dream;
+}
+
+[data-value = "moneyball"] > .param5container .irs-bar {
+	background: white;
+}
+
+[data-value = "moneyball"] > .param5container .irs--shiny .irs-handle {
+	background-color: black;
+}
+
+@media screen and (max-width: 800px) {
+	[data-value = "moneyball"] > .param5container {
+		display: block;
+		width: 300px;
+	}
+	
+	[data-value = "moneyball"] > .param5container > div {
+		margin: auto;
+	}
+	
+	[data-value = "moneyball"] > .param5container > div:nth-of-type(1) {
+		margin-top: 10px;
+	}
+
+	[data-value = "moneyball"] > .param5container > div:nth-of-type(6) {
+		margin-bottom: 10px;
+	}
+	
+}
+
+/*--------- Maine Graph Custom ---------*/ 
+[data-value = "moneyball"] > #customGraph5 {
+	margin: auto;
+	margin-top: 20px;
+	min-width: 600px;
+}
+
+[data-value = "moneyball"] > #customGraph5 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(1) {
+    top: 0;
+	height: 100%;
+}
+
+[data-value = "moneyball"] > #customGraph5 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(2) {
+    padding-top: 0px;
+}
+
+[data-value = "moneyball"] > #customGraph5 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(3) {
+    top: 0%;
+	height: 100%;
+}
+
+[data-value = "moneyball"] > .row:nth-of-type(4), .row:nth-of-type(5) {
+	display: flex;
+	justify-content:center;
+	margin: 10px;
+}
+
+[data-value = "moneyball"] > .row:nth-of-type(4) > #playerCarDT5 {
+	max-width: 900px;
+	min-width: 600px;
+	margin: 10px;
+	padding:0px;
+}
+
+[data-value = "moneyball"] > .row:nth-of-type(5) > #playerSalDT5 {
+	max-width: 900px;
+	min-width: 600px;
+	margin: 10px;
+	padding:0px;
+}
+
+[data-value = "moneyball"] > .row:nth-of-type(5) > #playerSalDT5 > .dataTables_paginate.paging_simple_numbers {
+	display: none;
+}
+
+
+
+
+div.basketballGo {
+  position: relative;
+  overflow: hidden;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: white;
+  box-sizing: border-box;
+  border: 2px solid black;
+  	margin-left: auto;
+}
+
+div.lineCurvLeftGo {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    left: 70%;
+    border-radius: 50%;
+    top: 0;
+	background-color: blue;
+}
+
+div.lineCurvRightGo {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    right: 70%;
+    transform: scale(-1, -1);
+    border-radius: 50%;
+    top: 0;
+	background-color:red;
+}
+
+div.basketballGo #goButton1 {
+	top: -5%;
+    position: absolute;
+    left: -5%;
+    width: 110px;
+    height: 110px;
+    background-color: transparent;
+    color: black;
+    font-size: 20px;
+}
+
+div.basketball {
+  position: relative;
+  overflow: hidden;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: #e65c00;
+  box-sizing: border-box;
+  border: 2px solid black;
+}
+
+div.lineVert {
+content: '';
+    position: absolute;
+    height: 110%;
+    width: 52%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    right: 50%;
+    top: -5%;
+}
+
+div.lineCurvLeft {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    left: 70%;
+    border-radius: 50%;
+    top: 0;
+}
+
+div.lineCurvRight {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    right: 70%;
+    transform: scale(-1, -1);
+    border-radius: 50%;
+    top: 0;
+}
+
+div.basketball #resetButton {
+	top: -5%;
+    position: absolute;
+    left: -5%;
+    width: 110px;
+    height: 110px;
+    background-color: transparent;
+    color: white;
+    font-size: 20px;
+}
+
+.btn[disabled] {
+	backdrop-filter: blur(4px);
+}
+
+div.busy {
+  position:absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.8;
+  background: #C90821;
+  background: -moz-linear-gradient(left, #C90821 0%, #FFFFFF 50%, #17408B 100%);
+  background: -webkit-linear-gradient(left, #C90821 0%, #FFFFFF 50%, #17408B 100%);
+  background: linear-gradient(to right, #C90821 0%, #FFFFFF 50%, #17408B 100%);
+  text-align: center;
+  padding-top: 20%;
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+}

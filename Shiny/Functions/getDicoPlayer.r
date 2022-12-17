@@ -1,8 +1,11 @@
+library(stringr)
+library(data.table)
+
 #-------------------------------------------------------------------------------
 getDicoPlayers <- function(season, seasonType = "Regular Season", filePattern = "combined-stats", 
-                       colDelete = c("date", "remaining_time", "play_length", "play_id", "away", "home", "num", 
-                                     "opponent", "outof", "possession", "reason", "original_x", "original_y", "description"),
-                       path = getwd()) {
+                           colDelete = c("date", "remaining_time", "play_length", "play_id", "away", "home", "num", 
+                                         "opponent", "outof", "possession", "reason", "original_x", "original_y", "description"),
+                           path = "Shiny/CombinedGames") {
   #-------------------------------------------------------------------------------
   # @ variables :
   # - path : Path where to find all files of each NBA games (default)
@@ -15,7 +18,8 @@ getDicoPlayers <- function(season, seasonType = "Regular Season", filePattern = 
   file <- list.files(path)[grepl(filePattern, list.files(path)) & grepl(season1, list.files(path)) & grepl(season2, list.files(path))]
   
   # Return a data.table with cleaned variables
-  nbaDT <- fread(file, sep = ",", dec = ".", quote = "'", header = TRUE, data.table = TRUE, drop = colDelete)
+  nbaDT <- readRDS(paste(path, "/", file, sep = ""))
+  nbaDT <- nbaDT[, .SD, .SDcols = setdiff(colnames(nbaDT), colDelete)]
   
   # We filter on season type
   nbaDT <- nbaDT[data_set %like% seasonType]
@@ -24,10 +28,11 @@ getDicoPlayers <- function(season, seasonType = "Regular Season", filePattern = 
    dicoPlayers <- nbaDT[team != "" & player != "" & event_type != "jump ball"]
    dicoPlayers<- dicoPlayers[, .(TotalGames = uniqueN(game_id)), by = .(player, team)]
    dicoPlayers <- dicoPlayers[order(player, team)]
-   fwrite(dicoPlayers, file = paste("Dictionary/", season, "/", seasonType, "/dicoPlayers.csv", sep=""))
+   fwrite(dicoPlayers, file = paste("Shiny/Dictionary/", season, "/", seasonType, "/dicoPlayers.csv", sep=""))
   
 }
 
-season <- "2020-2021"
+season <- "2021-2022"
 seasonType <- "Playoffs"
 getDicoPlayers(season = season, seasonType = seasonType)
+

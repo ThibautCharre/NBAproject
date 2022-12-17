@@ -31,7 +31,7 @@ getGamesId <-  function(selectedTeam = NULL, selectedPlayer, DT = nbaDatas) {
 getDatasForMinutesManual <- function(season, seasonType = "Regular Season", filePattern = "combined-stats", 
                        colDelete = c("date", "remaining_time", "play_length", "play_id", "away", "home", "num", 
                                      "opponent", "outof", "possession", "reason", "original_x", "original_y", "description"),
-                       path = getwd()) {
+                       path = "Shiny/CombinedGames") {
   #-------------------------------------------------------------------------------
   # @ variables :
   # - path : Path where to find all files of each NBA games (default)
@@ -44,7 +44,8 @@ getDatasForMinutesManual <- function(season, seasonType = "Regular Season", file
   file <- list.files(path)[grepl(filePattern, list.files(path)) & grepl(season1, list.files(path)) & grepl(season2, list.files(path))]
   
   # Return a data.table with cleaned variables
-  nbaDT <- fread(file, sep = ",", dec = ".", quote = "'", header = TRUE, data.table = TRUE, drop = colDelete)
+  nbaDT <- readRDS(paste(path, "/", file, sep = ""))
+  nbaDT <- nbaDT[, .SD, .SDcols = setdiff(colnames(nbaDT), colDelete)]
   
   # We filter on season type
   nbaDT <- nbaDT[data_set %like% seasonType]
@@ -58,7 +59,7 @@ getDatasForMinutesManual <- function(season, seasonType = "Regular Season", file
 }
 
 #-------------------------------------------------------------------------------
-getNBAcalendar <- function(season, DT = nbaDatas, path = "AllGames") {
+getNBAcalendar <- function(season, DT = nbaDatas, path = "Shiny/AllGames") {
   #-------------------------------------------------------------------------------
   # @ variables :
   # - path : Path where to find all files of each NBA games (default)
@@ -66,7 +67,7 @@ getNBAcalendar <- function(season, DT = nbaDatas, path = "AllGames") {
   # - DT : Generic data table (default)
   #-------------------------------------------------------------------------------
   # we list files in the directory 
-  filesName <- list.files(paste("AllGames/", season, sep = ""))
+  filesName <- list.files(paste(path, "/", season, sep = ""))
   
   # operations to identify each games gathered in a DT
   Games <- unlist(str_extract_all(string = filesName, pattern = ".{7}(?=.csv)"))
@@ -147,7 +148,7 @@ getPlayerMinutesManual <- function(selectedTeam, selectedPlayer, nbaDT = nbaData
 }
 
 # INPUTS
-season = "2020-2021"
+season = "2021-2022"
 seasonType = "Playoffs"
 
 # DT where datas are taken 
@@ -158,7 +159,7 @@ nbaCalendarDT <- getNBAcalendar(season, nbaDatasDT)
 nbaDatasDT <- merge(nbaDatasDT, nbaCalendarDT[, .(game_id, Date, Home, Away)], by = "game_id") 
 
 # DT where players and teams vectors are taken
-dicoPlayerTeam <- fread(paste("Dictionary/", season, "/", seasonType, "/dicoPlayers.csv", sep = ""))
+dicoPlayerTeam <- fread(paste("Shiny/Dictionary/", season, "/", seasonType, "/dicoPlayers.csv", sep = ""))
 
 # lapply to all players
 ltest <- mapply(getPlayerMinutesManual, dicoPlayerTeam$team, dicoPlayerTeam$player, SIMPLIFY = FALSE)
@@ -171,5 +172,4 @@ finalMinDT <- data.table(player = dicoPlayerTeam$player, team = dicoPlayerTeam$t
                          TotMin = TotMin, TotalGames = GamesPlayed, AvgMin = MeanMin)
 
 # We create a file
-fwrite(x = finalMinDT, file = paste("Dictionary/", season, "/", seasonType, "/minutesSummary.csv", sep = ""), append = FALSE)
-
+fwrite(x = finalMinDT, file = paste("Shiny/Dictionary/", season, "/", seasonType, "/minutesSummary.csv", sep = ""), append = FALSE)

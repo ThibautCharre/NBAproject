@@ -28,8 +28,7 @@ getDicoPlayers <- function(season, seasonType = "Regular Season", filePattern = 
    dicoPlayers <- nbaDT[team != "" & player != "" & event_type != "jump ball"]
    dicoPlayers<- dicoPlayers[, .(TotalGames = uniqueN(game_id)), by = .(player, team)]
    dicoPlayers <- dicoPlayers[order(player, team)]
-   fwrite(dicoPlayers, file = paste("Shiny/Dictionary/", season, "/", seasonType, "/dicoPlayers.csv", sep=""))
-  
+   fwrite(dicoPlayers, file = paste("Shiny/Dictionary/", season, "/", seasonType, "/dicoPlayers.csv", sep="")) 
 }
 
 season <- "2021-2022"

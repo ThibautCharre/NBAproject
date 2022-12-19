@@ -1,10 +1,10 @@
 library(data.table)
 library(stringr)
 
-seasonSelected1 <- "2020-2021"
+seasonSelected1 <- "2021-2022"
 seasonTypeSelected1 <- "Regular Season"
 
-dicoPlayerFich <- gePlayersFich(season = "2020-2021", seasonType = "Regular Season")
+dicoPlayerFich <- gePlayersFich(season = seasonSelected1, seasonType = seasonTypeSelected1, path = "Shiny/Dictionary/")
 dicoPlayerMinute <- fread(file = paste("Shiny/Dictionary/", seasonSelected1, "/", seasonTypeSelected1, "/minutesSummary.csv", sep = ""))
 listDatas <- cleanDatas(season = seasonSelected1, seasonType = seasonTypeSelected1, path = "Shiny/CombinedGames")
 nbaDatas <- listDatas[["nbaDatas"]]
@@ -12,6 +12,28 @@ nbaDatas <- listDatas[["nbaDatas"]]
 NBAcalendar <- getNBAcalendar(season = seasonSelected1, DT = nbaDatas, path = "Shiny/AllGames")
 nbaDatas <- merge(nbaDatas, NBAcalendar[, .(game_id, Date, Home, Away)], by = "game_id")
 
+datas <- getShootingCustom(DT = nbaDatas, DTplayerPres = dicoPlayerFich)
+datas
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Script to calculate bench points
 
 subteam <- "GSW"
 DTteam <- nbaDatas[Home == subteam|Away == subteam]

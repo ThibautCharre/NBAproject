@@ -74,7 +74,7 @@ ui <-
                         <br>So before going further, let's select the season to be exploited.")),
                         h2("Data Selection"),
                         tags$div(class = "container", 
-                                 selectInput(inputId = "seasonSelected1", label = "Season", choices = c("2020-2021"), selected = c("2020-2021")),
+                                 selectInput(inputId = "seasonSelected1", label = "Season", choices = c("2020-2021", "2021-2022"), selected = c("2020-2021")),
                                  selectInput(inputId = "seasonTypeSelected1", label = "Period", choices = c("Regular Season", "Playoffs"), selected = c("Regular Season")),
                                  
                                  tags$div(class = "basketballGo",
@@ -675,7 +675,7 @@ server <- function(input, output, session) {
   ############################################################################
   ################################### TAB 5 ##################################
   ############################################################################
-
+  
   # - CATEGORY SELECTED VARIABLE
   categorySelected5 <- reactive({input$categorySelected5})
   
@@ -695,7 +695,7 @@ server <- function(input, output, session) {
   
   # - STAT SELECTED VARIABLE
   statSelected5 <- reactive({input$statSelected5})
-    
+  
   # UPDATE SELECTED TEAM
   observe({
     updateSelectInput(inputId = "selectedTeam5", label = "TEAM", choices = c("All", nbaTeams()), selected = "All")
@@ -707,25 +707,10 @@ server <- function(input, output, session) {
   # - POSITION SELECTED VARIABLE
   positionSelected5 <- reactive({input$positionSelected5})
   
-  # - UPDATE SALARY SLIDER INPUT
-  # minSliderSalary <- reactive({
-  #   if (teamSelected5() == "All") {
-  #     floor(min(dicoPlayerFich()$Salary/1000000))
-  #   } else {
-  #     floor(min(dicoPlayerFich()[team == teamSelected5()]$Salary/1000000))
-  #   }
-  # })
   minSliderSalary <- reactive({
     floor(min(dicoPlayerFich()$Salary/1000000))
   })
   
-  # maxSliderSalary <- reactive({
-  #   if (teamSelected5() == "All") {
-  #     ceiling(max(dicoPlayerFich()$Salary/1000000))
-  #   } else {
-  #     ceiling(max(dicoPlayerFich()[team == teamSelected5()]$Salary/1000000))+1
-  #   }
-  # })
   maxSliderSalary <- reactive({
     ceiling(max(dicoPlayerFich()$Salary/1000000))+1
   })
@@ -738,25 +723,10 @@ server <- function(input, output, session) {
   salaryLow5 <- reactive({input$salarySelected5[1]})
   salaryHigh5 <- reactive({input$salarySelected5[2]})
   
-  # - UPDATE AGE SLIDER INPUT
-  # minSliderAge <- reactive({
-  #   if (teamSelected5() == "All") {
-  #     min(dicoPlayerFich()$Age)
-  #   } else {
-  #     min(dicoPlayerFich()[team == teamSelected5()]$Age)
-  #   }
-  # })
   minSliderAge <- reactive({
     min(dicoPlayerFich()$Age)
   })
   
-  # maxSliderAge <- reactive({
-  #   if (teamSelected5() == "All") {
-  #     max(dicoPlayerFich()$Age)
-  #   } else {
-  #     max(dicoPlayerFich()[team == teamSelected5()]$Age)
-  #   }
-  # })
   maxSliderAge <- reactive({
     max(dicoPlayerFich()$Age)
   })
@@ -774,16 +744,36 @@ server <- function(input, output, session) {
   
   # - STATS DT
   statsDT5 <- reactive({
-    getStatsCustom(selectedTeam = teamSelected5(), statType = statSelected5(), position = positionSelected5(), 
-                   salaryLow = salaryLow5() * 1000000, salaryHigh = salaryHigh5() * 1000000, 
-                   ageLow = ageLow5(), ageHigh = ageHigh5(), 
-                   nbPlayer = nbPlayerSelected5(), 
-                   DTgamesPlayed = dicoPlayerMinute(), DTplayerPres = dicoPlayerFich(), DT = nbaDatasDTmerged())
+    if (categorySelected5() == "Classic") {
+      getStatsCustom(selectedTeam = teamSelected5(), statType = statSelected5(), position = positionSelected5(), 
+                     salaryLow = salaryLow5() * 1000000, salaryHigh = salaryHigh5() * 1000000, 
+                     ageLow = ageLow5(), ageHigh = ageHigh5(), 
+                     nbPlayer = nbPlayerSelected5(), 
+                     DTgamesPlayed = dicoPlayerMinute(), DTplayerPres = dicoPlayerFich(), DT = nbaDatasDTmerged())
+    } else if (categorySelected5() == "Shooting") {
+      getShootingCustom(selectedTeam = teamSelected5(), shootType = statSelected5(), position = positionSelected5(), 
+                        salaryLow = salaryLow5() * 1000000, salaryHigh = salaryHigh5() * 1000000, 
+                        ageLow = ageLow5(), ageHigh = ageHigh5(), 
+                        nbPlayer = nbPlayerSelected5(), 
+                        DTplayerPres = dicoPlayerFich(), DT = nbaDatasDTmerged())
+    }
   })
   
   # - CUSTOM GRAPH
   output$customGraph5 <- renderPlotly({
-    getStatCustomGraph(statSelected5(), statsDT5())
+    if (categorySelected5() == "Classic") {
+      tryCatch({
+        getStatCustomGraph(statSelected5(), statsDT5())
+      }, error = function(e) {
+        NULL
+      })
+    } else if (categorySelected5() == "Shooting") {
+      tryCatch({
+        getShootingCustomGraph(statSelected5(), statsDT5())
+      }, error = function(e) {
+        NULL
+      })
+    }
   })
   
   # - DATA TABLE CLICK EVENT
@@ -797,32 +787,12 @@ server <- function(input, output, session) {
   # - DATA TABLE PLAYER SALARY
   output$playerSalDT5 <- DT::renderDataTable({
     tmpDT <- DT::datatable(statsDT5()[dataPlayer5()$pointNumber + 1, .SD, .SDcols = setdiff(colnames(statsDT5()), c("player", "Position", "Birth", "Age", "Experience", "Total", "Team", "TotalGames", "AvgMin", "statMean"))])
-    tmpDT <- formatCurrency(tmpDT, 1:6, digits = 0)
+    if (seasonSelected1() == "2022-2023") {
+      tmpDT <- formatCurrency(tmpDT, 1:6, digits = 0)
+    } else {
+      tmpDT <- formatCurrency(tmpDT, 1, digits = 0)
+    }
   }, options = list(dom = "t"))
-  
-  # # - CUSTOM GRAPH
-  # output$customGraph5 <- renderPlotly({
-  #   
-  #   tryCatch({
-  #     
-  #     if (categorySelected5() == "Classic") {
-  #       
-  #       getStatCustomGraph(statsDT5())
-  #       
-  #     } else if (categorySelected5() == "Shooting") {
-  #       
-  #       getShootingCustomGraph(selectedTeam = teamSelected5(), shootType = statSelected5(), position = positionSelected5(), 
-  #                              salaryLow = salaryLow5() * 1000000, salaryHigh = salaryHigh5() * 1000000, 
-  #                              ageLow = ageLow5(), ageHigh = ageHigh5(), 
-  #                              nbPlayer = nbPlayerSelected5(), DTplayerPres = dicoPlayerFich(), DT = nbaDatasDTmerged())
-  #       
-  #     } 
-  #   }, error = function(e) {
-  #     NULL
-  #   }, warning = function(w) {
-  #     NULL
-  #   })
-  # })
   
 }
 

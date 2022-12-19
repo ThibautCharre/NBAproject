@@ -330,14 +330,14 @@ getNbGames <-  function(DT = nbaDatas) {
 
 
 #-------------------------------------------------------------------------------
-gePlayersFich <- function(season, seasonType) {
+gePlayersFich <- function(season, seasonType, path = "Dictionary/") {
   #-------------------------------------------------------------------------------
   # @ variables :
   # - DT : where there is the list of players and their respective teams (default)
   # - path : path for the position.salary per player file (default)
   #-------------------------------------------------------------------------------
   # We download the dictionary pos salary age per player template
-  posSalPlayersDT <- fread(paste("Dictionary/", season, "/", seasonType, "/playersSummary.csv", sep = ""))
+  posSalPlayersDT <- fread(paste(path, season, "/", seasonType, "/playersSummary.csv", sep = ""))
   
   return(posSalPlayersDT)
   
@@ -2668,7 +2668,7 @@ getShotsLeagueRanking <- function(selectedArea = "All", minShots = 10, distLongS
 getShootingCustom <- function(selectedTeam = "All", shootType = "All Shots", 
                               position = "All", 
                               salaryLow = 0, salaryHigh = 100000000, 
-                              experienceLow = 1, experienceHigh = 100,
+                              experienceLow = 0, experienceHigh = 100,
                               ageLow = 1, ageHigh = 100,
                               nbPlayer = 15, DTplayerPres = dicoPlayerFich, DT = nbaDatas) {
   #-------------------------------------------------------------------------------
@@ -2682,14 +2682,12 @@ getShootingCustom <- function(selectedTeam = "All", shootType = "All Shots",
   if ("All" %in% position) {
     playersFilteredDT <- DTplayerPres[Salary >= salaryLow & Salary <= salaryHigh & 
                                         Age >= ageLow & Age <= ageHigh &
-                                        Experience >= experienceLow & Experience <= experienceHigh, 
-                                      .(player, Position, Salary, Age, Experience)]
+                                        Experience >= experienceLow & Experience <= experienceHigh]
   } else {
     playersFilteredDT <- DTplayerPres[Salary >= salaryLow & Salary <= salaryHigh & 
                                         Age >= ageLow & Age <= ageHigh &
                                         Experience >= experienceLow & Experience <= experienceHigh &
-                                        Position %in% position, 
-                                      .(player, Position, Salary, Age, Experience)]
+                                        Position %in% position]
   }
   
   # We filter taking all shots excluding FT
@@ -2714,17 +2712,25 @@ getShootingCustom <- function(selectedTeam = "All", shootType = "All Shots",
   # if a selected team is selected
   if (selectedTeam != "All") {
     shootingFilteredDT <- shootingFilteredDT[team == selectedTeam]
-    
   } else {
-    shootingFilteredDT <- shootingFilteredDT[, .(Total=sum(Total)), by = .(player, Position, Age, Experience, Salary, result)]
-    
+    shootingFilteredDT <- shootingFilteredDT[, .(Total=sum(Total)), by = setdiff(names(shootingFilteredDT), c("team", "Total"))]  
   } 
   
-  # We dcast values to get missed and made in variables (columns)
-  shootingFilteredDT <- dcast(data = shootingFilteredDT, formula = player + Position + Salary + Age + Experience ~ result, value.var = "Total")
+  # We separate the made and missed and gather them in a data table
+  shootingMadeDT <- shootingFilteredDT[result == "made", .SD, .SDcols = setdiff(names(shootingFilteredDT), "result")]
+  colnames(shootingMadeDT)[colnames(shootingMadeDT) == "Total"] <- "made"
+  
+  shootingMissedDT <- shootingFilteredDT[result == "missed", .SD, .SDcols = setdiff(names(shootingFilteredDT), "result")]
+  colnames(shootingMissedDT)[colnames(shootingMissedDT) == "Total"] <- "missed"
+  
+  # We merge the two previous DT
+  shootingFilteredDT <- merge(shootingMadeDT, shootingMissedDT, by = setdiff(names(shootingMissedDT), c("made", "missed")), all = TRUE)
+  
+  # We force NA values to zero
+  shootingFilteredDT[is.na(shootingFilteredDT)] <- 0
   
   # We create new variables to be displayed
-  shootingFilteredDT <- shootingFilteredDT[, total := made+missed]
+  shootingFilteredDT <- shootingFilteredDT[, total := made + missed]
   shootingFilteredDT <- shootingFilteredDT[, FieldGoal := round(made / total * 100, 2)][order(-total)]
   
   # We take the ith first lines
@@ -2735,12 +2741,7 @@ getShootingCustom <- function(selectedTeam = "All", shootType = "All Shots",
 }
 
 #-------------------------------------------------------------------------------
-getShootingCustomGraph <- function(selectedTeam = "All", shootType = "All Shots", 
-                                   position = "All", 
-                                   salaryLow = 0, salaryHigh = 100000000, 
-                                   experienceLow = 1, experienceHigh = 100,
-                                   ageLow = 1, ageHigh = 100,
-                                   nbPlayer = 15, DTplayerPres = dicoPlayerFich, DT = nbaDatas) {
+getShootingCustomGraph <- function(shootType, DTstats) {
   #-------------------------------------------------------------------------------
   # @ variables :
   # - DT : data table where to look for the datas
@@ -2749,8 +2750,7 @@ getShootingCustomGraph <- function(selectedTeam = "All", shootType = "All Shots"
   # - nbPlayer : Number of players displayed
   #-------------------------------------------------------------------------------
   # We download customed datas with preceding function
-  shootingDT <- getShootingCustom(selectedTeam, shootType, position, salaryLow, salaryHigh, 
-                                  experienceLow, experienceHigh, ageLow, ageHigh, nbPlayer, DTplayerPres, DT)
+  shootingDT <- DTstats
   
   # Creation of a plotly graph
   fig <- plot_ly(data = shootingDT, type = "scatter",
@@ -2758,10 +2758,9 @@ getShootingCustomGraph <- function(selectedTeam = "All", shootType = "All Shots"
                  x = ~total, y = ~FieldGoal,
                  color = ~Salary,
                  colors = "Spectral",
-                 marker = list(size = ~TotalGames, sizeref = 1, opacity = 0.5),
+                 marker = list(sizeref = 0.1, sizemode = "area", opacity = 0.5),
                  text = ~str_extract_all(string = get(x = 'player'), pattern = "(?<=([:blank:]))[A-z]+"),
                  hovertemplate = ~paste("<b>", player, "-", "</b>", Position,
-                                        "</b><br>Games Played : <b>", TotalGames,
                                         "</b><br>Total Attempted :<b>", total,
                                         "</b><br>Field Goal (%) :<b>", FieldGoal,
                                         "</b><br><br>", Age, "<b>years old",
@@ -2775,11 +2774,13 @@ getShootingCustomGraph <- function(selectedTeam = "All", shootType = "All Shots"
   
   # Title and axis range
   fig <- layout(p = fig,
-                title = paste(shootType, "Shooting Elite -", selectedTeam),
+                title = "",
                 xaxis = list(title = "Total Attempted",
                              zeroline = FALSE),
                 yaxis = list(title = paste(shootType, "- Field Goal (%)"),
-                             zeroline = FALSE))
+                             zeroline = FALSE), 
+				plot_bgcolor = "rgba(255, 255, 255, 0)",
+                paper_bgcolor = "rgba(255, 255, 255, 0)")
   
   return(fig)
   
@@ -2914,66 +2915,9 @@ getStatCustomGraph <- function(statType, DTstats) {
                 plot_bgcolor = "rgba(255, 255, 255, 0)",
                 paper_bgcolor = "rgba(255, 255, 255, 0)")
   
-  
   return(fig)
   
 }
-
-# #-------------------------------------------------------------------------------
-# getStatCustomGraph <- function(selectedTeam = "All", statType = "Points", 
-#                                position = "All", 
-#                                salaryLow = 0, salaryHigh = 100000000, 
-#                                experienceLow = 1, experienceHigh = 100,
-#                                ageLow = 1, ageHigh = 100,
-#                                nbPlayer = 15, DTgamesPlayed = dicoPlayerMinute, DTplayerPres = dicoPlayerFich, DT = nbaDatas) {
-#   #-------------------------------------------------------------------------------
-#   # @ variables :
-#   # - DT : data table where to look for the datas
-#   # - selectedTeam : select a team
-#   # - shootType : Either all, 2pt or 3pt shots or FT
-#   # - nbPlayer : Number of players displayed
-#   #-------------------------------------------------------------------------------
-#   # We download customed datas with preceding function
-#   statDT <- getStatsCustom(selectedTeam, statType, position, salaryLow, salaryHigh, 
-#                            experienceLow, experienceHigh, ageLow, ageHigh, nbPlayer, 
-#                            DTgamesPlayed, DTplayerPres, DT)
-#   
-#   # Creation of a plotly graph
-#   fig <- plot_ly(data = statDT, type = "scatter",
-#                  mode = "markers",
-#                  x = ~AvgMin, y = ~statMean,
-#                  color = ~Salary,
-#                  colors = "Spectral",
-#                  marker = list(size = ~TotalGames, sizeref = 1, opacity = 0.6),
-#                  text = ~str_extract_all(string = get(x = 'player'), pattern = "(?<=([:blank:]))[A-z]+"),
-#                  hovertemplate = ~paste("<b>", player, " - ", "</b>", Position, 
-#                                         "</b><br>Games Played : <b>", TotalGames,
-#                                         "</b><br>Minutes Per Game : <b>", AvgMin,
-#                                         "</b><br>", statType, " Per Game : <b>", statMean,
-#                                         "<b><br><br>", Age, " </b>years old",
-#                                         "</b><br>Salary : <b>", round(Salary/1000000, 3), " M $",
-#                                         "<extra></extra>", sep = ""),
-#                  showlegend = FALSE)
-#   
-#   # We add text on top of each bubble
-#   fig <- add_text(p = fig,
-#                   textposition = "top")
-#   
-#   # Title and axis range
-#   fig <- layout(p = fig,
-#                 title = "",
-#                 xaxis = list(title = "Minutes PG",
-#                              zeroline = FALSE), 
-#                 yaxis = list(title = paste(statType, "PG"),
-#                              zeroline = FALSE), 
-#                 plot_bgcolor = "rgba(255, 255, 255, 0)",
-#                 paper_bgcolor = "rgba(255, 255, 255, 0)")
-#   
-#   
-#   return(fig)
-#   
-# }
-
 
 #-------------------------------------------------------------------------------
 getTeamPoss <- function(selectedTeam, DT) {

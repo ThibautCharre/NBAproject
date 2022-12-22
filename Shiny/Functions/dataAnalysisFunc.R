@@ -961,6 +961,11 @@ getHistPlayerStats <- function(selectedTeam, selectedPlayer, startDate = NULL, e
   # - minTotGames : a number of minimum game to rank players (default)
   # - DT : data table where to look for the datas (default)
   #-------------------------------------------------------------------------------
+  # Return by default
+  if (selectedTeam == "Team" | selectedPlayer == "Player") {
+    histStatsDT <- data.table("Date" = "-", "W/L" = "-", "Opp" = "-", "Pts" = "-", "Asts" = "-", "Rebs" = "-", "Stls" = "-", "Blks" = "-", "TOs" = "-")
+    return(histStatsDT)
+  }
   
   # We filter DT based on dates
   if (!is.null(startDate) & !is.null(endDate)) {
@@ -2227,6 +2232,16 @@ getPlayerGlobalShooting <- function(selectedTeam, selectedPlayer, startDate = NU
   # - selectedPlayer : a player to select
   # - DT : where to get datas (default)
   #-------------------------------------------------------------------------------
+  # Returns object by default
+  if (selectedTeam == "Team" | selectedPlayer == "Player") {
+    
+    shootingCalDT <- data.table(Date = "-", Opp = "-", "2PM" = "-", "2PA" = "-", "3PM" = "-", "3PA" = "-", "FTM" = "-", "FTA" = "-")
+    shootingFinalDT <- data.table(Type = c("2pts Shots", "3pts Shots", "Free Throws", "Effective Shots", "True Shooting"), 
+                                  FieldGoal = c(0, 0, 0, 0, 0))
+    
+    return(list(calDT = shootingCalDT, graphDT = shootingFinalDT))
+  }
+  
   # We download datas
   if (is.null(startDate) | is.null(endDate)) {
     shootingDT <- DT[player == selectedPlayer & team == selectedTeam & event_type %in% c("free throw", "shot"), .(Date, Home, Away, points, type, result)]

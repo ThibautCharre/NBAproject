@@ -37,7 +37,12 @@ header {
 h1, h2 {
     text-align: center;
     margin: 20px;
-    font-family: Bell MT;
+    font-family: Bodoni MT;
+	-webkit-background-clip: text;
+    color: black;
+    background-color: white;
+    -webkit-text-stroke-color: transparent;
+    -webkit-text-stroke-width: 2px;
 }
 
 p, pre {
@@ -69,8 +74,16 @@ p, pre {
 	backdrop-filter: blur(8px);
 }
 
+.display.dataTable.no-footer > thead > tr > th:nth-of-type(1) {
+	display: none;
+}
+
 .display.dataTable.no-footer > tbody {
 	color: white;
+}
+
+.display.dataTable.no-footer > tbody > tr > td:nth-of-type(1) {
+	display: none;
 }
 
 .display.dataTable.no-footer > tbody > .odd {
@@ -224,6 +237,101 @@ th, th.dt-right, td.dt-right {
 }
 
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- DIV basket ball -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+div.basketballGo {
+  position: relative;
+  overflow: hidden;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: white;
+  box-sizing: border-box;
+  border: 2px solid black;
+  margin-left: auto;
+}
+
+div.lineCurvLeftGo {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    left: 70%;
+    border-radius: 50%;
+    top: 0;
+	background-color: blue;
+}
+
+div.lineCurvRightGo {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    right: 70%;
+    transform: scale(-1, -1);
+    border-radius: 50%;
+    top: 0;
+	background-color:red;
+}
+
+div.basketball {
+  position: relative;
+  overflow: hidden;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: #e65c00;
+  box-sizing: border-box;
+  border: 2px solid black;
+  margin-right: auto;
+}
+
+div.lineVert {
+	content: '';
+    position: absolute;
+    height: 110%;
+    width: 52%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    right: 50%;
+    top: -5%;
+}
+
+div.lineCurvLeft {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    left: 70%;
+    border-radius: 50%;
+    top: 0;
+}
+
+div.lineCurvRight {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    right: 70%;
+    transform: scale(-1, -1);
+    border-radius: 50%;
+    top: 0;
+}
+
+.btn[disabled] {
+	backdrop-filter: blur(4px);
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
 /*-------------------------------------------------------------------------- 1st tab -----------------------------------------------------------------------
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -264,6 +372,28 @@ th, th.dt-right, td.dt-right {
     margin-right: auto;
 }
 
+div.basketballGo #goButton1 {
+	top: -5%;
+    position: absolute;
+    left: -5%;
+    width: 110px;
+    height: 110px;
+    background-color: transparent;
+    color: black;
+    font-size: 20px;
+}
+
+div.basketball #resetButton {
+	top: -5%;
+    position: absolute;
+    left: -5%;
+    width: 110px;
+    height: 110px;
+    background-color: transparent;
+    color: white;
+    font-size: 20px;
+}
+
 @media screen and (max-width: 800px) {
 	.container {
 		display: grid;
@@ -284,13 +414,13 @@ th, th.dt-right, td.dt-right {
 		margin: auto;
 	}
 	
-	.container > .basketBallGo {
-		margin: auto;
+	div.basketballGo {
+		margin-right: auto;
 		margin-top: 5px;
 	}
 	
-	.container > .basketBall {
-		margin: auto;
+	div.basketball {
+		margin-left: auto;
 		margin-top: 20px;
 	}
 }
@@ -546,6 +676,21 @@ th, th.dt-right, td.dt-right {
 	}
 }
 
+[data-value = "teamPlayer"] div.basketball {
+	margin-left: auto;
+}
+
+div.basketball #goButton3 {
+	top: -5%;
+    position: absolute;
+    left: -5%;
+    width: 110px;
+    height: 110px;
+    background-color: transparent;
+    color: black;
+    font-size: 20px;
+}
+
 [data-value = "teamPlayer"] > #allItems3 > .row {
 	display: flex;
     justify-content: space-between;
@@ -670,19 +815,19 @@ th, th.dt-right, td.dt-right {
 	padding:0px;
 }
 
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(1) {
+[data-value = "kingCourt"] #allItems4 .col-sm-6:nth-of-type(1) {
 	padding: 0px;
 }
 
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(1) > #selectedChart4 {
+[data-value = "kingCourt"] #selectedChart4 {
 	text-align: center;
 }
 
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(1) > #playerShotsChart4 {
+[data-value = "kingCourt"] #playerShotsChart4 {
 	margin: auto;
 }
 
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(2) {
+[data-value = "kingCourt"] #allItems4 .col-sm-6:nth-of-type(2) {
     max-width: 800px;
 	min-width: 650px;
 	margin: 10px;
@@ -709,18 +854,18 @@ th, th.dt-right, td.dt-right {
 }
 
 @media screen and (max-width: 1755px) {
-	[data-value = "kingCourt"] > .row:nth-of-type(3) {
+	[data-value = "kingCourt"] #allItems4 .row {
 		display: block;
 		margin: 10px;
 	}
 
-	[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(1) {
+	[data-value = "kingCourt"] #allItems4 .col-sm-6:nth-of-type(1) {
 		width: 100%;
 		float: unset;
 		margin: auto;
 	}
 	
-	[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(2) {
+	[data-value = "kingCourt"] #allItems4  .col-sm-6:nth-of-type(2) {
 		width: 100%;
 		max-width: 900px;
 		min-width: 600px;
@@ -730,29 +875,76 @@ th, th.dt-right, td.dt-right {
 	}
 }
 
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(2) > #selectedChart4 {
+/*-------------- Basket Button ---------------*/
+
+[data-value = "teamPlayer"] div.basketball {
+	margin-left: auto;
+}
+
+div.basketball #goButton4 {
+	top: -5%;
+    position: absolute;
+    left: -5%;
+    width: 110px;
+    height: 110px;
+    background-color: transparent;
+    color: black;
+    font-size: 20px;
+}
+
+/*---------------- Selected Chart Option ------------*/
+
+[data-value = "kingCourt"] > #selectedChart4 {
 	text-align: center;
 }
 
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(2) > #areaSelected4 > .form-group.shiny-input-container {
+/* -------------- Area Selected Option ---------------*/
+
+[data-value = "kingCourt"] #areaSelected4 > .form-group.shiny-input-container {
 	margin: auto;
+	background-color: black;
+    text-align: center;
+    border-radius: 5px;
+    border: 2px solid white;
 }
 
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(2) > #globalAssist4 {
+[data-value = "kingCourt"] #areaSelected4 > .form-group.shiny-input-container label {
+	color: white;
+    background-color: red;
+    margin-top: 5px;
+}
+
+[data-value = "kingCourt"] #areaSelected4 .selectize-input.items.full.has-options.has-items {
+	background-color: black;
+    color: springgreen;
+    font-family: digital dream;
+    border: 0;
+    padding: 0;
+    vertical-align: middle;
+	min-height: 25px;
+}
+
+[data-value = "kingCourt"] #areaSelected4 .selectize-control.single.plugin-selectize-plugin-a11y {
+	margin-bottom: 0px;
+}
+
+/* --------------------------------------------------*/
+
+[data-value = "kingCourt"] #globalAssist4 {
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
 
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6 > #playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(1) {
+[data-value = "kingCourt"] #playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(1) {
     top: 0;
 	height: 100%;
 }
 
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6 > #playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(2) {
+[data-value = "kingCourt"] #playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(2) {
     padding-top: 0px;
 }
 
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6 > #playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(3) {
+[data-value = "kingCourt"] #playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(3) {
     top: 0%;
 	height: 100%;
 }
@@ -904,6 +1096,32 @@ th, th.dt-right, td.dt-right {
 	
 }
 
+/* ------ Graph Option Nb Players -------- */
+
+[data-value = "moneyball"] > .form-group.shiny-input-container {
+	width: 200px;
+    margin: auto;
+    background-color: black;
+    text-align: center;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+[data-value = "moneyball"] > .form-group.shiny-input-container label {
+	background-color: green;
+    color: white;
+    margin-top: 5px;
+}	
+
+[data-value = "moneyball"] > .form-group.shiny-input-container .form-control.shiny-bound-input {
+	font-family: digital dream;
+    color: springgreen;
+    background-color: black;
+    border: 0;
+    border-radius: 50px;
+    text-align: center;
+}
+
 /*--------- Maine Graph Custom ---------*/ 
 [data-value = "moneyball"] > #customGraph5 {
 	margin: auto;
@@ -945,124 +1163,22 @@ th, th.dt-right, td.dt-right {
 	padding:0px;
 }
 
-[data-value = "moneyball"] > .row:nth-of-type(5) > #playerSalDT5 > .dataTables_paginate.paging_simple_numbers {
+[data-value = "moneyball"] #playerSalDT5 .dataTables_paginate.paging_simple_numbers {
 	display: none;
 }
 
-
-
-
-div.basketballGo {
-  position: relative;
-  overflow: hidden;
-  height: 100px;
-  width: 100px;
-  border-radius: 50%;
-  background-color: white;
-  box-sizing: border-box;
-  border: 2px solid black;
-  	margin-left: auto;
+[data-value = "moneyball"] #playerSalDT5 .dataTables_length {
+	display: none;
 }
 
-div.lineCurvLeftGo {
-    content: '';
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    border: 2px solid black;
-    box-sizing: border-box;
-    left: 70%;
-    border-radius: 50%;
-    top: 0;
-	background-color: blue;
+[data-value = "moneyball"] #playerSalDT5 .dataTables_filter {
+	display: none;
 }
 
-div.lineCurvRightGo {
-    content: '';
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    border: 2px solid black;
-    box-sizing: border-box;
-    right: 70%;
-    transform: scale(-1, -1);
-    border-radius: 50%;
-    top: 0;
-	background-color:red;
+[data-value = "moneyball"] #playerSalDT5 .dataTables_info {
+	display: none;
 }
 
-div.basketballGo #goButton1 {
-	top: -5%;
-    position: absolute;
-    left: -5%;
-    width: 110px;
-    height: 110px;
-    background-color: transparent;
-    color: black;
-    font-size: 20px;
-}
-
-div.basketball {
-  position: relative;
-  overflow: hidden;
-  height: 100px;
-  width: 100px;
-  border-radius: 50%;
-  background-color: #e65c00;
-  box-sizing: border-box;
-  border: 2px solid black;
-}
-
-div.lineVert {
-content: '';
-    position: absolute;
-    height: 110%;
-    width: 52%;
-    border: 2px solid black;
-    box-sizing: border-box;
-    right: 50%;
-    top: -5%;
-}
-
-div.lineCurvLeft {
-    content: '';
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    border: 2px solid black;
-    box-sizing: border-box;
-    left: 70%;
-    border-radius: 50%;
-    top: 0;
-}
-
-div.lineCurvRight {
-    content: '';
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    border: 2px solid black;
-    box-sizing: border-box;
-    right: 70%;
-    transform: scale(-1, -1);
-    border-radius: 50%;
-    top: 0;
-}
-
-div.basketball #resetButton {
-	top: -5%;
-    position: absolute;
-    left: -5%;
-    width: 110px;
-    height: 110px;
-    background-color: transparent;
-    color: white;
-    font-size: 20px;
-}
-
-.btn[disabled] {
-	backdrop-filter: blur(4px);
-}
 
 div.busy {
   position:absolute;

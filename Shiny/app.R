@@ -64,7 +64,6 @@ ui <-
                         ################################### TAB 1 ##################################
                         ############################################################################
                         
-                        h1("Stat-IB : Intelligent Basketball"),
                         h2("First Words"),
                         tags$p(class = "introText", 
                                HTML("Welcome ! 
@@ -76,14 +75,12 @@ ui <-
                         tags$div(class = "container", 
                                  selectInput(inputId = "seasonSelected1", label = "Season", choices = c("2020-2021", "2021-2022"), selected = c("2020-2021")),
                                  selectInput(inputId = "seasonTypeSelected1", label = "Period", choices = c("Regular Season", "Playoffs"), selected = c("Regular Season")),
-                                 
                                  tags$div(class = "basketballGo",
                                           tags$div(class = "lineVert"),
                                           tags$div(class = "lineCurvLeftGo"),
                                           tags$div(class = "lineCurvRightGo"),
                                           actionButton(inputId = "goButton1", label = "GO!", onclick = "$('.nav.navbar-nav>li>a').parent().removeClass('disabled'); document.getElementById('resetButton').disabled = false;document.getElementById('goButton1').disabled = true;")
                                  ),
-                                 #actionButton(inputId = "resetButton", label = "RESET!")
                                  tags$div(class = "basketball",
                                           tags$div(class = "lineVert"),
                                           tags$div(class = "lineCurvLeft"),
@@ -91,8 +88,7 @@ ui <-
                                           actionButton(inputId = "resetButton", label = "RESET!")
                                  )
                         ),
-                        verbatimTextOutput(outputId = "confirmationText1"), 
-                        h2("End !!")
+                        verbatimTextOutput(outputId = "confirmationText1")
                ),
                
                
@@ -105,7 +101,6 @@ ui <-
                         ################################### TAB 2 ##################################
                         ############################################################################
                         
-                        h1("Team Analysis"),
                         h2("NBA League"),
                         leafletOutput(outputId = "usmap2", height = "500px", width = "100%"),
                         verbatimTextOutput(outputId = "selectedTeamText2"),
@@ -126,8 +121,7 @@ ui <-
                         h2("Best Performances"),
                         fluidRow(
                           DT::dataTableOutput(outputId = "bestGames2")
-                        ),
-                        h2("End !!")
+                        )
                ),
                
                
@@ -138,7 +132,6 @@ ui <-
                         ################################### TAB 3 ##################################
                         ############################################################################ 
                         
-                        h1("Payer Impact"),
                         h2("Season Stats"),
                         tags$div(class = "param3container",
                                  selectInput(inputId = "selectedTeam3", label = "TEAM", choices = "Team", selected = "Team"), 
@@ -151,10 +144,14 @@ ui <-
                           column(DT::dataTableOutput("sumGamesDT3", width = "100%"), width = 6),
                           column(plotlyOutput(outputId = "spiderChart3", width = "650px"), width = 6)
                         ),
+                        tags$div(class = "basketball",
+                                 tags$div(class = "lineVert"),
+                                 tags$div(class = "lineCurvLeft"),
+                                 tags$div(class = "lineCurvRight"),
+                                 actionButton(inputId = "goButton3", label = "GO!")
+                        ),
                         h2("Player Efficiency"),
-                        actionButton(inputId = "goButton3", label = "GO !"),
-                        uiOutput(outputId = "allItems3"),
-                        h2("End !!")
+                        uiOutput(outputId = "allItems3")
                ),
                
                
@@ -165,7 +162,6 @@ ui <-
                         ################################### TAB 4 ##################################
                         ############################################################################
                         
-                        h1("Who is the Best Shooter ?"),
                         h2("General Shooting"),
                         tags$div(class = "param4container",
                                  selectInput(inputId = "selectedTeam4", label = "TEAM", choices = "Team", selected = "Team"), 
@@ -178,19 +174,14 @@ ui <-
                           column(DT::dataTableOutput(outputId = "playerShotsDT4", width = "100%"), width = 6),
                           column(plotlyOutput(outputId = "playerShotsSum4", width = "100%"), width = 6)
                         ),
+                        tags$div(class = "basketball",
+                                 tags$div(class = "lineVert"),
+                                 tags$div(class = "lineCurvLeft"),
+                                 tags$div(class = "lineCurvRight"),
+                                 actionButton(inputId = "goButton4", label = "GO!")
+                        ),
                         h2("Shooting Spots & Assists"),
-                        fluidRow(
-                          column(
-                            uiOutput(outputId = "selectedChart4"),
-                            plotlyOutput(outputId = "playerShotsChart4", width = "830px", height = "850px")
-                            , width = 6),
-                          column(
-                            uiOutput(outputId = "areaSelected4"),
-                            DT::dataTableOutput(outputId = "globalAssist4", width = "100%"),
-                            DT::dataTableOutput(outputId = "detailedAssist4", width = "100%")
-                            , width = 6)
-                        ), 
-                        h2("End !!")
+                        uiOutput(outputId = "allItems4")
                ), 
                
                
@@ -199,7 +190,7 @@ ui <-
                         ############################################################################
                         ################################### TAB 5 ##################################
                         ############################################################################
-                        h1("NBA Leaders"),
+                        
                         h2("Floor is Yours"),
                         tags$div(class = "param5container",
                                  selectInput(inputId = "categorySelected5", label = "CATEGORY", choices = c("Classic", "Shooting"), selected = "Classic"),
@@ -210,7 +201,7 @@ ui <-
                                  sliderInput(inputId = "ageSelected5", label = "AGE", min = 18, max = 50, value = c(18, 50), step = 1)
                         ),
                         h2("Bubble Visualization"),
-                        numericInput(inputId = "nbPlayerSelected5", label = "Nb Players", value = 15, min = 10, max = 50, step = 1, width = "200px"),
+                        numericInput(inputId = "nbPlayerSelected5", label = "NB PLAYERS", value = 15, min = 10, max = 50, step = 1, width = "200px"),
                         plotlyOutput(outputId = "customGraph5", width = "75%", height = "800px"),
                         h2("Player Card"),
                         fluidRow(
@@ -219,8 +210,7 @@ ui <-
                         h2("Player Salary"),
                         fluidRow(
                           DT::dataTableOutput(outputId = "playerSalDT5")
-                        ),
-                        h2("End !!")
+                        )
                )
     ),
     
@@ -454,6 +444,7 @@ server <- function(input, output, session) {
   
   # - SPIDER CHART GRAPH
   output$spiderChart3 <- renderPlotly({
+    #req(playerSelected3() != "Player")
     tryCatch({
       getPlayerClassicStatsChart(selectedTeam = shortNameSelected3(), selectedPlayer = playerSelected3(), startDate = dateRange3Min(), endDate = dateRange3Max(), DT = nbaDatasDTmerged())
     }, warning = function(w) {
@@ -465,6 +456,7 @@ server <- function(input, output, session) {
   
   # - SUMMARY GAMES DT
   output$sumGamesDT3 <- DT::renderDataTable({
+    #req(playerSelected3() != "Player")
     tryCatch({
       getHistPlayerStats(selectedTeam = shortNameSelected3(), selectedPlayer = playerSelected3(), startDate = dateRange3Min(), endDate = dateRange3Max(), DTcalendar = NBAcalendar(), DT = nbaDatasDTmerged())
     }, warning = function(w) {
@@ -519,7 +511,6 @@ server <- function(input, output, session) {
     getPlayerImpact(selectedTeam = shortNameSelected3Graph(), selectedPlayer = playerSelected3Graph(), playerDT3())
   })
   
-  #req(listImpactDT3())
   output$impactFG3 <- renderDataTable({
     req(listImpactDT3())
     listImpactDT3()[["ShootImpact"]]
@@ -620,6 +611,7 @@ server <- function(input, output, session) {
   # - TYPE CHART RENDER UI
   output$selectedChart4 <- renderUI({
     req(playerSelected4()!="Player", shortNameSelected4()!="Team")
+    input$goButton4
     radioButtons(inputId = "selectedChart4", label = "Select a Chart", choices = c("Spots", "Efficiency"), selected = "Spots", inline = TRUE)
   })
   
@@ -628,27 +620,42 @@ server <- function(input, output, session) {
     input$selectedChart4
   })
   
-  # # - PLAYER SHOOTING LIST CHARTS
-  # listCharts4 <- eventReactive(input$goButton4, {
-  #   req(playerSelected4Graph() != "Player", teamSelected4() != "Team", dateRange4Min(), dateRange4Max())
-  #   list(ShotChart = getShotChart(selectedPlayer = playerSelected4Graph(), selectedTeam = teamSelected4Graph(), shootingDatas = "PlayerChart", startDate = dateRange4Min(), endDate = dateRange4Max(), DT = nbaDatasDTmerged()),
-  #        EfficientChart = getShotChart(selectedPlayer = playerSelected4Graph(), selectedTeam = teamSelected4Graph(), shootingDatas = "EfficientChart", startDate = dateRange4Min(), endDate = dateRange4Max(), DT = nbaDatasDTmerged()))
-  # })
+  # - GRAPH VARIABLES
+  playerSelected4Graph <- eventReactive(input$goButton4, {
+    input$selectedPlayer4
+  })
+  shortNameSelected4Graph <- eventReactive(input$goButton4, {
+    getShortTeamName(longName = input$selectedTeam4)
+  })
+  dateRange4MinGraph <- eventReactive(input$goButton4, {
+    input$dateRange4[1]
+  })
+  dateRange4MaxGraph <- eventReactive(input$goButton4, {
+    input$dateRange4[2]
+  })
+  
+  # - PLAYER SHOOTING LIST CHARTS
+  listCharts4 <- reactive({
+    req(playerSelected4Graph() != "Player", shortNameSelected4Graph() != "Team", dateRange4MinGraph(), dateRange4MaxGraph())
+    list(ShotChart = getShotChart(selectedPlayer = playerSelected4Graph(), selectedTeam = shortNameSelected4Graph(), shootingDatas = "PlayerChart", startDate = dateRange4MinGraph(), endDate = dateRange4MaxGraph(), DT = nbaDatasDTmerged()),
+         EfficientChart = getShotChart(selectedPlayer = playerSelected4Graph(), selectedTeam = shortNameSelected4Graph(), shootingDatas = "EfficientChart", startDate = dateRange4MinGraph(), endDate = dateRange4MaxGraph(), DT = nbaDatasDTmerged()))
+  })
   
   # - PLAYER CHARTS
   output$playerShotsChart4 <- renderPlotly({
-    req(playerSelected4()!="Player", shortNameSelected4()!="Team")
+    req(listCharts4())
     if (chartType4() == "Spots"){
-      getShotChart(selectedPlayer = playerSelected4(), selectedTeam = shortNameSelected4(), shootingDatas = "PlayerChart", startDate = dateRange4Min(), endDate = dateRange4Max(), DT = nbaDatasDTmerged())
+      listCharts4()[["ShotChart"]]
     } else if (chartType4() == "Efficiency") {
-      getShotChart(selectedPlayer = playerSelected4(), selectedTeam = shortNameSelected4(), shootingDatas = "EfficientChart", startDate = dateRange4Min(), endDate = dateRange4Max(), DT = nbaDatasDTmerged())
+      listCharts4()[["EfficientChart"]]
     }
   })
   
   # - AREA SELECTED RENDER UI
   output$areaSelected4 <- renderUI({
-    req(playerSelected4() != "Player", shortNameSelected4() != "Team")
-    selectInput(inputId = "areaSelected4", label = "Area", choices = area, selected = area[1])
+    input$goButton4
+    req(playerSelected4Graph() != "Player", shortNameSelected4Graph() != "Team")
+    selectInput(inputId = "areaSelected4", label = "AREA", choices = area, selected = area[1])
   })
   
   # - AREA SELECTED VARIABLE
@@ -658,8 +665,8 @@ server <- function(input, output, session) {
   
   # - ASSISTS DISTRIBUTION LIST
   listAssists4 <- reactive({
-    req(areaSelected4(), playerSelected4() != "Player", shortNameSelected4() != "Team")
-    getAssistsShotsPlayer(selectedPlayer = playerSelected4(), selectedTeam = shortNameSelected4(), startDate = dateRange4Min(), endDate = dateRange4Max(), selectedArea = areaSelected4(), DT = nbaDatasDTmerged())
+    req(playerSelected4Graph() != "Player", shortNameSelected4Graph() != "Team",dateRange4MinGraph(), dateRange4MaxGraph())
+    getAssistsShotsPlayer(selectedPlayer = playerSelected4Graph(), selectedTeam = shortNameSelected4Graph(), startDate = dateRange4MinGraph(), endDate = dateRange4MaxGraph(), selectedArea = areaSelected4(), DT = nbaDatasDTmerged())
   })
   
   output$globalAssist4 <- DT::renderDataTable({
@@ -671,6 +678,26 @@ server <- function(input, output, session) {
     req(listAssists4())
     listAssists4()[["Detailed"]]
   }, options = list(pageLength = 5, dom = "tp"))
+  
+  # - RENDER UI ALLITEMS4
+  output$allItems4 <- renderUI({
+    
+    input$goButton4
+    
+    tagList(
+      fluidRow(
+        column(
+          uiOutput(outputId = "selectedChart4"),
+          plotlyOutput(outputId = "playerShotsChart4", width = "830px", height = "850px")
+          , width = 6),
+        column(
+          uiOutput(outputId = "areaSelected4"),
+          DT::dataTableOutput(outputId = "globalAssist4", width = "100%"),
+          DT::dataTableOutput(outputId = "detailedAssist4", width = "100%")
+          , width = 6)
+      )
+    )
+  })
   
   ############################################################################
   ################################### TAB 5 ##################################

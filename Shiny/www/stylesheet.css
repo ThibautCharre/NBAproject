@@ -362,14 +362,41 @@ div.lineCurvRight {
 	display: none;
 }
 
-.container > .form-group.shiny-input-container:nth-of-type(1) { 
-    width: 200px;
+[data-value = "welcome"] .form-group.shiny-input-container {
+	width: 200px;
+	background-color: black;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+[data-value = "welcome"] .container > .form-group.shiny-input-container:nth-of-type(1) {
     margin-left: auto;
 }
 
-.container > .form-group.shiny-input-container:nth-of-type(2) { 
-    width: 200px;
-    margin-right: auto;
+[data-value = "welcome"] .container > .form-group.shiny-input-container:nth-of-type(2) {
+    margin-right: welcome;
+}
+
+[data-value = "welcome"] .container .form-group.shiny-input-container label {
+	background-color: green;
+    color: white;
+    margin-top: 5px;
+}
+
+[data-value = "welcome"] .container > .form-group.shiny-input-container:nth-of-type(2) label {
+    background-color: red;
+}
+
+[data-value = "welcome"] .container .selectize-input.items.full.has-options.has-items {
+	background-color: black;
+    color: springgreen;
+    font-family: digital dream;
+    border: 0;
+    padding: 0;
+    vertical-align: middle;
+	min-height: 25px;
+	border-radius:10px;
 }
 
 div.basketballGo #goButton1 {
@@ -460,34 +487,25 @@ div.basketball #resetButton {
 	border: 0px solid black;
 }
 
-[data-value = "teamDash"] > .row {
-	margin: 20px;
-}
-
-[data-value = "teamDash"] > .paramCharts {
-    display: flex;
-    margin: 20px;
-    justify-content: space-evenly;
-	margin-bottom: 0px;
-}
-
 [data-value = "teamDash"] > .row:nth-of-type(2) {
-    display: flex;
-    margin: 20px;
-    justify-content: space-evenly;
-	margin-bottom: 0px;
-	align-items: center;
+	display: flex;
+    justify-content: center;
+	margin: 10px;
 }
 
 [data-value = "teamDash"] > .row:nth-of-type(2) > #teamRank2 {
-	max-width: 750px;
+	max-width: 900px;
 	min-width: 600px;
+	margin: 10px;
+	padding:0px;
 }	
 
+/*
 @media screen and (max-width: 1410px) {
 	[data-value = "teamDash"] > .row:nth-of-type(2) {
 		display: block;
 	}
+	
 	
 	[data-value = "teamDash"] > .row:nth-of-type(2) > #logo2 {
 		display: flex;
@@ -495,11 +513,66 @@ div.basketball #resetButton {
 		align-items: center;
 	}
 	
+	
 	[data-value = "teamDash"] > .row:nth-of-type(2) > #teamRank2 {
 		margin: auto;
 	}
 	
 }
+*/
+
+/* -------------- Graphs Parameters Option ---------------*/
+[data-value = "teamDash"] > .paramCharts {
+    display: flex;
+    margin: 20px;
+    justify-content: space-evenly;
+	margin-bottom: 0px;
+}
+
+[data-value = "teamDash"] .form-group.shiny-input-container {
+	/*margin: auto;*/
+	background-color: black;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+[data-value = "teamDash"] .form-group.shiny-input-container label {
+	background-color: red;
+    color: white;
+    margin-top: 5px;
+}
+
+[data-value = "teamDash"] #statSelected2  .form-group.shiny-input-container label {
+    background-color: green;
+}
+
+[data-value = "teamDash"] #statSelected2 .selectize-input.items.full.has-options.has-items {
+	background-color: black;
+    color: springgreen;
+    font-family: digital dream;
+    border: 0;
+    padding: 0;
+    vertical-align: middle;
+	min-height: 25px;
+	border-radius:10px;
+}
+
+[data-value = "teamDash"] #statSelected2 .selectize-control.single.plugin-selectize-plugin-a11y {
+	margin-bottom: 0px;
+}
+
+[data-value = "teamDash"] #nbPlayerChart2 .form-control.shiny-bound-input {
+	font-family: digital dream;
+    color: springgreen;
+    background-color: black;
+    border: 0;
+    border-radius: 50px;
+    text-align: center;
+	height: 25px;
+}
+
+/* --------------------------------------------------------------*/
 
 [data-value = "teamDash"] > .row:nth-of-type(4) {
 	display: flex;
@@ -691,6 +764,34 @@ div.basketball #goButton3 {
     font-size: 20px;
 }
 
+/*---------------- Selected Chart Option ------------*/
+
+[data-value = "teamPlayer"] #selectedFreq3In {
+	text-align: center;
+	background-color: black;
+    width: 200px;
+    margin-right: auto;
+    margin-left: auto;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+[data-value = "teamPlayer"]  #selectedFreq3In > .control-label {
+	background-color: green;
+    color: white;
+    margin-top: 5px;
+}
+
+[data-value = "teamPlayer"] #selectedFreq3In .shiny-options-group {
+	font-family: digital dream;
+    color: springgreen;
+    margin-top: 5px;
+	margin-bottom: 5px;
+    text-align: center;
+}
+
+/* ---------------------- Items 3 Customization -----------------*/
+
 [data-value = "teamPlayer"] > #allItems3 > .row {
 	display: flex;
     justify-content: space-between;
@@ -725,6 +826,8 @@ div.basketball #goButton3 {
 	}
 }
 
+
+
 [data-value = "teamPlayer"] > #allItems3 > .row:nth-of-type(2) > .col-sm-6 > #dateBarChart3 > .plot-container.plotly > .user-select-none.svg-container {
 	border-radius: 20px 0px 20px 0px;
 }
@@ -758,7 +861,7 @@ div.basketball #goButton3 {
 }
 
 [data-value = "kingCourt"] > .param4container label {
-	background-color: red;
+	background-color: green;
     color: white;
     font-size: 17px;
     padding-bottom: 2px;
@@ -800,7 +903,7 @@ div.basketball #goButton3 {
 }
 
 /* -------------- First Row Custom --------------*/
-[data-value = "kingCourt"] > .row {
+[data-value = "kingCourt"] .row {
 	display: flex;
     justify-content: space-between;
 	align-items: center;
@@ -808,7 +911,7 @@ div.basketball #goButton3 {
 	margin-top: 0px;
 }
 
-[data-value = "kingCourt"] > .row:nth-of-type(2) > .col-sm-6 {
+[data-value = "kingCourt"] > .row > .col-sm-6 {
     max-width: 800px;
 	min-width: 650px;
 	margin: 10px;
@@ -817,10 +920,6 @@ div.basketball #goButton3 {
 
 [data-value = "kingCourt"] #allItems4 .col-sm-6:nth-of-type(1) {
 	padding: 0px;
-}
-
-[data-value = "kingCourt"] #selectedChart4 {
-	text-align: center;
 }
 
 [data-value = "kingCourt"] #playerShotsChart4 {
@@ -877,7 +976,7 @@ div.basketball #goButton3 {
 
 /*-------------- Basket Button ---------------*/
 
-[data-value = "teamPlayer"] div.basketball {
+[data-value = "kingCourt"] div.basketball {
 	margin-left: auto;
 }
 
@@ -894,9 +993,30 @@ div.basketball #goButton4 {
 
 /*---------------- Selected Chart Option ------------*/
 
-[data-value = "kingCourt"] > #selectedChart4 {
+[data-value = "kingCourt"] #selectedChart4In {
 	text-align: center;
+	background-color: black;
+    width: 200px;
+    margin-right: auto;
+    margin-left: auto;
+    border: 2px solid white;
+    border-radius: 10px;
 }
+
+[data-value = "kingCourt"]  #selectedChart4In > .control-label {
+	background-color: red;
+    color: white;
+    margin-top: 5px;
+}
+
+[data-value = "kingCourt"] #selectedChart4In .shiny-options-group {
+	font-family: digital dream;
+    color: springgreen;
+    margin-top: 5px;
+	margin-bottom: 5px;
+    text-align: center;
+}
+
 
 /* -------------- Area Selected Option ---------------*/
 
@@ -904,7 +1024,7 @@ div.basketball #goButton4 {
 	margin: auto;
 	background-color: black;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 2px solid white;
 }
 
@@ -922,6 +1042,7 @@ div.basketball #goButton4 {
     padding: 0;
     vertical-align: middle;
 	min-height: 25px;
+	border-radius:10px;
 }
 
 [data-value = "kingCourt"] #areaSelected4 .selectize-control.single.plugin-selectize-plugin-a11y {

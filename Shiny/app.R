@@ -3,13 +3,9 @@
 ###
 # Website
 library(shiny)
-library(shinycssloaders)
-library(DT)
-library(profvis)
-# Icon
-library(fontawesome)
 # Data Treatment
 library(data.table)
+library(DT)
 library(stringr)
 library(magrittr)
 # Graph
@@ -101,22 +97,24 @@ ui <-
                         leafletOutput(outputId = "usmap2", height = "500px", width = "100%"),
                         verbatimTextOutput(outputId = "selectedTeamText2"),
                         h2("Results and schedule"),
-                        fluidRow(
                           #imageOutput(outputId = "logo2", width = "auto", height = "auto"),
-                          DT::dataTableOutput(outputId = "teamRank2")
+                        tags$div(class = "RowDT",
+                          DT::dataTableOutput(outputId = "teamRank2", width = "600px"),
                         ),
                         h2("Collective Stats"),
-                        tags$div(class = "paramCharts", 
-                                 uiOutput(outputId = "statSelected2"),
-                                 uiOutput(outputId = "nbPlayerChart2")
-                        ),
-                        fluidRow(
-                          column(plotlyOutput(outputId = "teamBarChart2"), width = 6),
-                          column(plotlyOutput(outputId = "teamPieChart2"), width = 6)
+                        tags$div(class = "Row66",
+                          tags$div(class = "BlockParamDTchart",
+                            uiOutput(outputId = "statSelected2"),
+                            plotlyOutput(outputId = "teamBarChart2", width = "600px")
+                          ),
+                          tags$div(class = "BlockParamDTchart",
+                            uiOutput(outputId = "nbPlayerChart2"),       
+                            plotlyOutput(outputId = "teamPieChart2", width = "600px")
+                          )
                         ),
                         h2("Best Performances"),
-                        fluidRow(
-                          DT::dataTableOutput(outputId = "bestGames2")
+                        tags$div(class = "RowDT",
+                          DT::dataTableOutput(outputId = "bestGames2", width = "600px")
                         )
                ),
                
@@ -129,7 +127,7 @@ ui <-
                         ############################################################################ 
                         
                         h2("Parameters"),
-                        tags$div(class = "param3container",
+                        tags$div(class = "param34container",
                                  selectInput(inputId = "selectedTeam3", label = "TEAM", choices = "Team", selected = "Team"), 
                                  selectInput(inputId = "selectedPlayer3", label = "PLAYER", choices = "Player", selected = "Player"),
                                  dateRangeInput(inputId = "dateRange3", label = "SCHEDULE", 
@@ -137,9 +135,9 @@ ui <-
                                                 weekstart = 1, autoclose = FALSE)
                         ),
                         h2("Summary"),
-                        fluidRow(
-                          column(DT::dataTableOutput("sumGamesDT3", width = "100%"), width = 6),
-                          column(plotlyOutput(outputId = "spiderChart3", width = "650px"), width = 6)
+                        tags$div(class = "Row66",
+                          DT::dataTableOutput("sumGamesDT3", width = "600px", height = "auto"),
+                          plotlyOutput(outputId = "spiderChart3", width = "650px")
                         ),
                         tags$div(class = "basketball",
                                  tags$div(class = "lineVert"),
@@ -160,7 +158,7 @@ ui <-
                         ############################################################################
                         
                         h2("Parameters"),
-                        tags$div(class = "param4container",
+                        tags$div(class = "param34container",
                                  selectInput(inputId = "selectedTeam4", label = "TEAM", choices = "Team", selected = "Team"), 
                                  selectInput(inputId = "selectedPlayer4", label = "PLAYER", choices = "Player", selected = "Player"),
                                  dateRangeInput(inputId = "dateRange4", label = "SCHEDULE", 
@@ -168,9 +166,9 @@ ui <-
                                                 weekstart = 1, autoclose = FALSE)
                         ),
                         h2("Summary"),
-                        fluidRow(
-                          column(DT::dataTableOutput(outputId = "playerShotsDT4", width = "100%"), width = 6),
-                          column(plotlyOutput(outputId = "playerShotsSum4", width = "100%"), width = 6)
+                        tags$div(class = "Row66",
+                          DT::dataTableOutput(outputId = "playerShotsDT4", width = "600px"),
+                          plotlyOutput(outputId = "playerShotsSum4", width = "600px")
                         ),
                         tags$div(class = "basketball",
                                  tags$div(class = "lineVert"),
@@ -202,12 +200,12 @@ ui <-
                         numericInput(inputId = "nbPlayerSelected5", label = "NB PLAYERS", value = 15, min = 10, max = 50, step = 1, width = "200px"),
                         plotlyOutput(outputId = "customGraph5", width = "75%", height = "800px"),
                         h2("Player Card"),
-                        fluidRow(
-                          DT::dataTableOutput(outputId = "playerCarDT5")
+                        tags$div(class = "RowDT",
+                          DT::dataTableOutput(outputId = "playerCarDT5", width = "600px"),
                         ),
                         h2("Player Salary"),
-                        fluidRow(
-                          DT::dataTableOutput(outputId = "playerSalDT5")
+                        tags$div(class = "RowDT",
+                          DT::dataTableOutput(outputId = "playerSalDT5", width = "600px")
                         )
                )
     ),
@@ -525,17 +523,17 @@ server <- function(input, output, session) {
     input$goButton3
     
     tagList(
-      fluidRow(
-        column(
-          uiOutput("selectedFreq3"),
-          plotlyOutput(outputId = "dateBarChart3", width = "100%"), 
-          width = 6),
-        column(DT::dataTableOutput("impactFG3", width = "100%"), width = 6)
+      tags$div(class = "Row66",
+        tags$div(class = "BlockParamDTchart", 
+          uiOutput("selectedFreq3"),       
+          plotlyOutput(outputId = "dateBarChart3", width = "600px")
+        ), 
+          DT::dataTableOutput("impactFG3", width = "600px")
       ),
       h2("Impact"),
-      fluidRow(
-        column(DT::dataTableOutput("impactPluMin3", width = "100%"), width = 6),
-        column(plotlyOutput(outputId = "periodBarChart3", width = "100%"), width = 6)
+      tags$div(class = "Row66",
+        DT::dataTableOutput("impactPluMin3", width = "600px"),
+        plotlyOutput(outputId = "periodBarChart3", width = "600px")
       )
     )
   })
@@ -643,7 +641,7 @@ server <- function(input, output, session) {
   
   # - PLAYER CHARTS
   output$playerShotsChart4 <- renderPlotly({
-    req(listCharts4())
+    req(listCharts4(), chartType4())
     if (chartType4() == "Spots"){
       listCharts4()[["ShotChart"]]
     } else if (chartType4() == "Efficiency") {
@@ -665,7 +663,7 @@ server <- function(input, output, session) {
   
   # - ASSISTS DISTRIBUTION LIST
   listAssists4 <- reactive({
-    req(playerSelected4Graph() != "Player", shortNameSelected4Graph() != "Team",dateRange4MinGraph(), dateRange4MaxGraph())
+    req(playerSelected4Graph() != "Player", shortNameSelected4Graph() != "Team",dateRange4MinGraph(), dateRange4MaxGraph(), areaSelected4())
     getAssistsShotsPlayer(selectedPlayer = playerSelected4Graph(), selectedTeam = shortNameSelected4Graph(), startDate = dateRange4MinGraph(), endDate = dateRange4MaxGraph(), selectedArea = areaSelected4(), DT = nbaDatasDTmerged())
   })
   
@@ -685,17 +683,17 @@ server <- function(input, output, session) {
     input$goButton4
     
     tagList(
-      fluidRow(
-        column(
-          uiOutput(outputId = "selectedChart4"),
-          plotlyOutput(outputId = "playerShotsChart4", width = "830px", height = "850px")
-          , width = 6),
-        column(
-          uiOutput(outputId = "areaSelected4"),
-          DT::dataTableOutput(outputId = "globalAssist4", width = "100%"),
-          DT::dataTableOutput(outputId = "detailedAssist4", width = "100%")
-          , width = 6)
-      )
+        tags$div(class = "Row66",
+          tags$div(class = "BlockParamDTchart",
+            uiOutput(outputId = "selectedChart4"),
+            plotlyOutput(outputId = "playerShotsChart4", width = "830px", height = "850px")
+          ),
+          tags$div(class = "BlockParamDTchart",
+            uiOutput(outputId = "areaSelected4"),
+            DT::dataTableOutput(outputId = "globalAssist4", width = "600px"),
+            DT::dataTableOutput(outputId = "detailedAssist4", width = "600px")
+          )
+        )
     )
   })
   

@@ -7,7 +7,6 @@ body {
     zoom: 1; /* Other non-webkit browsers */
     zoom: 100%; /* Webkit browsers */
 	font-family: "Poppins";
-	
 }
 
 header {
@@ -55,6 +54,58 @@ p, pre {
     line-height: 35px;
     padding: 20px;
     border: 2px solid black;
+	margin-top:20px;
+	margin-bottom:20px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Rows & Blocks -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+div.Row66 {
+	margin: 20px;
+	display: flex;
+	justify-content: space-evenly;
+	align-items:center;
+}
+
+@media screen and (max-width: 1420px) {
+	div.Row66 {
+		margin: 20px;
+		display: block;
+	}
+	
+	div.Row66 > div {
+		margin-left:auto;
+		margin-right:auto;
+		margin-top:10px;
+		margin-bottom:10px;
+	}
+	
+}
+
+div.BlockParamDTchart  > div {
+		margin-left:auto;
+		margin-right:auto;
+		margin-top:10px;
+		margin-bottom:10px;
+}
+
+div.BlockParamDTchart  > div:nth-of-type(1) > div {
+		margin-left:auto;
+		margin-right:auto;
+		margin-top:10px;
+		margin-bottom:10px;
+}
+
+div.RowDT {
+	margin: 20px;
+}
+
+div.RowDT > div {
+	margin-right: auto;
+	margin-left: auto;
 }
 
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -134,6 +185,17 @@ th, th.dt-right, td.dt-right {
 .user-select-none.svg-container > .main-svg:nth-of-type(3) {
     top: 5%;
 	height: 95%;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Leaflet -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.leaflet-top.leaflet-left {
+	display: none;
+}
+
+.leaflet-control-attribution.leaflet-control {
+	display: none;
 }
 
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -334,18 +396,12 @@ div.lineCurvRight {
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
 /*-------------------------------------------------------------------------- 1st tab -----------------------------------------------------------------------
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-.introText, #confirmationText1 {
-	margin:auto;
-}
-
 .introText {
 	max-width: 1200px;
 }
 
 #confirmationText1 {
 	max-width: 600px;
-	margin-top: 40px;
 }
 
 .container {
@@ -375,7 +431,7 @@ div.lineCurvRight {
 }
 
 [data-value = "welcome"] .container > .form-group.shiny-input-container:nth-of-type(2) {
-    margin-right: welcome;
+    margin-right: auto;
 }
 
 [data-value = "welcome"] .container .form-group.shiny-input-container label {
@@ -433,22 +489,28 @@ div.basketball #resetButton {
 	
 	.container > .form-group.shiny-input-container:nth-of-type(1) { 
 		width: 200px;
-		margin: auto;
+		margin-right: auto;
+		margin-top: 10px;
+		margin-bottom: 10px;
 	}
 
 	.container > .form-group.shiny-input-container:nth-of-type(2) { 
 		width: 200px;
-		margin: auto;
+		margin-left: auto;
+		margin-top: 10px;
+		margin-bottom: 10px;
 	}
 	
 	div.basketballGo {
 		margin-right: auto;
-		margin-top: 5px;
+		margin-top: 10px;
+		margin-bottom: 10px;
 	}
 	
 	div.basketball {
 		margin-left: auto;
-		margin-top: 20px;
+		margin-top: 10px;
+		margin-bottom: 10px;
 	}
 }
 
@@ -473,64 +535,13 @@ div.basketball #resetButton {
 	}
 }
 
-.leaflet-top.leaflet-left {
-	display: none;
-}
-
-.leaflet-control-attribution.leaflet-control {
-	display: none;
-}
-
 #selectedTeamText2 {
 	max-width: 1000px;
     margin: 10px auto;
 	border: 0px solid black;
 }
 
-[data-value = "teamDash"] > .row:nth-of-type(2) {
-	display: flex;
-    justify-content: center;
-	margin: 10px;
-}
-
-[data-value = "teamDash"] > .row:nth-of-type(2) > #teamRank2 {
-	max-width: 900px;
-	min-width: 600px;
-	margin: 10px;
-	padding:0px;
-}	
-
-/*
-@media screen and (max-width: 1410px) {
-	[data-value = "teamDash"] > .row:nth-of-type(2) {
-		display: block;
-	}
-	
-	
-	[data-value = "teamDash"] > .row:nth-of-type(2) > #logo2 {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	
-	
-	[data-value = "teamDash"] > .row:nth-of-type(2) > #teamRank2 {
-		margin: auto;
-	}
-	
-}
-*/
-
-/* -------------- Graphs Parameters Option ---------------*/
-[data-value = "teamDash"] > .paramCharts {
-    display: flex;
-    margin: 20px;
-    justify-content: space-evenly;
-	margin-bottom: 0px;
-}
-
 [data-value = "teamDash"] .form-group.shiny-input-container {
-	/*margin: auto;*/
 	background-color: black;
     text-align: center;
     border-radius: 10px;
@@ -543,11 +554,11 @@ div.basketball #resetButton {
     margin-top: 5px;
 }
 
-[data-value = "teamDash"] #statSelected2  .form-group.shiny-input-container label {
+#statSelected2  .form-group.shiny-input-container label {
     background-color: green;
 }
 
-[data-value = "teamDash"] #statSelected2 .selectize-input.items.full.has-options.has-items {
+#statSelected2 .selectize-input.items.full.has-options.has-items {
 	background-color: black;
     color: springgreen;
     font-family: digital dream;
@@ -558,11 +569,11 @@ div.basketball #resetButton {
 	border-radius:10px;
 }
 
-[data-value = "teamDash"] #statSelected2 .selectize-control.single.plugin-selectize-plugin-a11y {
+#statSelected2 .selectize-control.single.plugin-selectize-plugin-a11y {
 	margin-bottom: 0px;
 }
 
-[data-value = "teamDash"] #nbPlayerChart2 .form-control.shiny-bound-input {
+#nbPlayerChart2 .form-control.shiny-bound-input {
 	font-family: digital dream;
     color: springgreen;
     background-color: black;
@@ -571,69 +582,17 @@ div.basketball #resetButton {
     text-align: center;
 	height: 25px;
 }
-
-/* --------------------------------------------------------------*/
-
-[data-value = "teamDash"] > .row:nth-of-type(4) {
-	display: flex;
-    justify-content: space-between;
-	align-items: center;
-	margin: 10px;
-	margin-top: 0px;
-}
-
-[data-value = "teamDash"] > .row:nth-of-type(4) > .col-sm-6 {
-    max-width: 800px;
-	min-width: 650px;
-	margin: 10px;
-	padding:0px;
-}
-
-@media screen and (max-width: 1710px) {
-	[data-value = "teamDash"] > .row:nth-of-type(4) {
-		display: block;
-		margin:10px;
-	}
-
-	[data-value = "teamDash"] > .row:nth-of-type(4) > .col-sm-6 {
-		width: 100%;
-		max-width: 900px;
-		min-width: 600px;
-		float: unset;
-		margin: auto;
-	}
-	
-	[data-value = "teamDash"] > .row:nth-of-type(4) > .col-sm-6:nth-of-type(2) {
-		margin-top: 20px;
-	}
-}
-
-[data-value = "teamDash"] > .row:nth-of-type(4) > .col-sm-6 > #teamPieChart2 > .plot-container.plotly > .user-select-none.svg-container {
+#teamPieChart2 > .plot-container.plotly > .user-select-none.svg-container {
 	border-radius: 20px 0px 20px 0px;
 }
-
-[data-value = "teamDash"] > .row:nth-of-type(4) > .col-sm-6 > #teamBarChart2 > .plot-container.plotly> .user-select-none.svg-container {
+#teamBarChart2 > .plot-container.plotly> .user-select-none.svg-container {
 	border-radius: 0px 20px 0px 20px;
-}
-
-[data-value = "teamDash"] > .row:nth-of-type(5) {
-	display: flex;
-    justify-content: center;
-	margin: 10px;
-}
-
-[data-value = "teamDash"] > .row:nth-of-type(5) > #bestGames2 {
-	max-width: 900px;
-	min-width: 600px;
-	margin: 10px;
-	padding:0px;
 }
 
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
 /*-------------------------------------------------------------------------- 3rd tab -----------------------------------------------------------------------
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-[data-value = "teamPlayer"] > .param3container {
+div.param34container {
 	width: 300px;
     margin: auto;
     padding: 1px;
@@ -642,24 +601,24 @@ div.basketball #resetButton {
     border: 2px solid white;
 }
 
-[data-value = "teamPlayer"] > .param3container > div {
+div.param34container > div {
 	text-align:center;
 	margin-top: 0px;
 	margin-bottom:0px;
 }
 
-[data-value = "teamPlayer"] > .param3container > div:nth-of-type(1) {
+div.param34container > div:nth-of-type(1) {
 	margin-top: 10px;
 }
 
-[data-value = "teamPlayer"] > .param3container label {
+div.param34container label {
 	background-color: red;
     color: white;
     font-size: 17px;
     padding-bottom: 2px;
 }
 
-[data-value = "teamPlayer"] > .param3container .selectize-input.full {
+div.param34container .selectize-input.full {
 	background-color: black;
     color: springgreen;
     font-family: Digital Dream;
@@ -670,11 +629,11 @@ div.basketball #resetButton {
 	border: 0px;
 }
 
-[data-value = "teamPlayer"] > .param3container .selectize-control {
+div.param34container .selectize-control {
 	margin-bottom: 0px;
 }
 
-[data-value = "teamPlayer"] > .param3container .form-control {
+div.param34container .form-control {
 	background-color: black;
     font-family: Digital Dream;
     color: white;
@@ -683,70 +642,20 @@ div.basketball #resetButton {
     font-weight: 600;
 }
 
-[data-value = "teamPlayer"] > .param3container .input-group {
+div.param34container .input-group {
 	margin-bottom: 10px;
 }
 
-[data-value = "teamPlayer"] > .param3container .input-group-addon {
+div.param34container .input-group-addon {
 	background-color: black;
     border: 0px;
     font-family: Digital Dream;
     color: white;
 }
 
-[data-value = "teamPlayer"] > .row:nth-of-type(2) {
-	display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 20px;
-    flex-wrap: wrap;
-}
-
-[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6 > #spiderChart3 > .plot-container.plotly > .user-select-none.svg-container {
+#spiderChart3 > .plot-container.plotly > .user-select-none.svg-container {
 	background-color: transparent;	
 	backdrop-filter: none;
-}
-
-[data-value = "teamPlayer"] > .row:nth-of-type(2) {
-	display: flex;
-    justify-content: space-between;
-	align-items: center;
-	margin: 10px;
-	margin-top: 0px;
-}
-
-[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6 {
-    max-width: 800px;
-	min-width: 650px;
-	margin: 10px;
-	padding:0px;
-}
-
-@media screen and (max-width: 1710px) {
-	[data-value = "teamPlayer"] > .row:nth-of-type(2) {
-		display: block;
-		margin: 10px;
-	}
-
-	[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6 {
-		width: 100%;
-		max-width: 900px;
-		min-width: 600px;
-		float: unset;
-		margin: auto;
-	}
-	
-	[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6:nth-of-type(1) {
-		margin-top: 50px;
-	}
-	
-	[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6:nth-of-type(2) {
-		margin-top: 20px;
-	}
-	
-	[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6:nth-of-type(2) > #spiderChart3 {
-		margin: auto;
-	}
 }
 
 [data-value = "teamPlayer"] div.basketball {
@@ -766,7 +675,7 @@ div.basketball #goButton3 {
 
 /*---------------- Selected Chart Option ------------*/
 
-[data-value = "teamPlayer"] #selectedFreq3In {
+#selectedFreq3In {
 	text-align: center;
 	background-color: black;
     width: 200px;
@@ -776,13 +685,13 @@ div.basketball #goButton3 {
     border-radius: 10px;
 }
 
-[data-value = "teamPlayer"]  #selectedFreq3In > .control-label {
+#selectedFreq3In > .control-label {
 	background-color: green;
     color: white;
     margin-top: 5px;
 }
 
-[data-value = "teamPlayer"] #selectedFreq3In .shiny-options-group {
+#selectedFreq3In .shiny-options-group {
 	font-family: digital dream;
     color: springgreen;
     margin-top: 5px;
@@ -790,189 +699,17 @@ div.basketball #goButton3 {
     text-align: center;
 }
 
-/* ---------------------- Items 3 Customization -----------------*/
-
-[data-value = "teamPlayer"] > #allItems3 > .row {
-	display: flex;
-    justify-content: space-between;
-	align-items: center;
-	margin: 10px;
-	margin-top: 0px;
-}
-
-[data-value = "teamPlayer"] > #allItems3 > .row > .col-sm-6 {
-    max-width: 800px;
-	min-width: 650px;
-	margin: 10px;
-	padding:0px;
-}
-
-@media screen and (max-width: 1710px) {
-	[data-value = "teamPlayer"] > #allItems3 > .row {
-		display: block;
-		margin:10px;
-	}
-
-	[data-value = "teamPlayer"] > #allItems3 > .row > .col-sm-6 {
-		width: 100%;
-		max-width: 900px;
-		min-width: 600px;
-		float: unset;
-		margin: auto;
-	}
-	
-	[data-value = "teamPlayer"] > #allItems3 > .row > .col-sm-6:nth-of-type(2) {
-		margin-top: 20px;
-	}
-}
-
-
-
-[data-value = "teamPlayer"] > #allItems3 > .row:nth-of-type(2) > .col-sm-6 > #dateBarChart3 > .plot-container.plotly > .user-select-none.svg-container {
+#dateBarChart3 > .plot-container.plotly > .user-select-none.svg-container {
 	border-radius: 20px 0px 20px 0px;
 }
 
-[data-value = "teamPlayer"] > #allItems3 > .row:nth-of-type(3) > .col-sm-6 > #periodBarChart3 > .plot-container.plotly > .user-select-none.svg-container {
+#periodBarChart3 > .plot-container.plotly > .user-select-none.svg-container {
 	border-radius: 0px 20px 0px 20px;
 }
 
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
 /*-------------------------------------------------------------------------- 4th tab -----------------------------------------------------------------------
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-/*-------------- Parameters Containers --------------*/
-[data-value = "kingCourt"] > .param4container {
-	width: 300px;
-    margin: auto;
-    padding: 1px;
-    background-color: black;
-    border-radius: 10px;
-    border: 2px solid white;
-}
-
-[data-value = "kingCourt"] > .param4container > div {
-	text-align:center;
-	margin-top: 0px;
-	margin-bottom:0px;
-}
-
-[data-value = "kingCourt"] > .param4container > div:nth-of-type(1) {
-	margin-top: 10px;
-}
-
-[data-value = "kingCourt"] > .param4container label {
-	background-color: green;
-    color: white;
-    font-size: 17px;
-    padding-bottom: 2px;
-}
-
-[data-value = "kingCourt"] > .param4container .selectize-input.full {
-	background-color: black;
-    color: springgreen;
-    font-family: Digital Dream;
-    font-size: 18px;
-	min-height: 0px;
-	padding-top:10px;
-	padding-bottom:10px;
-	border: 0px;
-}
-
-[data-value = "kingCourt"] > .param4container .selectize-control {
-	margin-bottom: 0px;
-}
-
-[data-value = "kingCourt"] > .param4container .form-control {
-	background-color: black;
-    font-family: Digital Dream;
-    color: white;
-    border: 0px solid white;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-[data-value = "kingCourt"] > .param4container .input-group {
-	margin-bottom: 10px;
-}
-
-[data-value = "kingCourt"] > .param4container .input-group-addon {
-	background-color: black;
-    border: 0px;
-    font-family: Digital Dream;
-    color: white;
-}
-
-/* -------------- First Row Custom --------------*/
-[data-value = "kingCourt"] .row {
-	display: flex;
-    justify-content: space-between;
-	align-items: center;
-	margin: 10px;
-	margin-top: 0px;
-}
-
-[data-value = "kingCourt"] > .row > .col-sm-6 {
-    max-width: 800px;
-	min-width: 650px;
-	margin: 10px;
-	padding:0px;
-}
-
-[data-value = "kingCourt"] #allItems4 .col-sm-6:nth-of-type(1) {
-	padding: 0px;
-}
-
-[data-value = "kingCourt"] #playerShotsChart4 {
-	margin: auto;
-}
-
-[data-value = "kingCourt"] #allItems4 .col-sm-6:nth-of-type(2) {
-    max-width: 800px;
-	min-width: 650px;
-	margin: 10px;
-	padding:0px;
-}
-
-@media screen and (max-width: 1710px) {
-	[data-value = "kingCourt"] > .row:nth-of-type(2) {
-		display: block;
-		margin: 10px;
-	}
-
-	[data-value = "kingCourt"] > .row:nth-of-type(2) > .col-sm-6 {
-		width: 100%;
-		max-width: 900px;
-		min-width: 600px;
-		float: unset;
-		margin: auto;
-	}
-	
-	[data-value = "kingCourt"] > .row:nth-of-type(2) > .col-sm-6:nth-of-type(2) {
-		margin-top: 20px;
-	}
-}
-
-@media screen and (max-width: 1755px) {
-	[data-value = "kingCourt"] #allItems4 .row {
-		display: block;
-		margin: 10px;
-	}
-
-	[data-value = "kingCourt"] #allItems4 .col-sm-6:nth-of-type(1) {
-		width: 100%;
-		float: unset;
-		margin: auto;
-	}
-	
-	[data-value = "kingCourt"] #allItems4  .col-sm-6:nth-of-type(2) {
-		width: 100%;
-		max-width: 900px;
-		min-width: 600px;
-		float: unset;
-		margin: auto;
-		margin-top: 20px;
-	}
-}
 
 /*-------------- Basket Button ---------------*/
 
@@ -993,7 +730,7 @@ div.basketball #goButton4 {
 
 /*---------------- Selected Chart Option ------------*/
 
-[data-value = "kingCourt"] #selectedChart4In {
+#selectedChart4In {
 	text-align: center;
 	background-color: black;
     width: 200px;
@@ -1003,13 +740,13 @@ div.basketball #goButton4 {
     border-radius: 10px;
 }
 
-[data-value = "kingCourt"]  #selectedChart4In > .control-label {
+#selectedChart4In > .control-label {
 	background-color: red;
     color: white;
     margin-top: 5px;
 }
 
-[data-value = "kingCourt"] #selectedChart4In .shiny-options-group {
+#selectedChart4In .shiny-options-group {
 	font-family: digital dream;
     color: springgreen;
     margin-top: 5px;
@@ -1020,7 +757,7 @@ div.basketball #goButton4 {
 
 /* -------------- Area Selected Option ---------------*/
 
-[data-value = "kingCourt"] #areaSelected4 > .form-group.shiny-input-container {
+#areaSelected4 > .form-group.shiny-input-container {
 	margin: auto;
 	background-color: black;
     text-align: center;
@@ -1028,13 +765,13 @@ div.basketball #goButton4 {
     border: 2px solid white;
 }
 
-[data-value = "kingCourt"] #areaSelected4 > .form-group.shiny-input-container label {
+#areaSelected4 > .form-group.shiny-input-container label {
 	color: white;
     background-color: red;
     margin-top: 5px;
 }
 
-[data-value = "kingCourt"] #areaSelected4 .selectize-input.items.full.has-options.has-items {
+#areaSelected4 .selectize-input.items.full.has-options.has-items {
 	background-color: black;
     color: springgreen;
     font-family: digital dream;
@@ -1045,27 +782,27 @@ div.basketball #goButton4 {
 	border-radius:10px;
 }
 
-[data-value = "kingCourt"] #areaSelected4 .selectize-control.single.plugin-selectize-plugin-a11y {
+#areaSelected4 .selectize-control.single.plugin-selectize-plugin-a11y {
 	margin-bottom: 0px;
 }
 
 /* --------------------------------------------------*/
 
-[data-value = "kingCourt"] #globalAssist4 {
+#globalAssist4 {
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
 
-[data-value = "kingCourt"] #playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(1) {
+#playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(1) {
     top: 0;
 	height: 100%;
 }
 
-[data-value = "kingCourt"] #playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(2) {
+#playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(2) {
     padding-top: 0px;
 }
 
-[data-value = "kingCourt"] #playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(3) {
+#playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(3) {
     top: 0%;
 	height: 100%;
 }
@@ -1264,26 +1001,6 @@ div.basketball #goButton4 {
 	height: 100%;
 }
 
-[data-value = "moneyball"] > .row:nth-of-type(4), .row:nth-of-type(5) {
-	display: flex;
-	justify-content:center;
-	margin: 10px;
-}
-
-[data-value = "moneyball"] > .row:nth-of-type(4) > #playerCarDT5 {
-	max-width: 900px;
-	min-width: 600px;
-	margin: 10px;
-	padding:0px;
-}
-
-[data-value = "moneyball"] > .row:nth-of-type(5) > #playerSalDT5 {
-	max-width: 900px;
-	min-width: 600px;
-	margin: 10px;
-	padding:0px;
-}
-
 [data-value = "moneyball"] #playerSalDT5 .dataTables_paginate.paging_simple_numbers {
 	display: none;
 }
@@ -1299,6 +1016,8 @@ div.basketball #goButton4 {
 [data-value = "moneyball"] #playerSalDT5 .dataTables_info {
 	display: none;
 }
+
+
 
 
 div.busy {

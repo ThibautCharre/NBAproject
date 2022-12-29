@@ -89,7 +89,7 @@ getShotChart <- function(selectedPlayer = NULL, selectedTeam = NULL, shootingDat
                    color = ~vsLeague,
                    colors = "Reds",
                    size = ~TotalPlayerAttempted,
-                   #marker = list(sizeref = 0.005, sizemode = "area", line = list(line.width = 0)),
+                   fill = ~"",
                    marker = list(sizeref = 0.005, sizemode = "area"),
                    hovertemplate = ~paste("Area :<b>", area, 
                                           "<br></b>Total Attempted :<b>", TotalPlayerAttempted,

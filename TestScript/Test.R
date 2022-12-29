@@ -1,7 +1,7 @@
 library(data.table)
 library(stringr)
 
-seasonSelected1 <- "2021-2022"
+seasonSelected1 <- "2020-2021"
 seasonTypeSelected1 <- "Regular Season"
 
 dicoPlayerFich <- gePlayersFich(season = seasonSelected1, seasonType = seasonTypeSelected1, path = "Shiny/Dictionary/")

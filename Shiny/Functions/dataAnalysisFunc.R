@@ -777,14 +777,11 @@ getClassicPlayerStats <- function(selectedTeam, selectedPlayer, startDate = NULL
   }
   
   # We find player tot games for the period
-  playerTotGames <- nrow(unique(DT[team == selectedTeam & (onFloorHome %like% selectedPlayer|onFloorAway %like% selectedPlayer), "game_id"]))
+  playerTotGames <- nrow(unique(DT[(Home == selectedTeam & onFloorHome %like% selectedPlayer) | (Away == selectedTeam & onFloorAway %like% selectedPlayer), "game_id"]))
   
   ########
   # GAMES
   ########
-  
-  # We find the number of games for each player
-  # timeDT <- DTgamesPlayed[team == selectedTeam, .(player, TotalGames, TotMin)]
   
   ########
   # POINTS
@@ -874,7 +871,23 @@ getClassicPlayerStats <- function(selectedTeam, selectedPlayer, startDate = NULL
 #-------------------------------------------------------------------------------
 getPlayerClassicStatsChart <- function(selectedTeam, selectedPlayer, startDate = NULL ,endDate = NULL, DT) {
   #-------------------------------------------------------------------------------
-  if (selectedTeam != "Team" & selectedPlayer != "Player") {
+  # We filter DT based on dates
+  if (!is.null(startDate) & !is.null(endDate)) {
+    DT <- DT[Date >= startDate & Date <= endDate]
+  }
+  
+  # We take into account games where player was on the floor
+  gamesIds <- unique(DT[(Home == selectedTeam & onFloorHome %like% selectedPlayer) | (Away == selectedTeam & onFloorAway %like% selectedPlayer), game_id])
+  
+  # Return by default if no game is found
+  if (length(gamesIds) == 0) {
+    continue <- FALSE
+  } else {
+    continue <- TRUE
+  }
+  
+  # We render the graph or an empty graph
+  if (selectedTeam != "Team" & selectedPlayer != "Player" & continue == TRUE) {
     
     # we dl datas from previous function
     listStats <- getClassicPlayerStats(selectedTeam, selectedPlayer, startDate, endDate, DT)
@@ -961,19 +974,19 @@ getHistPlayerStats <- function(selectedTeam, selectedPlayer, startDate = NULL, e
   # - minTotGames : a number of minimum game to rank players (default)
   # - DT : data table where to look for the datas (default)
   #-------------------------------------------------------------------------------
-  # Return by default
-  if (selectedTeam == "Team" | selectedPlayer == "Player") {
-    histStatsDT <- data.table("Date" = "-", "W/L" = "-", "Opp" = "-", "Pts" = "-", "Asts" = "-", "Rebs" = "-", "Stls" = "-", "Blks" = "-", "TOs" = "-")
-    return(histStatsDT)
-  }
-  
   # We filter DT based on dates
   if (!is.null(startDate) & !is.null(endDate)) {
     DT <- DT[Date >= startDate & Date <= endDate]
   }
   
   # We take into account games where player was on the floor
-  gamesIds <- unique(DT[onFloorHome %like% selectedPlayer|onFloorAway %like% selectedPlayer, game_id])
+  gamesIds <- unique(DT[(Home == selectedTeam & onFloorHome %like% selectedPlayer) | (Away == selectedTeam & onFloorAway %like% selectedPlayer), game_id])
+  
+  # Return by default if no game is found
+  if (length(gamesIds) == 0) {
+    histStatsDT <- data.table("Date" = "-", "W/L" = "-", "Opp" = "-", "Pts" = "-", "Asts" = "-", "Rebs" = "-", "Stls" = "-", "Blks" = "-", "TOs" = "-")
+    return(histStatsDT)
+  }
   
   # We filter DT
   DT <- DT[game_id %in% gamesIds]
@@ -1452,268 +1465,6 @@ getAdvancedPlayerStatsPerDateGraph <- function(selectedTeam, selectedPlayer, per
   
 }
 
-# #-------------------------------------------------------------------------------
-# getPlayerStatsPerDate <- function(selectedTeam, selectedPlayer, perMonthWeek = "Month", DTcalendar, DTplayer) {
-#   #-------------------------------------------------------------------------------
-#   # @ variables :
-#   # - selectedTeam : a team to select
-#   # - selectedPlayer : a player to select from selected team
-#   # - perMonthWeek : Results by Month or Week (default)
-#   # - date1 : Minimum date (null by default, takes all current season)
-#   # - date2 : Maximum date (null by default, takes all current season)
-#   # - DT : a data table where datas are extracted (default)
-#   #-------------------------------------------------------------------------------
-#   ############
-#   ##### TEAM # Results by team selected if selectedPlayer
-#   ############
-#   winsLooseTeamDT <- DTcalendar[Winner %like% selectedTeam|Loser %like% selectedTeam]
-#   
-#   # We add variable to group stats per ponth or week
-#   if (perMonthWeek == "Month") {
-#     winsLooseTeamDT[, MonthOrWeek := lubridate::month(Date)]
-#   } else if (perMonthWeek == "Week") {
-#     winsLooseTeamDT[, MonthOrWeek := lubridate::week(Date)]
-#   }
-#   
-#   # We aggregate wins and loses by selected team and period, if no wins then we force value to zero
-#   winsTeamDT <- winsLooseTeamDT[Winner == selectedTeam, .(TotalWins = .N), by = MonthOrWeek]
-#   if (nrow(winsTeamDT) == 0) {
-#     winsTeamDT <- data.table(MonthOrWeek = unique(winsLooseTeamDT$MonthOrWeek),
-#                              TotalWins = 0)
-#     # end if
-#   }
-#   
-#   # Same thing for loses
-#   lossesTeamDT <- winsLooseTeamDT[Loser == selectedTeam, .(TotalLosses = .N), by = MonthOrWeek]
-#   if (nrow(lossesTeamDT) == 0) {
-#     lossesTeamDT <- data.table(MonthOrWeek = unique(winsLooseTeamDT$MonthOrWeek),
-#                                TotalLosses = 0)
-#     # end if
-#   }
-#   
-#   # We merge wins and losses
-#   winsLooseTeamDT <- merge(winsTeamDT, lossesTeamDT, by = c("MonthOrWeek"), all = TRUE)
-#   
-#   # We force NA values to 0
-#   winsLooseTeamDT[is.na(winsLooseTeamDT)] <- 0
-#   
-#   #############################
-#   ##### PLAYER/LEAGUE LEADERS #
-#   #############################
-#   
-#   # We filter generic datas used for all stats
-#   nbaDatasDT <- DTplayer
-#   
-#   # if no games we return an empty data.table
-#   if (nrow(nbaDatasDT) == 0) {
-#     perMonthWeek <- "Week"
-#     weekVector <- unique(lubridate::week(seq(from = date1, to = date2, by = 1)))
-#     return(data.table(MonthOrWeek = weekVector, TotalWins = 0, TotalLosses = 0))
-#     # end if
-#   }
-#   
-#   # We add variable to group stats per month or week
-#   if (perMonthWeek == "Month") {
-#     nbaDatasDT[, MonthOrWeek := lubridate::month(Date)] 
-#   } else if (perMonthWeek == "Week") {
-#     nbaDatasDT[, MonthOrWeek := lubridate::week(Date)]
-#   }
-#   
-#   # GAMES - 1
-#   nbGamesDT <- nbaDatasDT[, .(TotalGames = uniqueN(game_id)), by = MonthOrWeek]
-#   
-#   # If no games played by player then we only display wins and losses
-#   if (nrow(nbGamesDT) == 0) {
-#     return(winsLooseTeamDT)
-#   }
-#   
-#   # POINTS - 2
-#   playerPointsDT <- nbaDatasDT[player == selectedPlayer & points %in% c(0, 1, 2, 3), 
-#                                .(Date, MonthOrWeek, player, points)]
-#   playerPointsDT <- playerPointsDT[, .(TotalPts = sum(points)), by = c("player", "MonthOrWeek")]
-#   
-#   # FIELD GOAL - 3
-#   # We filter on shooting datas and create a variable to include 2pts Shots or 2pts Shots types
-#   fieldGoalDT <- nbaDatasDT[result %in% c("made", "missed") & player == selectedPlayer, 
-#                             .(MonthOrWeek, player, type, result)]
-#   fieldGoalDT[, type := ifelse(grepl("3pt", type), "3pt Shots", 
-#                                ifelse(grepl("free throw", type), 
-#                                       "Free Throws", "2pt Shots"))]
-#   
-#   # We aggregate per type of shots and dcast for better results
-#   fieldGoalDT <- fieldGoalDT[, .(Total = .N), by = c("player", "MonthOrWeek", "type", "result")]
-#   fieldGoalDT <- dcast(fieldGoalDT, formula =  player + MonthOrWeek ~ type + result, value.var = "Total", fill = 0)
-#   
-#   # We check if all shoot type and results are tgere, if not, we create and force value to zero
-#   missingTypeShots <- setdiff(c("player", "2pt Shots_made", "2pt Shots_missed", "3pt Shots_made", "3pt Shots_missed", "Free Throws_made", "Free Throws_missed"), 
-#                               colnames(fieldGoalDT))
-#   if (length(missingTypeShots) > 0) {  
-#     for (i in seq(1, length(missingTypeShots))) {
-#       fieldGoalDT <- fieldGoalDT[, missingTypeShots[i] := 0]
-#     }
-#   }
-#   
-#   # We calculate the % of FG
-#   fieldGoalDT[, ":=" (FG2pts = round(get("2pt Shots_made") / (get("2pt Shots_missed") + get("2pt Shots_made"))  * 100, 2), 
-#                       FG3pts = round(get("3pt Shots_made") / (get("3pt Shots_missed") + get("3pt Shots_made"))  * 100, 2),
-#                       FGft = round(get("Free Throws_made") / (get("Free Throws_missed") + get("Free Throws_made"))  * 100, 2))]
-#   
-#   # If no FG, then we force to zero
-#   fieldGoalDT[is.na(fieldGoalDT)] <- 0
-#   fieldGoalDT <- fieldGoalDT[, .(player, MonthOrWeek, FG2pts, FG3pts, FGft)]
-#   
-#   
-#   # ASSISTS - 4
-#   assistsPlayerDT <- nbaDatasDT[assist == selectedPlayer, .(Date, MonthOrWeek, assist, team)]
-#   assistsPlayerDT <- assistsPlayerDT[, .(TotalAss = .N), by = c("assist", "MonthOrWeek")]
-#   
-#   # REBOUND - 5
-#   reboundsPlayerDT <- nbaDatasDT[event_type == "rebound" & player == selectedPlayer, .(Date, MonthOrWeek, player, team)]
-#   reboundsPlayerDT <- reboundsPlayerDT[, .(TotalReb = .N), by = c("player", "MonthOrWeek")]
-#   
-#   # We aggregate all objects
-#   statsPlayerPeriodDT <- merge(playerPointsDT, fieldGoalDT, 
-#                                by = c("player", "MonthOrWeek"), all = TRUE)
-#   statsPlayerPeriodDT <- merge(statsPlayerPeriodDT, assistsPlayerDT, 
-#                                by.x = c("player", "MonthOrWeek"), by.y = c("assist", "MonthOrWeek"), all = TRUE)
-#   statsPlayerPeriodDT <- merge(statsPlayerPeriodDT, reboundsPlayerDT, 
-#                                by = c("player", "MonthOrWeek"), all = TRUE)
-#   statsPlayerPeriodDT <- merge(winsLooseTeamDT, statsPlayerPeriodDT, 
-#                                by = c("MonthOrWeek"), all = TRUE)
-#   
-#   # We add number of games to finally get per game results
-#   statsPlayerPeriodDT <- merge(statsPlayerPeriodDT, nbGamesDT, 
-#                                by = c("MonthOrWeek"), all = TRUE)
-#   
-#   # New variables to get mean
-#   statsPlayerPeriodDT[, PPG := round(TotalPts / TotalGames, 2)]
-#   statsPlayerPeriodDT[, APG := round(TotalAss / TotalGames, 2)]
-#   statsPlayerPeriodDT[, RPG := round(TotalReb / TotalGames, 2)]
-#   
-#   return(statsPlayerPeriodDT)
-#   
-# }
-# 
-# #-------------------------------------------------------------------------------
-# getPlayerStatsPerDateGraph <- function(selectedTeam, selectedPlayer, perMonthWeek = "Month", date1 = NULL, date2 = NULL, DTcalendar = NBAcalendar, DTplayer) {
-#   #-------------------------------------------------------------------------------
-#   # @ variables :
-#   # - selectedTeam : a team to select
-#   # - selectedPlayer : a player to select from selected team
-#   # - perMonthWeek : Results by Month or Week (default)
-#   # - date1 : Minimum date (null by default, takes all current season)
-#   # - date2 : Maximum date (null by default, takes all current season)
-#   # - DT : a data table where datas are extracted (default)
-#   #-------------------------------------------------------------------------------
-#   # We donwnload stats for a specific player
-#   playerStatsDT <- getPlayerStatsPerDate(selectedTeam, selectedPlayer, perMonthWeek, date1, date2, DTcalendar, DTplayer)
-#   
-#   if (perMonthWeek == "Month") {
-#     
-#     # Conversion DT for factoring period
-#     convertDT <- data.table(numMonth = seq(1, 12, 1), 
-#                             nameMonth = c("January", "Februray", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"))
-#     
-#     # We translate number to Month name
-#     playerStatsDT[, MonthOrWeek := sapply(X = MonthOrWeek, FUN = function(x) {
-#       convertDT[numMonth == x, nameMonth]
-#     })]
-#     
-#     # We do a factorization to respect time order of the season
-#     playerStatsDT$MonthOrWeek <- factor(playerStatsDT$MonthOrWeek, 
-#                                         levels = c("September", "October", "November", "December", "January", "Februray", "March", "April", "May", "June", "July", "August"), 
-#                                         ordered = TRUE)
-#     
-#   } else if (perMonthWeek == "Week") {
-#     
-#     # Conversion DT for factoring period
-#     convertDT <- data.table(numWeek = seq(1, 52, 1), 
-#                             nameWeek = sapply(seq(1, 52, 1), function(x) {paste("W-", x, sep = "")}))
-#     
-#     # We translate number to Month name
-#     playerStatsDT[, MonthOrWeek := sapply(X = MonthOrWeek, FUN = function(x) {
-#       convertDT[numWeek == x, nameWeek]
-#     })]
-#     
-#     # We do a factorization to respect time order of the season
-#     playerStatsDT$MonthOrWeek <- factor(playerStatsDT$MonthOrWeek, 
-#                                         levels = c(paste("W-", seq(35, 52, 1), sep = ""), paste("W-", seq(1, 34, 1), sep = "")))
-#     # end if  
-#   }
-#   
-#   # 1st bar chart : wins
-#   fig <- plot_ly(data = playerStatsDT, type = "bar", 
-#                  x = ~MonthOrWeek, y = ~TotalWins,
-#                  marker = list(color = "rgba(255, 99, 71, 0.5)"),
-#                  texttemplate = ~paste("<b>", TotalWins, "W"),
-#                  hoverinfo = "none",
-#                  showlegend = FALSE)
-#   
-#   # 2nd bar chart : losses
-#   fig <- add_trace(p = fig, type = "bar", 
-#                    y = ~TotalLosses,
-#                    texttemplate = ~paste("<b>", TotalLosses, "L"),
-#                    marker = list(color = "rgba(51, 132, 255, 0.5)"),
-#                    hoverinfo = "none",
-#                    showlegend = FALSE)
-#   
-#   # 3rd marks : PPG plus other stats (only available if player played at least 1 game betwwen date1 and date 2)
-#   hasPlayerPlayed <- ifelse(ncol(playerStatsDT) == 3, FALSE, TRUE)
-#   
-#   if (hasPlayerPlayed == TRUE) {
-#     fig <- add_trace(p = fig, data = playerStatsDT, type = "scatter", mode = "markers",
-#                      x = ~MonthOrWeek, y = ~PPG,
-#                      yaxis = "y2",
-#                      marker = list(color = "rgba(151, 44, 92, 0.8)", size = 10),
-#                      hovertemplate = ~paste(TotalGames, "games",
-#                                             "<br>PPG :", PPG,
-#                                             "<br>APG :", APG,
-#                                             "<br>RPG :", RPG,
-#                                             "<br><br>2pts FG :", FG2pts, "%",
-#                                             "<br>3pts FG :", FG3pts, "%",
-#                                             "<br>FT FG :", FGft, "%",
-#                                             "<extra></extra>"), 
-#                      showlegend = FALSE)
-#     
-#     # Title and disposition
-#     fig <- layout(p = fig, data = playerStatsDT,
-#                   title = paste("<b>", str_extract_all(selectedPlayer, "(?<=[:space:]).*"), "</b>-", "Stats per", perMonthWeek),
-#                   xaxis = list(title=""),
-#                   yaxis2 = list(overlaying = "y",
-#                                 side = "right",
-#                                 range = ~c(0, max(PPG)+1),
-#                                 zeroline = TRUE,
-#                                 showline = FALSE,
-#                                 showticklabels = FALSE,
-#                                 showgrid = FALSE),
-#                   yaxis = list(title = "",
-#                                zeroline = TRUE,
-#                                showline = FALSE,
-#                                showticklabels = FALSE,
-#                                showgrid = TRUE),
-#                   barmode = "group")
-#     # end if
-#   } else if (hasPlayerPlayed == FALSE) {
-#     # Title and disposition
-#     fig <- layout(p = fig, data = playerStatsDT,
-#                   title = paste("<b>", str_extract_all(selectedPlayer, "(?<=[:space:]).*"), "</b>-", "</b>Did Not Play"),
-#                   xaxis = list(title=""),
-#                   yaxis = list(title = "Team Wins/Losses",
-#                                zeroline = TRUE,
-#                                showline = TRUE,
-#                                showticklabels = TRUE,
-#                                showgrid = TRUE),
-#                   barmode = "group")
-#     # enf else if  
-#   }
-#   
-#   # No plot bar top right
-#   fig <- plotly::config(p = fig, displayModeBar = FALSE)
-#   
-#   return(fig)
-#   
-# }
-
 #-------------------------------------------------------------------------------
 getPlayerPointsPerPeriod <- function(selectedTeam, selectedPlayer, DTplayer) {
   #-------------------------------------------------------------------------------
@@ -2029,74 +1780,6 @@ getPlayerImpact <- function(selectedTeam, selectedPlayer, DTplayer) {
   
 }
 
-# #-------------------------------------------------------------------------------
-# getPlayerImpactGraph <- function(selectedTeam, selectedPlayer, DTplayer) {
-#   #-------------------------------------------------------------------------------
-#   # @ variables :
-#   # - selectedTeam : a team to select
-#   # - selectedPlayer : a player from the selected team
-#   # - DT : a data table where datas are extracted (default)
-#   #-------------------------------------------------------------------------------
-#   # We download impact datas
-#   playerImpactDT <- getPlayerImpact(selectedTeam, selectedPlayer, DTplayer)
-#   
-#   # We treat shooting datas to display on a 1st graph
-#   shootingImpactDT <- playerImpactDT[["ShootImpact"]]
-#   
-#   # We treat points datas to display on a 2nd graph
-#   pointImpactDT <- playerImpactDT[["PointImpact"]]
-#   
-#   # We factor to get a correct order
-#   pointImpactDT$Floor <- c("With Player", "Without Player")
-#   pointImpactDT$Floor <- factor(x = pointImpactDT$Floor, levels = c("With Player", "Without Player"))
-#   
-#   # We keep nb games to include in a title
-#   nbGamesPlayed <- unique(pointImpactDT[, nbGames])
-#   
-#   # Impact on Shooting datas
-#   fig <- plot_ly(data = shootingImpactDT, type = "bar", name = "Team FG with Player", 
-#                  x = ~typeSimplified, y = ~Team_onFloor, 
-#                  marker = list(color = "rgba(255, 99, 71, 1)"),
-#                  hovertemplate = ~paste(Team_onFloor, "%", "<extra></extra>"))
-#   
-#   fig <- add_bars(p = fig, name = "Team FG without Player", 
-#                   y = ~Team_offFloor, 
-#                   marker = list(color = "rgba(255, 99, 71, 0.7)"),
-#                   hovertemplate = ~paste(Team_offFloor, "%", "<extra></extra>"))
-#   
-#   fig <- add_bars(p = fig, name = "Opp Team FG with Player", 
-#                   y = ~Opponent_onFloor, 
-#                   marker = list(color = "rgba(71, 99, 255, 1)"),
-#                   hovertemplate = ~paste(Opponent_onFloor, "%", "<extra></extra>"))
-#   
-#   fig <- add_bars(p = fig, name = "Opp Team FG without Player", 
-#                   y = ~Opponent_offFloor, 
-#                   marker = list(color = "rgba(71, 99, 255, 0.7)"),
-#                   hovertemplate = ~paste(Opponent_offFloor, "%", "<extra></extra>"))
-#   
-#   fig <- layout(p = fig, 
-#                 title = paste("<b>", selectedPlayer, "-", selectedTeam, "<br></b>: FG & +/- Impacts on", nbGamesPlayed, "games played"),
-#                 barmode = "group", 
-#                 legend = list(x = 100, y = 0.7))
-#   
-#   # Impact on points graph
-#   fig2 <- plot_ly(data = pointImpactDT, type = "bar", 
-#                   x = ~Floor, y = ~MeanPlusMinus, 
-#                   marker = list(color = c("rgba(180, 190, 95, 0.7)", "rgba(180, 107, 95, 0.7)")),
-#                   hovertemplate = ~paste("+/- :", MeanPlusMinus, "pts", "<extra></extra>"), 
-#                   showlegend = FALSE)
-#   
-#   fig2 <- layout(p = fig2,
-#                  yaxis = list(title = ""),
-#                  xaxis = list(title = ""))
-#   
-#   # We combine the two preceding graphs
-#   fig3 <- subplot(fig, fig2, nrows = 2, heights = c(0.7, 0.3), margin = 0.05)
-#   
-#   return(fig3)
-#   
-# }
-
 #-------------------------------------------------------------------------------
 getPlayerClutch <- function(selectedTeam, selectedPlayer, timeLeft = 4, diffScore = 5, DTplayer) {
   #-------------------------------------------------------------------------------
@@ -2232,23 +1915,23 @@ getPlayerGlobalShooting <- function(selectedTeam, selectedPlayer, startDate = NU
   # - selectedPlayer : a player to select
   # - DT : where to get datas (default)
   #-------------------------------------------------------------------------------
+  # We download datas
+  if (is.null(startDate) | is.null(endDate)) {
+    shootingDT <- DT[player == selectedPlayer & team == selectedTeam & event_type %in% c("free throw", "shot"), .(Date, Home, Away, points, type, result)]
+    shootingDT <- shootingDT[, oppTeam := ifelse(Home == selectedTeam, paste("@-", Away, sep = ""), paste("h-", Home, sep = ""))]
+  } else {
+    shootingDT <- DT[player == selectedPlayer & team == selectedTeam & event_type %in% c("free throw", "shot") & Date >= startDate & Date <= endDate, .(Date, Home, Away, points, type, result)]
+    shootingDT <- shootingDT[, oppTeam := ifelse(Home == selectedTeam, paste("@-", Away, sep = ""), paste("h-", Home, sep = ""))]
+  }
+  
   # Returns object by default
-  if (selectedTeam == "Team" | selectedPlayer == "Player") {
+  if (selectedTeam == "Team" | selectedPlayer == "Player" | nrow(shootingDT) == 0) {
     
     shootingCalDT <- data.table(Date = "-", Opp = "-", "2PM" = "-", "2PA" = "-", "3PM" = "-", "3PA" = "-", "FTM" = "-", "FTA" = "-")
     shootingFinalDT <- data.table(Type = c("2pts Shots", "3pts Shots", "Free Throws", "Effective Shots", "True Shooting"), 
                                   FieldGoal = c(0, 0, 0, 0, 0))
     
     return(list(calDT = shootingCalDT, graphDT = shootingFinalDT))
-  }
-  
-  # We download datas
-  if (is.null(startDate) | is.null(endDate)) {
-    shootingDT <- DT[player == selectedPlayer & team == selectedTeam & event_type %in% c("free throw", "shot"), .(Date, Home, Away, points, type, result)]
-    shootingDT <- shootingDT[, oppTeam := ifelse(Home == selectedTeam, Away, Home)]
-  } else {
-    shootingDT <- DT[player == selectedPlayer & team == selectedTeam & event_type %in% c("free throw", "shot") & Date >= startDate & Date <= endDate, .(Date, Home, Away, points, type, result)]
-    shootingDT <- shootingDT[, oppTeam := ifelse(Home == selectedTeam, Away, Home)]
   }
   
   # We isolate total points of the player
@@ -2685,7 +2368,7 @@ getShootingCustom <- function(selectedTeam = "All", shootType = "All Shots",
                               salaryLow = 0, salaryHigh = 100000000, 
                               experienceLow = 0, experienceHigh = 100,
                               ageLow = 1, ageHigh = 100,
-                              nbPlayer = 15, DTplayerPres = dicoPlayerFich, DT = nbaDatas) {
+                              nbPlayer = 15, DTgamesPlayed = dicoPlayerMinute, DTplayerPres = dicoPlayerFich, DT = nbaDatas) {
   #-------------------------------------------------------------------------------
   # @ variables :
   # - DT : data table where to look for the datas
@@ -2723,6 +2406,9 @@ getShootingCustom <- function(selectedTeam = "All", shootType = "All Shots",
   
   # We filter with selected players
   shootingFilteredDT <- merge(playersFilteredDT, shootingDT, by = "player", all.x = FALSE, all.y = FALSE)
+  
+  # We filter with minutes played
+  shootingFilteredDT <- merge(shootingFilteredDT, DTgamesPlayed[, .(player, team, TotalGames)], by = c("player", "team"), all.x = TRUE, all.y = FALSE)
   
   # if a selected team is selected
   if (selectedTeam != "All") {
@@ -2773,9 +2459,10 @@ getShootingCustomGraph <- function(shootType, DTstats) {
                  x = ~total, y = ~FieldGoal,
                  color = ~Salary,
                  colors = "Spectral",
-                 marker = list(sizeref = 0.1, sizemode = "area", opacity = 0.5),
+                 marker = list(size = ~TotalGames, sizeref = 1, opacity = 0.6),
                  text = ~str_extract_all(string = get(x = 'player'), pattern = "(?<=([:blank:]))[A-z]+"),
                  hovertemplate = ~paste("<b>", player, "-", "</b>", Position,
+                                        "</b><br>Games Played : <b>", TotalGames,
                                         "</b><br>Total Attempted :<b>", total,
                                         "</b><br>Field Goal (%) :<b>", FieldGoal,
                                         "</b><br><br>", Age, "<b>years old",
@@ -2796,6 +2483,9 @@ getShootingCustomGraph <- function(shootType, DTstats) {
                              zeroline = FALSE), 
 				plot_bgcolor = "rgba(255, 255, 255, 0)",
                 paper_bgcolor = "rgba(255, 255, 255, 0)")
+  
+  # No plot bar top right
+  fig <- plotly::config(p = fig, displayModeBar = FALSE)
   
   return(fig)
   
@@ -2929,6 +2619,9 @@ getStatCustomGraph <- function(statType, DTstats) {
                              zeroline = FALSE), 
                 plot_bgcolor = "rgba(255, 255, 255, 0)",
                 paper_bgcolor = "rgba(255, 255, 255, 0)")
+  
+  # No plot bar top right
+  fig <- plotly::config(p = fig, displayModeBar = FALSE)
   
   return(fig)
   

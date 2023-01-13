@@ -22,7 +22,12 @@ library(maps)
 ###
 # Functions to create objects displayed
 ###
-source("Functions/dataAnalysisFunc.R")
+source("Functions/dataAnalysisFuncTab1.R")
+source("Functions/dataAnalysisFuncTab2.R")
+source("Functions/dataAnalysisFuncTab3.R")
+source("Functions/dataAnalysisFuncTab4.R")
+source("Functions/dataAnalysisFuncTab5.R")
+source("Functions/dataAnalysisFuncTab6.R")
 source("BasketCourt/court.R")
 
 ############################################
@@ -47,10 +52,6 @@ ui <-
     ,
     
     navbarPage(title = "Stat-IB",
-               # tags$div(
-               #   class = "busy",
-               #   img(src = "https://i.gifer.com/XOsX.gif")
-               # ),
                
                tabPanel("New Comers", value = "welcome",
                         
@@ -67,8 +68,8 @@ ui <-
                         <br>So before going further, let's select the season to be exploited.")),
                         h2("Data Selection"),
                         tags$div(class = "container", 
-                                 selectInput(inputId = "seasonSelected1", label = "Season", choices = c("2020-2021", "2021-2022"), selected = c("2020-2021")),
-                                 selectInput(inputId = "seasonTypeSelected1", label = "Period", choices = c("Regular Season", "Playoffs"), selected = c("Regular Season")),
+                                 selectInput(inputId = "seasonSelected1", label = "SEASON", choices = c("2020-2021", "2021-2022"), selected = c("2020-2021")),
+                                 selectInput(inputId = "seasonTypeSelected1", label = "TYPE", choices = c("Regular Season", "Playoffs"), selected = c("Regular Season")),
                                  tags$div(class = "basketballGo",
                                           tags$div(class = "lineVert"),
                                           tags$div(class = "lineCurvLeftGo"),
@@ -82,7 +83,11 @@ ui <-
                                           actionButton(inputId = "resetButton", label = "RESET!")
                                  )
                         ),
-                        verbatimTextOutput(outputId = "confirmationText1")
+                        verbatimTextOutput(outputId = "confirmationText1"),
+                        h2("League Calendar"),
+                        tags$div(class = "RowDT",
+                                 DT::dataTableOutput(outputId = "calendarDT1", width = "600px")
+                        )
                ),
                
                
@@ -112,7 +117,6 @@ ui <-
                                           plotlyOutput(outputId = "teamPieChart2", width = "600px")
                                  )
                         ),
-                        h2("Best Performances"),
                         tags$div(class = "RowDT",
                                  DT::dataTableOutput(outputId = "bestGames2", width = "600px")
                         )
@@ -193,7 +197,7 @@ ui <-
                                  selectInput(inputId = "statSelected5", label = "STATS", choices = c("Points", "Assists", "Rebounds", "Blocks", "Steals"), selected = "Points"),
                                  selectInput(inputId = "selectedTeam5", label = "TEAM", choices = "All", selected = "All"),
                                  selectInput(inputId = "positionSelected5", label = "POSITION", choices = c("All", "PG", "SG", "SF", "PF", "C"), selected = "All", multiple = TRUE),
-                                 sliderInput(inputId = "salarySelected5", label = "SQLQRY (M$)", min = 0, max = 100, value = c(0, 100), step = 1), 
+                                 sliderInput(inputId = "salarySelected5", label = "SALARY (M$)", min = 0, max = 100, value = c(0, 100), step = 1), 
                                  sliderInput(inputId = "ageSelected5", label = "AGE", min = 18, max = 50, value = c(18, 50), step = 1), 
                         ),
                         tags$div(class = "basketballGo",
@@ -204,7 +208,7 @@ ui <-
                         ),
                         h2("Bubbles ..."),
                         numericInput(inputId = "nbPlayerSelected5", label = "NB PLAYERS", value = 15, min = 10, max = 50, step = 1, width = "200px"),
-                        plotlyOutput(outputId = "customGraph5", width = "75%", height = "800px"),
+                        plotlyOutput(outputId = "customGraph5", width = "67%", height = "715px"),
                         h2("Player Card"),
                         tags$div(class = "RowDT",
                                  DT::dataTableOutput(outputId = "playerCarDT5", width = "600px"),
@@ -213,9 +217,30 @@ ui <-
                         tags$div(class = "RowDT",
                                  DT::dataTableOutput(outputId = "playerSalDT5", width = "600px")
                         )
-               )
+               ), 
+               
+               
+               tabPanel("Bonus", value = "bonus",
+                        
+                        ############################################################################
+                        ################################### TAB 6 ##################################
+                        ############################################################################
+                        
+                        h2("Filtering"), 
+                        tags$div(class = "param6container",
+                          radioButtons(inputId = "teamOpp6", label = "WHO", choices = c("Team", "Opp", "Both"), selected = "Team", inline = TRUE), 
+                          selectInput(inputId = "typeStat6", label = "STATS", choices = c("Possession", "Points", "Assists", "Rebounds", "Steals", "Blocks", "Turnovers", "All FGM", "All FGA", "All FG%", "3FGM", "3FGA", "3FG%"), selected = c("Possession", "Points"), multiple = TRUE)
+                        ),
+                        tags$div(class = "RowDT",
+                          DT::dataTableOutput(outputId = "teamStatDT6")
+                        )
+               ),
+                        
+                        
+                        
     ),
     
+    tags$div(class = "busy", img(src = "Loading/circleWait.gif")),
     tags$body(style = "background-image: url(BckPics/tab2Basket.jpg);"),
     tags$nav(tags$div(class = "hamb", img(src = "hamb.png", width = "100px")))
   )
@@ -254,40 +279,38 @@ server <- function(input, output, session) {
   })
   
   # --------------------------- DATAS DOWNLOAD --------------------------------- 
-  
   # - DATAS DOWNLOADED : DT PLAYER MINUTE
+  teamStatSum <- reactive({
+    fread(file = paste("Dictionary/", seasonSelected1(), "/", seasonTypeSelected1(), "/teamStatSummary.csv", sep = ""))
+  })
+  
   dicoPlayerMinute <- reactive({
     fread(file = paste("Dictionary/", seasonSelected1(), "/", seasonTypeSelected1(), "/minutesSummary.csv", sep = ""))
   })
   
-  # - DATAS DOWNLOADED : DT with players characteristics (position, salary, age)
-  dicoPlayerFich <- reactive({
-    gePlayersFich(seasonSelected1(), seasonTypeSelected1())
-  })
-  
-  # - DATAS DOWNLOADED : LIST of vector players and nbaDatas DT
-  seasonDatasList <- reactive({
-    cleanDatas(seasonSelected1(), seasonTypeSelected1())
-  })
-  
   # - DATAS DOWNLOADED : Vector of NBA teams
   nbaTeams <- reactive({
-    seasonDatasList()[["nbaTeams"]]
+    sort(sapply(dicoPlayerMinute()$team, FUN = getLongTeamName, USE.NAMES = FALSE))
   })
   
   # - DATAS DOWNLOADED : Vector of NBA players
   nbaPlayers <- reactive({
-    seasonDatasList()[["nbaPlayers"]]
+    dicoPlayerMinute()$player
   })
   
-  # - DATAS DOWNLOADED : DT Reference for other functions
+  # - DATAS DOWNLOADED : DT with players characteristics (position, salary, age)
+  dicoPlayerFich <- reactive({
+    fread(paste("Dictionary/", seasonSelected1(), "/", seasonTypeSelected1(), "/playersSummary.csv", sep = ""))
+  })
+  
+  # - DATAS DOWNLOADED : LIST of vector players and nbaDatas DT
   nbaDatasDT <- reactive({
-    seasonDatasList()[["nbaDatas"]]
+    readRDS(paste("Dictionary/", seasonSelected1(), "/", seasonTypeSelected1(), "/nbaDatas.rds", sep = ""))
   })
   
   # - DATAS DOWNLOADED : DT NBA Calendar
   NBAcalendar <- reactive({
-    getNBAcalendar(seasonSelected1(), DT = nbaDatasDT())
+    readRDS(paste("Dictionary/", seasonSelected1(), "/", seasonTypeSelected1(), "/nbaCalendar.rds", sep = ""))
   })
   
   # - DATAS DOWNLOADED : DT merge nbaDatasDT & NBAcalendar
@@ -312,6 +335,12 @@ server <- function(input, output, session) {
       }
     }
   })
+  
+  output$calendarDT1 <- DT::renderDataTable({
+    if (input$goButton1 != 0) {
+      NBAcalendar()[, .(Date, Home, home_score, Away, away_score, Winner)]
+    }
+  }, options = list(pageLength = 10, dom = "tp"))
   
   ############################################################################
   ################################### TAB 2 ##################################
@@ -389,7 +418,7 @@ server <- function(input, output, session) {
   # - TEAM BAR CHART GRAPH
   output$teamBarChart2 <- renderPlotly({
     req(statSelected2(), shortNameSelected2())
-    getTeamStatsGraph(selectedTeam = shortNameSelected2(), typeStat = statSelected2(), DT = nbaDatasDTmerged())
+    getTeamStatsGraph(selectedTeam = shortNameSelected2(), typeStat = statSelected2(), DT = teamStatSum())
   })
   
   # - TEAM PIE CHART GRAPH
@@ -446,6 +475,7 @@ server <- function(input, output, session) {
   
   # - SPIDER CHART GRAPH
   output$spiderChart3 <- renderPlotly({
+    #req(shortNameSelected3() != "Team", playerSelected3() != "Player")
     tryCatch({
       getPlayerClassicStatsChart(selectedTeam = shortNameSelected3(), selectedPlayer = playerSelected3(), startDate = dateRange3Min(), endDate = dateRange3Max(), DT = nbaDatasDTmerged())
     }, warning = function(w) {
@@ -457,6 +487,7 @@ server <- function(input, output, session) {
   
   # - SUMMARY GAMES DT
   output$sumGamesDT3 <- DT::renderDataTable({
+    #req(shortNameSelected3() != "Team", playerSelected3() != "Player")
     tryCatch({
       getHistPlayerStats(selectedTeam = shortNameSelected3(), selectedPlayer = playerSelected3(), startDate = dateRange3Min(), endDate = dateRange3Max(), DTcalendar = NBAcalendar(), DT = nbaDatasDTmerged())
     }, warning = function(w) {
@@ -674,19 +705,18 @@ server <- function(input, output, session) {
   })
   
   # - PLAYER SHOOTING LIST CHARTS
-  listCharts4 <- reactive({
+  listPlayerShots4 <- reactive({
     req(playerSelected4Graph() != "Player", shortNameSelected4Graph() != "Team", dateRange4MinGraph(), dateRange4MaxGraph(), continueCalc$value == TRUE)
-    list(ShotChart = getShotChart(selectedPlayer = playerSelected4Graph(), selectedTeam = shortNameSelected4Graph(), shootingDatas = "PlayerChart", startDate = dateRange4MinGraph(), endDate = dateRange4MaxGraph(), DT = nbaDatasDTmerged()),
-         EfficientChart = getShotChart(selectedPlayer = playerSelected4Graph(), selectedTeam = shortNameSelected4Graph(), shootingDatas = "EfficientChart", startDate = dateRange4MinGraph(), endDate = dateRange4MaxGraph(), DT = nbaDatasDTmerged()))
+    getPlayerShotDT(selectedPlayer = playerSelected4Graph(), selectedTeam = shortNameSelected4Graph(), startDate = dateRange4MinGraph(), endDate = dateRange4MaxGraph(), DT = nbaDatasDTmerged())
   })
   
   # - PLAYER CHARTS
   output$playerShotsChart4 <- renderPlotly({
-    req(listCharts4(), chartType4())
+    req(listPlayerShots4(), chartType4())
     if (chartType4() == "Spots"){
-      listCharts4()[["ShotChart"]]
+      getShotChart(playerSelected4Graph(), shortNameSelected4Graph(), "PlayerChart", listPlayerShots4()[["coordsDT"]])
     } else if (chartType4() == "Efficiency") {
-      listCharts4()[["EfficientChart"]]
+      getShotChart(playerSelected4Graph(), shortNameSelected4Graph(), "EfficientChart", listPlayerShots4()[["leagueDT"]])
     }
   })
   
@@ -703,8 +733,8 @@ server <- function(input, output, session) {
   
   # - ASSISTS DISTRIBUTION LIST
   listAssists4 <- reactive({
-    req(playerSelected4Graph() != "Player", shortNameSelected4Graph() != "Team",dateRange4MinGraph(), dateRange4MaxGraph(), areaSelected4(), continueCalc$value == TRUE)
-    getAssistsShotsPlayer(selectedPlayer = playerSelected4Graph(), selectedTeam = shortNameSelected4Graph(), startDate = dateRange4MinGraph(), endDate = dateRange4MaxGraph(), selectedArea = areaSelected4(), DT = nbaDatasDTmerged())
+    req(listPlayerShots4(), areaSelected4())
+    getAssistsShotsPlayer(listPlayerShots4()[["assistsDT"]], selectedArea = areaSelected4())
   })
   
   output$globalAssist4 <- DT::renderDataTable({
@@ -743,8 +773,8 @@ server <- function(input, output, session) {
                ),
                tags$div(class = "BlockParamDTchart",
                         uiOutput(outputId = "areaSelected4"),
-                        DT::dataTableOutput(outputId = "globalAssist4", width = "600px"),
-                        DT::dataTableOutput(outputId = "detailedAssist4", width = "600px")
+                        DT::dataTableOutput(outputId = "globalAssist4", width = "500px"),
+                        DT::dataTableOutput(outputId = "detailedAssist4", width = "500px")
                )
       )
     )
@@ -788,7 +818,7 @@ server <- function(input, output, session) {
   
   # - TEAM SELECTED VARIABLE
   teamSelected5 <- eventReactive(input$goButton5,{
-    input$selectedTeam5
+    getShortTeamName(input$selectedTeam5)
   })
   
   # - POSITION SELECTED VARIABLE
@@ -837,12 +867,13 @@ server <- function(input, output, session) {
   })
   
   # - NB PLAYER GRAPH VARIABLE
-  nbPlayerSelected5 <- eventReactive(input$goButton5, {
+  nbPlayerSelected5 <- reactive({
+    req(input$goButton5)
     input$nbPlayerSelected5
   })
   
   # - STATS DT
-  statsDT5 <- eventReactive(input$goButton5,{
+  statsDT5 <- reactive({
     req(categorySelected5Graph(), teamSelected5(), statSelected5(), positionSelected5(), salaryLow5(), salaryHigh5(), ageLow5(), ageHigh5(), nbPlayerSelected5())
     if (categorySelected5Graph() == "Classic") {
       getStatsCustom(selectedTeam = teamSelected5(), statType = statSelected5(), position = positionSelected5(), 
@@ -894,7 +925,24 @@ server <- function(input, output, session) {
     }
   })
   
+  ############################################################################
+  ################################### TAB 6 ##################################
+  ############################################################################
+  
+  teamOpp6 <- reactive({
+    input$teamOpp6
+  })
+  
+  statSelected6 <- reactive({
+    input$typeStat6
+  })
+  
+  output$teamStatDT6 <- DT::renderDataTable({
+    req(teamOpp6(), statSelected6())
+    getTeamCustomDT(typeStat = statSelected6(), teamOpp = teamOpp6(), DT = teamStatSum())
+  }, options = list(pageLength = 30, dom = "t"))
+  
 }
 
-shinyApp(ui, server, options = list(launch.browser = TRUE))
+shinyApp(ui, server, options = list(launch.browser = T))
 #shinyApp(ui, server)

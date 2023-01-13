@@ -31,7 +31,6 @@ getDicoPlayers <- function(season, seasonType = "Regular Season", filePattern = 
    fwrite(dicoPlayers, file = paste("Shiny/Dictionary/", season, "/", seasonType, "/dicoPlayers.csv", sep="")) 
 }
 
-season <- "2021-2022"
+season <- "2020-2021"
 seasonType <- "Playoffs"
 getDicoPlayers(season = season, seasonType = seasonType)
-

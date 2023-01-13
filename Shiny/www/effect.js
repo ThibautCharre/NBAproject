@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		return false;
 	  });
 	});
-	
 	document.getElementById("resetButton").disabled = true;
 });
 

@@ -22,10 +22,8 @@ nbaDatas <- merge(nbaDatas, NBAcalendar[, .(game_id, Date, Home, Away)], by = "g
 
 
 
-# Script to calculate bench points
-subteam <- "GSW"
 
-ratio <- round(100 * sumBenchPts/(sumBenchPts+sumTituPts), 2)
+
 
 getBenchDistrib <- function(selectedTeam, DT) {
   

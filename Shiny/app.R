@@ -86,7 +86,7 @@ ui <-
                         verbatimTextOutput(outputId = "confirmationText1"),
                         h2("League Calendar"),
                         tags$div(class = "RowDT",
-                                 DT::dataTableOutput(outputId = "calendarDT1", width = "600px")
+                                 DT::dataTableOutput(outputId = "calendarDT1", width = "40%")
                         )
                ),
                
@@ -99,30 +99,27 @@ ui <-
                         ############################################################################
                         
                         h2("Team Selection"),
-                        leafletOutput(outputId = "usmap2", height = "500px", width = "100%"),
+                        leafletOutput(outputId = "usmap2", height = "400px", width = "700px"),
                         verbatimTextOutput(outputId = "selectedTeamText2"),
                         h2("Results and schedule"),
-                        #imageOutput(outputId = "logo2", width = "auto", height = "auto"),
                         tags$div(class = "RowDT",
-                                 DT::dataTableOutput(outputId = "teamRank2", width = "600px"),
+                                 DT::dataTableOutput(outputId = "teamRank2", width = "40%"),
                         ),
                         h2("Collective Stats"),
                         tags$div(class = "Row66",
                                  tags$div(class = "BlockParamDTchart",
                                           uiOutput(outputId = "statSelected2"),
-                                          plotlyOutput(outputId = "teamBarChart2", width = "600px")
+                                          plotlyOutput(outputId = "teamBarChart2", width = "35vw", height = "20vw")
                                  ),
                                  tags$div(class = "BlockParamDTchart",
                                           uiOutput(outputId = "nbPlayerChart2"),       
-                                          plotlyOutput(outputId = "teamPieChart2", width = "600px")
+                                          plotlyOutput(outputId = "teamPieChart2", width = "35vw", height = "20vw")
                                  )
                         ),
                         tags$div(class = "RowDT",
-                                 DT::dataTableOutput(outputId = "bestGames2", width = "600px")
+                                 DT::dataTableOutput(outputId = "bestGames2", width = "40%")
                         )
                ),
-               
-               
                
                tabPanel("Business Card", value = "teamPlayer",
                         
@@ -171,8 +168,8 @@ ui <-
                         ),
                         h2("Summary"),
                         tags$div(class = "Row66",
-                                 DT::dataTableOutput(outputId = "playerShotsDT4", width = "600px"),
-                                 plotlyOutput(outputId = "playerShotsSum4", width = "600px")
+                                 DT::dataTableOutput(outputId = "playerShotsDT4", width = "40vw"),
+                                 plotlyOutput(outputId = "playerShotsSum4", width = "35vw", height = "20vw")
                         ),
                         tags$div(class = "basketball",
                                  tags$div(class = "lineVert"),
@@ -229,7 +226,7 @@ ui <-
                         h2("Filtering"), 
                         tags$div(class = "param6container",
                           radioButtons(inputId = "teamOpp6", label = "WHO", choices = c("Team", "Opp", "Both"), selected = "Team", inline = TRUE), 
-                          selectInput(inputId = "typeStat6", label = "STATS", choices = c("Possession", "Points", "Assists", "Rebounds", "Steals", "Blocks", "Turnovers", "All FGM", "All FGA", "All FG%", "3FGM", "3FGA", "3FG%"), selected = c("Possession", "Points"), multiple = TRUE)
+                          selectInput(inputId = "typeStat6", label = "STATS", choices = c("Possession", "Points", "Assists", "Rebounds", "Steals", "Blocks", "Turnovers", "All FGM", "All FGA", "All FG%", "3FGM", "3FGA", "3FG%"), selected = c("Points"), multiple = TRUE)
                         ),
                         tags$div(class = "RowDT",
                           DT::dataTableOutput(outputId = "teamStatDT6")
@@ -242,7 +239,7 @@ ui <-
     
     tags$div(class = "busy", img(src = "Loading/circleWait.gif")),
     tags$body(style = "background-image: url(BckPics/tab2Basket.jpg);"),
-    tags$nav(tags$div(class = "hamb", img(src = "hamb.png", width = "100px")))
+    tags$nav(tags$div(class = "hamb", img(src = "hamb.png", width = "75px", height = "75px")))
   )
 
 ################################################################################
@@ -390,7 +387,7 @@ server <- function(input, output, session) {
   output$teamRank2 <- DT::renderDataTable({
     req(shortNameSelected2())
     getRankingStreakTeam(selectedTeam = shortNameSelected2(), listResultTeam = resultsByTeamList())
-  }, options = list(pageLength = 9, dom = "tp"))
+  }, options = list(pageLength = 5, dom = "tp"))
   
   # - STAT SELECTION RENDER UI
   output$statSelected2 <- renderUI({
@@ -769,12 +766,12 @@ server <- function(input, output, session) {
       tags$div(class = "Row66",
                tags$div(class = "BlockParamDTchart",
                         uiOutput(outputId = "selectedChart4"),
-                        plotlyOutput(outputId = "playerShotsChart4", width = "830px", height = "850px")
+                        plotlyOutput(outputId = "playerShotsChart4", width = "45.9vw", height = "47vw")
                ),
                tags$div(class = "BlockParamDTchart",
                         uiOutput(outputId = "areaSelected4"),
-                        DT::dataTableOutput(outputId = "globalAssist4", width = "500px"),
-                        DT::dataTableOutput(outputId = "detailedAssist4", width = "500px")
+                        DT::dataTableOutput(outputId = "globalAssist4", width = "30vw"),
+                        DT::dataTableOutput(outputId = "detailedAssist4", width = "30vw")
                )
       )
     )

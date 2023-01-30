@@ -212,6 +212,13 @@ getStatsCustom <- function(selectedTeam = "All", statType = "Points",
     statFilteredDT <- statFilteredDT[, .SD, .SDcols = setdiff(colnames(statFilteredDT), "team")]
     
   } else {
+    
+    playerVect <- statFilteredDT$player
+    teamVect <- sapply(playerVect, function(x) {
+      paste(statFilteredDT[player == x, team], collapse = "|")
+    }, USE.NAMES = FALSE)
+    dicoTeamDT <- data.table(player = playerVect, team = teamVect)
+    
     statFilteredDT <- statFilteredDT[, 
                                      .(Total=sum(Total), TotalGames = sum(TotalGames), AvgMin=(TotalGames * AvgMin / sum(TotalGames))), 
                                      by = names(playersFilteredDT)]
@@ -221,6 +228,9 @@ getStatsCustom <- function(selectedTeam = "All", statType = "Points",
                                      by = setdiff(names(statFilteredDT), "AvgMin")]
     
     statFilteredDT <- statFilteredDT[, statMean := round(Total/TotalGames, 2)]
+    
+    statFilteredDT <- merge(statFilteredDT, dicoTeamDT, by = "player", all)
+    
   }
   
   statFilteredDT <- statFilteredDT[order(-statMean)]

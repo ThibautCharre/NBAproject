@@ -56,10 +56,8 @@ getRankingStreakTeam <- function(selectedTeam, listResultTeams) {
   resultsTeamsDT = listResultTeams[[selectedTeam]]
   
   # We add variables
-  resultsTeamsDT <- resultsTeamsDT[, Home_Score := ifelse(home_score > away_score, home_score, away_score)]
-  resultsTeamsDT <- resultsTeamsDT[, Away_Score := ifelse(home_score < away_score, home_score, away_score)]
-  resultsTeamsDT <- resultsTeamsDT[, Result := paste(Home_Score, "-", Away_Score)]
-  resultsTeamsDT <- resultsTeamsDT[, .(Date, Home, Away, Result, Bilan, Ratio, Streak)][order(-Date)]
+  resultsTeamsDT <- resultsTeamsDT[, Score := paste(home_score, "-", away_score)]
+  resultsTeamsDT <- resultsTeamsDT[, .(Date, Home, Away, Score, Bilan, Ratio, Streak)][order(-Date)]
   
   return(resultsTeamsDT)
   

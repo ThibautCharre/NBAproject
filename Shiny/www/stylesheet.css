@@ -512,6 +512,10 @@ div.basketball #resetButton {
     font-size: 20px;
 }
 
+#calendarDT1 {
+	font-size:clamp(8px, 0.9vw, 10px);
+}
+
 @media screen and (max-width: 800px) {
 	.container {
 		display: grid;
@@ -539,10 +543,6 @@ div.basketball #resetButton {
 	}
 }
 
-#calendarDT1 {
-	font-size:clamp(8px, 0.9vw, 10px);
-}
-
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
 /*-------------------------------------------------------------------------- 2nd tab -----------------------------------------------------------------------
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -563,13 +563,8 @@ div.basketball #resetButton {
 }
 
 #teamRank2, #bestGames2 {
+	min-width:450px;
 	font-size:clamp(9px, 0.9vw, 10px);
-}
-
-@media screen and (max-width: 800px) {
-	#teamRank2, #bestGames2 {
-		min-width: 450px;
-	}
 }
 
 [data-value = "teamDash"] .form-group.shiny-input-container {
@@ -618,7 +613,6 @@ div.basketball #resetButton {
 	padding-right: 30px;
 	padding-left: 30px;
 	padding-top: 0px;
-	
 }
 
 #teamPieChart2, #teamBarChart2 {
@@ -636,6 +630,8 @@ div.basketball #resetButton {
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
 /*-------------------------------------------------------------------------- 3rd tab -----------------------------------------------------------------------
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+/*-------------- Main Panel (works for 4th tab as well) ---------------*/
 div.param34container {
 	width: 250px;
     margin:2vh auto;
@@ -696,11 +692,41 @@ div.param34container .input-group-addon {
     color: white;
 }
 
-#spiderChart3 > .plot-container.plotly > .user-select-none.svg-container {
-	background-color: transparent;	
-	backdrop-filter: none;
+/*-------------- Selected Stat Button ---------------*/
+[data-value = "teamPlayer"] .RowDT .BlockParamDTchart .form-group.shiny-input-container {
+	font-size:13px;
+	text-align: center;
+	background-color: black;
+    width: 150px;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 10px;
+	border:2px solid white;
 }
 
+[data-value = "teamPlayer"] .RowDT .BlockParamDTchart .form-group.shiny-input-container label {
+    background-color: green;
+	color: white;
+    margin-top: 1vh;
+	margin-bottom:5px;
+}
+
+[data-value = "teamPlayer"] .RowDT .BlockParamDTchart .selectize-input.items.full.has-options.has-items {
+	background-color: black;
+    color: springgreen;
+    font-family: digital dream;
+    border: 0;
+    padding: 0;
+    vertical-align: middle;
+	min-height: 25px;
+	border-radius:10px;
+}
+
+[data-value = "teamPlayer"] .RowDT .BlockParamDTchart .form-group.shiny-input-container .selectize-control {
+	margin-bottom:0;
+}
+
+/*-------------- Basket Button ---------------*/
 [data-value = "teamPlayer"] div.basketball {
 	margin-left: auto;
 }
@@ -717,29 +743,42 @@ div.basketball #goButton3 {
 }
 
 /*---------------- Selected Chart Option ------------*/
-
 #selectedFreq3In {
+	font-size:13px;
 	text-align: center;
 	background-color: black;
-    width: 200px;
+    width: 150px;
     margin-right: auto;
     margin-left: auto;
+	margin-bottom:0;
     border: 2px solid white;
     border-radius: 10px;
 }
 
-#selectedFreq3In > .control-label {
+#selectedFreq3In .control-label {
 	background-color: green;
     color: white;
-    margin-top: 5px;
+    margin-top: 1vh;
+	margin-bottom:5px;
 }
 
 #selectedFreq3In .shiny-options-group {
 	font-family: digital dream;
     color: springgreen;
-    margin-top: 5px;
-	margin-bottom: 5px;
+	margin-bottom: 1vh;
     text-align: center;
+}
+
+/*-------------- DTs size ---------------*/
+#sumGamesDT3, #compGamesDT3, #impactPluMin3, #impactFG3 {
+	min-width:400px;
+	font-size:clamp(9px, 0.8vw, 10px);
+}
+
+/*-------------- Graphs sizes & border radius ---------------*/
+#sumGraph3, #dateBarChart3, #periodBarChart3 {
+	min-width: 450px; 
+	min-height: 300px;
 }
 
 #dateBarChart3 > .plot-container.plotly > .user-select-none.svg-container {
@@ -755,7 +794,6 @@ div.basketball #goButton3 {
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 /*-------------- Basket Button ---------------*/
-
 [data-value = "kingCourt"] div.basketball {
 	margin-left: auto;
 }
@@ -771,15 +809,18 @@ div.basketball #goButton4 {
     font-size: 20px;
 }
 
+/*-------------- Label main panel colors ---------------*/
 [data-value = "kingCourt"] div.param34container label {
 	background-color: green;
 }
 
+/*-------------- 1st DT size ---------------*/
 #playerShotsDT4 {
 	min-width:450px;
 	font-size:clamp(9px, 0.8vw, 10px);
 }
 
+/*-------------- 1st Graph size ---------------*/
 #playerShotsSum4 {
 	min-width: 450px; 
 	min-height: 300px;
@@ -840,7 +881,6 @@ div.basketball #goButton4 {
 	left:-1.39vw;
 }
 
-
 /* -------------- Area Selected Option ---------------*/
 #areaSelected4 > .form-group.shiny-input-container {
 	width:250px;
@@ -873,6 +913,7 @@ div.basketball #goButton4 {
 	margin-bottom: 1vh;
 }
 
+/* -------------- Area Selected DT definition ---------------*/
 #globalAssist4 {
 	margin-top: 2vh;
 	margin-bottom: 2vh;
@@ -893,44 +934,54 @@ div.basketball #goButton4 {
     grid-template-columns: repeat(2, 1fr);
     margin-left: auto;
 	margin-right: auto;
-    grid-column-gap: 30px;
-	padding: 1px;
+    grid-column-gap: 10px;
     background-color: black;
     border-radius: 10px;
     border: 2px solid white;
-	width: 500px;
+	width: 350px;
 }
 
 [data-value = "moneyball"] > .param5container::before {
 	display: none;
 }
 
+[data-value = "moneyball"] > .param5container > div {
+	text-align:center;
+	margin-top: 0;
+	margin-bottom:0;
+}
+
+[data-value = "moneyball"] > .param5container > div:nth-of-type(1) {
+	margin-top: 1vh;
+}
+
+[data-value = "moneyball"] > .param5container > div:nth-of-type(2) {
+	margin-top: 1vh;
+}
+
+[data-value = "moneyball"] > .param5container > div:nth-of-type(5) {
+	margin-bottom: 1vh;
+}
+
+[data-value = "moneyball"] > .param5container > div:nth-of-type(6) {
+	margin-bottom: 1vh;
+}
+
 [data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n+1) { 
-    width: 200px;
+    width: 150px;
     margin-left: auto;
 }
 
 [data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n) { 
-    width: 200px;
+    width: 150px;
     margin-right: auto;
 }
 
-[data-value = "moneyball"] > .param5container > div {
-	text-align:center;
-	margin-top: 0px;
-	margin-bottom:0px;
-}
-
-[data-value = "moneyball"] > .param5container > div:nth-of-type(1) {
-	margin-top: 10px;
-}
-
-[data-value = "moneyball"] > .param5container > div:nth-of-type(2) {
-	margin-top: 10px;
-}
-
-[data-value = "moneyball"] > .param5container > div:nth-of-type(6) {
-	margin-bottom: 10px;
+[data-value = "moneyball"] > .param5container label {
+    color: white;
+    font-size: 13px;
+	line-height: normal;
+	margin-bottom:5px;
 }
 
 [data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n)> label { 
@@ -941,31 +992,22 @@ div.basketball #goButton4 {
     background-color: green;
 }
 
-[data-value = "moneyball"] > .param5container label {
-    color: white;
-    font-size: 17px;
-	line-height: normal;
-}
-
 [data-value = "moneyball"] > .param5container .selectize-input.full {
 	background-color: black;
     color: springgreen;
     font-family: Digital Dream;
-    font-size: 18px;
+    font-size: 13px;
 	min-height: 0px;
-	padding-top:10px;
-	padding-bottom:10px;
 	border: 0px;
 }
 
 [data-value = "moneyball"] > .param5container .selectize-input {
     background-color: black;
 	font-family: Digital Dream;
-    font-size: 18px;
-	min-height: 0px;
-	padding-top:10px;
-	padding-bottom:10px;
-	border: 0px;
+    font-size: 13px;
+	min-height: 0;
+	border: 0;
+	padding:0;
 }
 
 [data-value = "moneyball"] > .param5container .selectize-input > div {
@@ -974,14 +1016,14 @@ div.basketball #goButton4 {
 }
 
 [data-value = "moneyball"] > .param5container .selectize-control {
-	margin-bottom: 0px;
+	margin-bottom: 0;
 }
 
 [data-value = "moneyball"] > .param5container .form-control {
 	background-color: black;
     font-family: Digital Dream;
     color: white;
-    border: 0px solid white;
+    border: 0;
     font-size: 13px;
     font-weight: 600;
 }
@@ -992,7 +1034,7 @@ div.basketball #goButton4 {
 
 [data-value = "moneyball"] > .param5container .input-group-addon {
 	background-color: black;
-    border: 0px;
+    border:0;
     font-family: Digital Dream;
     color: white;
 }
@@ -1013,7 +1055,7 @@ div.basketball #goButton4 {
 @media screen and (max-width: 800px) {
 	[data-value = "moneyball"] > .param5container {
 		display: block;
-		width: 300px;
+		width: 200px;
 	}
 	
 	[data-value = "moneyball"] > .param5container > div {
@@ -1040,17 +1082,17 @@ div.basketballGo #goButton5 {
 	top: -5%;
     position: absolute;
     left: -5%;
-    width: 110px;
-    height: 110px;
+    width: 100px;
+    height: 100px;
     background-color: transparent;
     color: black;
     font-size: 20px;
 }
 
 /* ------ Graph Option Nb Players -------- */
-
 [data-value = "moneyball"] > .form-group.shiny-input-container {
-	width: 200px;
+	width: 150px;
+	font-size:13px;
     margin: auto;
     background-color: black;
     text-align: center;
@@ -1061,7 +1103,7 @@ div.basketballGo #goButton5 {
 [data-value = "moneyball"] > .form-group.shiny-input-container label {
 	background-color: green;
     color: white;
-    margin-top: 5px;
+    margin-top: 1vh;
 }	
 
 [data-value = "moneyball"] > .form-group.shiny-input-container .form-control.shiny-bound-input {
@@ -1076,8 +1118,10 @@ div.basketballGo #goButton5 {
 /*--------- Maine Graph Custom ---------*/ 
 [data-value = "moneyball"] > #customGraph5 {
 	margin: auto;
-	margin-top: 10px;
+	margin-top: 2vh;
+	margin-bottom:2vh;
 	min-width: 600px;
+	min-height:461px;
 }
 
 [data-value = "moneyball"] > #customGraph5 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(1) {
@@ -1086,7 +1130,7 @@ div.basketballGo #goButton5 {
 }
 
 [data-value = "moneyball"] > #customGraph5 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(2) {
-    padding-top: 0px;
+    padding-top:0;
 }
 
 [data-value = "moneyball"] > #customGraph5 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(3) {
@@ -1100,6 +1144,10 @@ div.basketballGo #goButton5 {
 }
 
 /*------------ Data Table Customs --------*/
+#playerSalDT5, #playerCarDT5 {
+	min-width:450px;
+	font-size:clamp(9px, 0.9vw, 10px);
+}
 
 [data-value = "moneyball"] #playerSalDT5 .dataTables_paginate.paging_simple_numbers {
 	display: none;

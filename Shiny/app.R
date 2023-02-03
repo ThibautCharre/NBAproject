@@ -136,9 +136,16 @@ ui <-
                                                 weekstart = 1, autoclose = FALSE)
                         ),
                         h2("Summary"),
-                        tags$div(class = "Row66",
-                                 DT::dataTableOutput("sumGamesDT3", width = "600px", height = "auto"),
-                                 plotlyOutput(outputId = "spiderChart3", width = "650px")
+                        tags$div(class = "RowDT",
+                                 DT::dataTableOutput("sumGamesDT3", width = "40vw")
+                                 ),
+                        tags$div(class = "RowDT",
+                                 tags$div(class = "BlockParamDTchart",
+                                          selectInput(inputId = "statSelected3", 
+                                                      label = "STATS", 
+                                                      choices = c("Points", "Assists", "Rebounds", "Blocks", "Steals"), width = "150px"),
+                                          plotlyOutput(outputId = "sumGraph3", width = "60vw", height = "25vw")
+                                 )
                         ),
                         tags$div(class = "basketball",
                                  tags$div(class = "lineVert"),
@@ -205,14 +212,14 @@ ui <-
                         ),
                         h2("Bubbles ..."),
                         numericInput(inputId = "nbPlayerSelected5", label = "NB PLAYERS", value = 15, min = 10, max = 50, step = 1, width = "200px"),
-                        plotlyOutput(outputId = "customGraph5", width = "67%", height = "715px"),
+                        plotlyOutput(outputId = "customGraph5", width = "65vw", height = "50vw"),
                         h2("Player Card"),
                         tags$div(class = "RowDT",
-                                 DT::dataTableOutput(outputId = "playerCarDT5", width = "600px"),
+                                 DT::dataTableOutput(outputId = "playerCarDT5", width = "40%"),
                         ),
                         h2("Player Salary"),
                         tags$div(class = "RowDT",
-                                 DT::dataTableOutput(outputId = "playerSalDT5", width = "600px")
+                                 DT::dataTableOutput(outputId = "playerSalDT5", width = "40%")
                         )
                ), 
                
@@ -335,7 +342,9 @@ server <- function(input, output, session) {
   
   output$calendarDT1 <- DT::renderDataTable({
     if (input$goButton1 != 0) {
-      NBAcalendar()[, .(Date, Home, home_score, Away, away_score, Winner)]
+      tmpCal <- NBAcalendar()[, .(Date, Home, home_score, Away, away_score, Winner)]
+      tmpCal <- tmpCal[, Score := paste(home_score, "-", away_score, sep = "")]
+      tmpCal[, .(Date, Home, Away, Score, Winner)][order(-Date)]
     }
   }, options = list(pageLength = 10, dom = "tp"))
   
@@ -470,29 +479,43 @@ server <- function(input, output, session) {
     input$dateRange3[2]
   })
   
-  # - SPIDER CHART GRAPH
-  output$spiderChart3 <- renderPlotly({
-    #req(shortNameSelected3() != "Team", playerSelected3() != "Player")
-    tryCatch({
-      getPlayerClassicStatsChart(selectedTeam = shortNameSelected3(), selectedPlayer = playerSelected3(), startDate = dateRange3Min(), endDate = dateRange3Max(), DT = nbaDatasDTmerged())
-    }, warning = function(w) {
-      NULL
-    }, error = function(e) {
-      NULL
-    })
+  # - PLAYER GAMES LIST
+  playerGamesList <- reactive({
+    getHistPlayerStats(selectedTeam = shortNameSelected3(), selectedPlayer = playerSelected3(), startDate = dateRange3Min(), endDate = dateRange3Max(), DTcalendar = NBAcalendar(), DT = nbaDatasDTmerged())
   })
-  
+    
   # - SUMMARY GAMES DT
   output$sumGamesDT3 <- DT::renderDataTable({
-    #req(shortNameSelected3() != "Team", playerSelected3() != "Player")
     tryCatch({
-      getHistPlayerStats(selectedTeam = shortNameSelected3(), selectedPlayer = playerSelected3(), startDate = dateRange3Min(), endDate = dateRange3Max(), DTcalendar = NBAcalendar(), DT = nbaDatasDTmerged())
+      playerGamesList()[["historicalDT"]]
     }, warning = function(w) {
       NULL
     }, error = function(e) {
       NULL
     })
   }, options = list(pageLength = 5, dom = "tp"))
+  
+  # # - COMPARISON GAMES DT
+  # output$sumGraph3 <- renderPlotly({
+  #   tryCatch({
+  #     getPlayerClassicStatsChart(selectedStat = "Points", histDT = playerGamesList[["historicalDT"]], histMeanDT = playerGamesList[["historicalMeanDT"]])
+  #   }, warning = function(w) {
+  #     NULL
+  #   }, error = function(e) {
+  #     NULL
+  #   })
+  # })
+  
+  # - STAT SELECTED VARIABLE
+  statSelected3 <- reactive({
+    input$statSelected3
+  })
+  
+  # - COMPARISON GAMES DT
+  output$sumGraph3 <- renderPlotly({
+    #req(playerSelected3() != "Player", statSelected3())
+    getPlayerClassicStatsChart(selectedStat = statSelected3(), histDT = playerGamesList()[["historicalDT"]], histMeanDT = playerGamesList()[["historicalMeanDT"]])
+  })
   
   # - SHORT NAME TEAM FIXED VARIABLE
   shortNameSelected3Graph <- eventReactive(input$goButton3, {
@@ -586,13 +609,13 @@ server <- function(input, output, session) {
       tags$div(class = "Row66",
                tags$div(class = "BlockParamDTchart", 
                         uiOutput("selectedFreq3"),       
-                        plotlyOutput(outputId = "dateBarChart3", width = "600px")
+                        plotlyOutput(outputId = "dateBarChart3", width = "35vw", height = "20vw")
                ), 
-               DT::dataTableOutput("impactFG3", width = "600px")
+               DT::dataTableOutput("impactFG3", width = "40vw")
       ),
       tags$div(class = "Row66",
-               DT::dataTableOutput("impactPluMin3", width = "600px"),
-               plotlyOutput(outputId = "periodBarChart3", width = "600px")
+               DT::dataTableOutput("impactPluMin3", width = "40vw"),
+               plotlyOutput(outputId = "periodBarChart3", width = "35vw", height = "20vw")
       )
     )
   })
@@ -640,7 +663,7 @@ server <- function(input, output, session) {
   # - PLAYER SHOOTING LIST
   shootingList4 <- reactive({
     req(shortNameSelected4(), playerSelected4(), dateRange4Min(), dateRange4Max())
-    getPlayerGlobalShooting(shortNameSelected4(), playerSelected4(), dateRange4Min(), dateRange4Max(), nbaDatasDTmerged())
+    getPlayerGlobalShooting(shortNameSelected4(), playerSelected4(), dateRange4Min(), dateRange4Max(), NBAcalendar(), nbaDatasDTmerged())
   })
   
   # - REACTIVE VALUE TO DISPLAY ALL ITEMS
@@ -904,7 +927,7 @@ server <- function(input, output, session) {
   # - DATA TABLE PLAYER SUMMARY
   output$playerCarDT5 <- DT::renderDataTable({
     req(statsDT5())
-    statsDT5()[dataPlayer5()$pointNumber + 1, .SD, .SDcols = c("player", "Position", "Birth", "Age", "Experience")]
+    statsDT5()[dataPlayer5()$pointNumber + 1, .SD, .SDcols = c("player", "team", "Position", "Birth", "Age", "Experience")]
   }, options = list(pageLength = 5, dom = "t"))
   
   # - DATA TABLE PLAYER SALARY
@@ -912,7 +935,7 @@ server <- function(input, output, session) {
     req(statsDT5())
     
     tmpDT <- DT::datatable(statsDT5()[dataPlayer5()$pointNumber + 1, .SD, 
-                                      .SDcols = setdiff(colnames(statsDT5()), c("player", "Position", "Birth", "Age", "Experience", "Total", "Team", "TotalGames", "AvgMin", "statMean", "made", "missed", "total", "FieldGoal"))
+                                      .SDcols = setdiff(colnames(statsDT5()), c("player", "Position", "Birth", "Age", "Experience", "Total", "team", "TotalGames", "AvgMin", "statMean", "made", "missed", "total", "FieldGoal"))
     ], options = list(dom = "t"))
     
     if (seasonSelected1() == "2022-2023") {

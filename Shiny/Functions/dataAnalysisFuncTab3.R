@@ -85,12 +85,13 @@ getHistPlayerStats <- function(selectedTeam, selectedPlayer, startDate = NULL, e
   # - minTotGames : a number of minimum game to rank players (default)
   # - DT : data table where to look for the datas (default)
   #-------------------------------------------------------------------------------
-  t <- Sys.time()
-  
   # Return by default if no player selected
-  if (selectedPlayer == "Player") {
+  if (selectedPlayer == "Player" | is.null(selectedPlayer)) {
+    
     histStatsDT <- data.table("Date" = "-", "W/L" = "-", "Opp" = "-", "Pts" = "-", "Asts" = "-", "Rebs" = "-", "Stls" = "-", "Blks" = "-", "TOs" = "-")
-    return(histStatsDT)
+    meanStatDT <- data.table(Type = c("Games", "Pts", "Asts", "Rebs", "Stls", "Blks", "TOs"), Period = c("-", "-", "-", "-", "-", "-", "-"))
+    
+    return(list(historicalDT = histStatsDT[order(-Date)], historicalMeanDT = meanStatDT))
   }
   
   # We filter DT based on dates
@@ -103,8 +104,12 @@ getHistPlayerStats <- function(selectedTeam, selectedPlayer, startDate = NULL, e
   
   # Return by default if no game is found
   if (length(gamesIds) == 0) {
+    
     histStatsDT <- data.table("Date" = "-", "W/L" = "-", "Opp" = "-", "Pts" = "-", "Asts" = "-", "Rebs" = "-", "Stls" = "-", "Blks" = "-", "TOs" = "-")
-    return(histStatsDT)
+    meanStatDT <- data.table(Type = c("Games", "Pts", "Asts", "Rebs", "Stls", "Blks", "TOs"), Period = c("-", "-", "-", "-", "-", "-", "-"))
+    
+    return(list(historicalDT = histStatsDT[order(-Date)], historicalMeanDT = meanStatDT))
+    
   }
   
   # We filter DT
@@ -188,229 +193,161 @@ getHistPlayerStats <- function(selectedTeam, selectedPlayer, startDate = NULL, e
   histStatsDT <- histStatsDT[, Opp := paste(ifelse(Place == "H", "h", "@"), "-", Vs, sep = "")]
   histStatsDT <- histStatsDT[, .SD, , .SDcols = c("Date", "W/L", "Opp", "Pts", "Asts", "Rebs", "Stls", "Blks", "TOs")]
 
-  return(histStatsDT[order(-Date)])
+  # We also add a mean data table for a comparison with season mean data table
+  meanStatDT <- data.table(Type = c("Games", "Pts", "Asts", "Rebs", "Stls", "Blks", "TOs"),
+                           Period = c(length(histStatsDT$Date), round(mean(histStatsDT$Pts), 2), round(mean(histStatsDT$Asts), 2), round(mean(histStatsDT$Rebs), 2), 
+                                      round(mean(histStatsDT$Stls), 2), round(mean(histStatsDT$Blks), 2), round(mean(histStatsDT$TOs), 2)))
   
-  print(Sys.time()-t)
-}
-
-#-------------------------------------------------------------------------------
-getClassicPlayerStats <- function(selectedTeam, selectedPlayer, startDate = NULL, endDate = NULL, DT) {
-  #-------------------------------------------------------------------------------
-  # @ variables :
-  # - minTotGames : a number of minimum game to rank players (default)
-  # - DT : data table where to look for the datas (default)
-  #-------------------------------------------------------------------------------
-  
-  t <- Sys.time()
-  
-  # We filter DT based on extreme dates values
-  if (!is.null(startDate) & !is.null(endDate)) {  
-    DT <- DT[Date >= startDate & Date <= endDate]
-  }
-  
-  # We find player tot games for the period
-  playerTotGames <- nrow(unique(DT[(Home == selectedTeam & onFloorHome %like% selectedPlayer) | (Away == selectedTeam & onFloorAway %like% selectedPlayer), "game_id"]))
-  
-  ########
-  # GAMES
-  ########
-  
-  ########
-  # POINTS
-  ########
-  
-  # We filter datas to get points
-  totPointsDT <- DT[points %in% c(0, 1, 2, 3) & team == selectedTeam, .(TotalPoints = sum(points)), by = player]
-  
-  ##########
-  # ASSISTS
-  ##########
-  
-  # We filter datas to get assists
-  totAssistsDT <- DT[assist != "" & team == selectedTeam, .(TotalAssists = .N), by = assist]
-  colnames(totAssistsDT) <- c("player", "TotalAssists")
-  
-  ##########
-  # REBOUNDS
-  ##########
-  
-  # We filter datas to get rebounds
-  totReboundsDT <- DT[event_type == "rebound" & player != "" & team == selectedTeam, .(TotalRebounds = .N), by = player]
-  
-  ##########
-  # TURNOVER
-  ##########
-  
-  # We filter datas to get TO
-  totTODT <- DT[event_type == "turnover" & player != "" & team == selectedTeam, .(TotalTO = .N), by = player]
-  
-  # ##########
-  # # STEALS
-  # ##########
-  
-  # We arrange datas
-  DTsteals <- DT[steal != ""]
-  DTsteals <- DTsteals[, team := ifelse(team == Away, Home, Away)]
-  
-  # We filter datas to get TO
-  totStealsDT <- DTsteals[team == selectedTeam, .(TotalSteals = .N), by = steal]
-  
-  # renamin of columns
-  colnames(totStealsDT) <- c("player", "TotalSteals")
-  
-  ##########
-  # BLOCKS
-  ##########
-  
-  # We arrange datas
-  DTblocks <- DT[block != ""]
-  DTblocks <- DTblocks[, team := ifelse(team == Away, Home, Away)]
-  
-  # We filter datas to get TO
-  totBlocksDT <- DTblocks[team == selectedTeam, .(TotalBlocks = .N), by = block]
-  
-  # renamin of columns
-  colnames(totBlocksDT) <- c("player", "TotalBlocks")
-  
-  # We merge all datas
-  statsDT <- Reduce(function(...) merge(..., by = "player", all.x = TRUE, all.y = FALSE), list(totPointsDT, totAssistsDT, totReboundsDT, totStealsDT, totBlocksDT, totTODT))
-  
-  # We force value to 0 if NA
-  statsDT[is.na(statsDT)] <- 0
-  
-  # We calculate variables per game
-  for (i in c("Points", "Assists", "Rebounds", "TO", "Steals", "Blocks")) {
-    statsDT <- statsDT[order(-get(colnames(statsDT)[grepl(paste("Total", i, sep = ""), colnames(statsDT))], statsDT))]
-    statsDT <- statsDT[, paste("Rank", i, sep = "") := .I]
-    # statsDT <- statsDT[, paste("Mean", i, sep = "") := round(get(colnames(statsDT)[grepl(paste("Total", i, sep = ""), colnames(statsDT))], statsDT) / TotalGames, 2)]
-  }
-  
-  # We keep the number of players
-  nbTeamPlayers <- nrow(statsDT)
-  
-  # We filter on selectedPlayer
-  statsDT <- statsDT[player == selectedPlayer]
-  
-  # we calculate the mean for each stats types
-  for (i in c("Points", "Assists", "Rebounds", "TO", "Steals", "Blocks")) {
-    statsDT <- statsDT[, paste("Mean", i, sep = "") := round(get(colnames(statsDT)[grepl(paste("Total", i, sep = ""), colnames(statsDT))], statsDT) / playerTotGames, 2)]
-  }
-    
-  return(list(playerDT = statsDT, nbPlayersTeam = nbTeamPlayers, nbTotGames = playerTotGames))
-  
-  print(Sys.time()-t)
+  # List of DTs
+  return(list(historicalDT = histStatsDT[order(-Date)], historicalMeanDT = meanStatDT))
   
 }
 
+# #-------------------------------------------------------------------------------
+# getSeasonPlayerStats <- function(selectedTeam, selectedPlayer, DT) {
+#   #-------------------------------------------------------------------------------
+#   # @ variables :
+#   # - minTotGames : a number of minimum game to rank players (default)
+#   # - DT : data table where to look for the datas (default)
+#   #-------------------------------------------------------------------------------
+#   
+#   # We find player tot games for the period
+#   playerSeasonDT <- DT[(Home == selectedTeam & onFloorHome %like% selectedPlayer) | (Away == selectedTeam & onFloorAway %like% selectedPlayer)]
+#   
+#   ########
+#   # GAMES
+#   ########
+#   
+#   # Number of games played by the player for the season
+#   nbGames = length(unique(playerSeasonDT[, game_id]))
+#   
+#   ########
+#   # POINTS
+#   ########
+#   
+#   # We filter datas to get points
+#   totPoints <- sum(DT[points %in% c(0, 1, 2, 3) & team == selectedTeam & player == selectedPlayer, points])
+#   
+#   ##########
+#   # ASSISTS
+#   ##########
+#   
+#   # We filter datas to get assists
+#   totAssists <- nrow(DT[assist == selectedPlayer & team == selectedTeam])
+#   
+#   ##########
+#   # REBOUNDS
+#   ##########
+#   
+#   # We filter datas to get rebounds
+#   totRebounds <- nrow(DT[event_type == "rebound" & player == selectedPlayer & team == selectedTeam])
+#   
+#   ##########
+#   # TURNOVER
+#   ##########
+#   
+#   # We filter datas to get TO
+#   totTO <- nrow(DT[event_type == "turnover" & player == selectedPlayer & team == selectedTeam])
+#   
+#   # ##########
+#   # # STEALS
+#   # ##########
+#   
+#   # We arrange datas
+#   playerStealDT <- DT[steal == selectedPlayer]
+#   playerStealDT <- playerStealDT[, team := ifelse(team == Away, Home, Away)]
+#   
+#   # We filter datas to get steals
+#   totSteals <- nrow(playerStealDT[team == selectedTeam])
+#   
+#   ##########
+#   # BLOCKS
+#   ##########
+#   
+#   # We arrange datas
+#   playerBlockDT <- DT[block == selectedPlayer]
+#   playerBlockDT <- playerBlockDT[, team := ifelse(team == Away, Home, Away)]
+#   
+#   # We filter datas to get blocks
+#   totBlocks <- nrow(playerBlockDT[team == selectedTeam])
+#   
+#   ##########
+#   # Reunification
+#   ##########
+#   
+#   # We aggregate all season stats
+#   seasonStatDT <- data.table(Type = c("Games", "Points", "Assists", "Rebounds", "Steals", "Blocks", "TOs"), 
+#                              Season = c(nbGames, round(totPoints/nbGames, 2), round(totAssists/nbGames, 2), round(totRebounds/nbGames, 2), 
+#                              round(totSteals/nbGames, 2), round(totBlocks/nbGames, 2), round(totTO/nbGames, 2))
+#                              )
+#   
+#   return(seasonStatDT)
+#   
+# }
+
 #-------------------------------------------------------------------------------
-getPlayerClassicStatsChart <- function(selectedTeam, selectedPlayer, startDate = NULL ,endDate = NULL, DT) {
-  #-------------------------------------------------------------------------------
-  t <- Sys.time()
-  
-  # We filter DT based on dates
-  if (!is.null(startDate) & !is.null(endDate)) {
-    DT <- DT[Date >= startDate & Date <= endDate]
+getPlayerClassicStatsChart <- function(selectedStat = "Points", histDT, histMeanDT) {
+#-------------------------------------------------------------------------------
+  # Convert Stat
+  if (selectedStat == "Points") {
+    stat <- "Pts"
+  } else if (selectedStat == "Assists") {
+    stat <- "Asts"
+  } else if (selectedStat == "Rebounds") {
+    stat <- "Rebs"
+  } else if (selectedStat == "Steals") {
+    stat <- "Stls"
+  } else if (selectedStat == "Blocks") {
+    stat <- "Blks"
+  } else if (selectedStat == "Turnovers") {
+    stat <- "TOs"
   }
   
-  # We take into account games where player was on the floor
-  if (selectedPlayer != "Player") {
-	gamesIds <- unique(DT[(Home == selectedTeam & onFloorHome %like% selectedPlayer) | (Away == selectedTeam & onFloorAway %like% selectedPlayer), game_id])
-	continue <- TRUE
-  } else {
-	continue <- FALSE
-  }
+  # We filter DT based on stat selected
+  histMean <- histMeanDT[Type == stat, Period]
   
-  # Return by default if no game is found
-  if (continue == FALSE) {
-    continue <- FALSE
-  } else if (continue == TRUE) {
-	if (length(gamesIds > 0)) {
-	  continue <- TRUE
-	} else {
-	  continue <- FALSE
-	}
-  }
+  # We filter DT based on stat selected
+  histDT <- histDT[, .SD, .SDcols = c("Date", stat)]
   
-  # We render the graph or an empty graph
-  if (selectedTeam != "Team" & selectedPlayer != "Player" & continue == TRUE) {
-    
-    # we dl datas from previous function
-    listStats <- getClassicPlayerStats(selectedTeam, selectedPlayer, startDate, endDate, DT)
-    
-    # On vérifie que le nombre de match min est respecté
-    playerStatsDT <- listStats[["playerDT"]]
-    
-    # We download team players stats
-    nbTeamPlayers <- listStats[["nbPlayersTeam"]]
-    
-    # Vector to be displayed
-    chartDT <- data.table(Stats = c("Points", "Rebounds", "Assists", "Steals", "Blocks", "Turnovers"),
-                          PerGame = c(playerStatsDT[, MeanPoints], 
-                                      playerStatsDT[, MeanRebounds], 
-                                      playerStatsDT[, MeanAssists], 
-                                      playerStatsDT[, MeanSteals], 
-                                      playerStatsDT[, MeanBlocks], 
-                                      playerStatsDT[, MeanTO]),
-                          Total = c(playerStatsDT[, TotalPoints], 
-                                    playerStatsDT[, TotalRebounds], 
-                                    playerStatsDT[, TotalAssists], 
-                                    playerStatsDT[, TotalSteals], 
-                                    playerStatsDT[, TotalBlocks], 
-                                    playerStatsDT[, TotalTO]),
-                          Rank = c(playerStatsDT[, RankPoints], 
-                                   playerStatsDT[, RankRebounds], 
-                                   playerStatsDT[, RankAssists], 
-                                   playerStatsDT[, RankSteals], 
-                                   playerStatsDT[, RankBlocks], 
-                                   playerStatsDT[, RankTO]),
-                          Top = c(nbTeamPlayers + 1 - playerStatsDT[, RankPoints], 
-                                  nbTeamPlayers + 1 - playerStatsDT[, RankRebounds], 
-                                  nbTeamPlayers + 1 - playerStatsDT[, RankAssists], 
-                                  nbTeamPlayers + 1 - playerStatsDT[, RankSteals],
-                                  nbTeamPlayers + 1 - playerStatsDT[, RankBlocks], 
-                                  nbTeamPlayers + 1 - playerStatsDT[, RankTO]))
-    
-    # We plot the spider chart
-    fig <- plot_ly(data = chartDT, type = "scatterpolar", mode = "markers", 
-                   r = ~Top, theta = ~Stats,
-                   hovertemplate = ~paste(Stats, "Per Game :", PerGame,
-                                          "<br>Total :", Total,
-                                          "<br>Total Team Rank :", paste(Rank, "/", nbTeamPlayers, sep = ""), 
-                                          "<extra></extra>"),
-                   fill = 'toself')
-    
-    # title and axes format
-    fig <- layout(p = fig, 
-                  title = paste("Games Played :", listStats[["nbTotGames"]]),
-                  polar = list(radialaxis = list(visible = FALSE, range = c(1, nbTeamPlayers))), 
-                  showlegend = FALSE, 
-                  plot_bgcolor = "rgba(255, 255, 255, 0)", 
-                  paper_bgcolor = "rgba(255, 255, 255, 0)")
-    
-  } else {
-    # We plot the spider chart
-    fig <- plot_ly(data = data.table(Top = c(0, 0, 0, 0, 0, 0), Stats = c("Points", "Rebounds", "Assists", "Steals", "Blocks", "Turnovers")),
-                   type = "scatterpolar", mode = "markers", 
-                   r = ~Top, theta = ~Stats,
-                   hoverinfo = "none",
-                   fill = 'toself')
-    
-    # title and axes format
-    fig <- layout(p = fig, 
-                  title = "",
-                  polar = list(radialaxis = list(visible = FALSE)), 
-                  showlegend = FALSE, 
-                  plot_bgcolor = "rgba(255, 255, 255, 0)", 
-                  paper_bgcolor = "rgba(255, 255, 255, 0)")
-    
-  }
+  # We add the mean value
+  histDT <- histDT[, mean := histMean]
+  
+  # We add bars for points
+  fig <- plot_ly(data = histDT, type = "bar",
+                 x = ~Date, y = ~get(stat, histDT),
+                 texttemplate = ~paste(get(stat, histDT), " ", stat, sep = ""),
+                 hovertemplate = ~paste(Date,
+                                        "<br>", stat, " : ", get(stat, histDT), "<extra></extra>", sep = ""))
+
+  # We plot the mean value
+  fig <- add_trace(p = fig, data = histDT, type = "scatter", mode = "lines", x = ~Date, y = ~mean, 
+                 hovertemplate = ~paste("Mean : ", mean, " ", stat, "<extra></extra>", sep = ""))
+  
+  # title and axes format
+  fig <- layout(p = fig, 
+                title = paste("Games Played :", histMeanDT[Type == "Games", Period]),
+                showlegend = FALSE,
+                xaxis = list(title=""),
+                # yaxis2 = list(overlaying = "y",
+                #               side = "right",
+                #               title = "",
+                #               zeroline = FALSE,
+                #               showline = FALSE,
+                #               showticklabels = FALSE,
+                #               showgrid = FALSE),
+                yaxis = list(title = selectedStat,
+                             #range = c(0, max(get(stat, histDT)) +  1),
+                             zeroline = TRUE,
+                             showline = TRUE,
+                             showticklabels = TRUE,
+                             showgrid = FALSE),
+                plot_bgcolor = "rgba(255, 255, 255, 0)", 
+                paper_bgcolor = "rgba(255, 255, 255, 0)")
   
   fig <- plotly::config(p = fig, displayModeBar = FALSE)
   
   # Final spider chart
   return(fig)
-  
-  print(Sys.time()-t)
   
 }
 
@@ -640,10 +577,9 @@ getAdvancedPlayerStats <- function(selectedTeam, selectedPlayer, DTplayer) {
   ##########
   # Usage Percent :
   ##########
+  statsMerged[, usagePlayer := 100 * ((sumPlayerFGA + 0.44 * sumPlayerFTA + sumPlayerTO) * (minTeam / 5)) / (minPlayer * (sumTeamFGA + 0.44 * sumTeamFTA + sumTeamTO))]
   
-  # statsMerged[, usagePlayer := 100 * ((sumPlayerFGA + 0.44 * sumPlayerFTA + sumPlayerTO) * (minTeam / 5)) / (minPlayer * (sumTeamFGA + 0.44 * sumTeamFTA + sumTeamTO))]
-  
-  statsMerged <- statsMerged[, .(game_id, OffRating, DefRating)]
+  statsMerged <- statsMerged[, .(game_id, OffRating, DefRating, usagePlayer)]
   
   return(statsMerged)
   
@@ -730,7 +666,7 @@ getAdvancedPlayerStatsPerDateGraph <- function(selectedTeam, selectedPlayer, per
   }
   
   # We calculate mean per month or week
-  playerStatsDT <- playerStatsDT[, .(meanOffRating = round(mean(OffRating), 2), meanDefRating = round(mean(DefRating), 2)), by = MonthOrWeek]
+  playerStatsDT <- playerStatsDT[, .(meanOffRating = round(mean(OffRating), 2), meanDefRating = round(mean(DefRating), 2), meanUsRate = round(mean(usagePlayer), 2)), by = MonthOrWeek]
   
   # And number of wins and loses
   DTcalendarWins <- DTcalendar[Winner == selectedTeam, .(TotWins = .N), by = MonthOrWeek]
@@ -747,7 +683,7 @@ getAdvancedPlayerStatsPerDateGraph <- function(selectedTeam, selectedPlayer, per
                  texttemplate = ~paste("<b>", get("TotWins", DTcalendarCombined), "W"),
                  marker = list(color = "rgba(255, 99, 71, 0.6)"),
                  hoverinfo = "none",
-                 showlegend = TRUE)
+                 showlegend = FALSE)
   
   # 2nd bar chart : losses
   fig <- add_trace(p = fig, data = DTcalendarCombined, type = "bar", 
@@ -756,15 +692,16 @@ getAdvancedPlayerStatsPerDateGraph <- function(selectedTeam, selectedPlayer, per
                    texttemplate = ~paste("<b>", TotLoss, "L"),
                    marker = list(color = "rgba(51, 132, 255, 0.6)"),
                    hoverinfo = "none",
-                   showlegend = TRUE)
+                   showlegend = FALSE)
   
   fig <- add_trace(p = fig, data = playerStatsDT, type = "scatter", mode = "markers",
                    x = ~MonthOrWeek, y = ~meanOffRating,
                    yaxis = "y2",
                    name = "Player Off Rating",
                    marker = list(color = "rgba(151, 44, 92, 0.6)", size = 10),
-                   hovertemplate = ~paste("Off Rating :<b>", meanOffRating, "<extra></extra>"), 
-                   showlegend = TRUE)
+                   hovertemplate = ~paste("Off Rating :<b> ", meanOffRating, 
+										  "<br></b>Usage Rate :<b> ", meanUsRate, "%", "<extra></extra>", sep = ""), 
+                   showlegend = FALSE)
   
   fig <- add_trace(p = fig, data = playerStatsDT, type = "scatter", mode = "markers",
                    x = ~MonthOrWeek, y = ~meanDefRating,
@@ -772,7 +709,7 @@ getAdvancedPlayerStatsPerDateGraph <- function(selectedTeam, selectedPlayer, per
                    name = "Player Def Rating",
                    marker = list(color = "rgba(0, 0, 0, 0.6)", size = 10),
                    hovertemplate = ~paste("Def Rating :<b>", meanDefRating, "<extra></extra>"), 
-                   showlegend = TRUE)
+                   showlegend = FALSE)
     
   # Title and disposition
   fig <- layout(p = fig, data = playerStatsDT,
@@ -780,7 +717,7 @@ getAdvancedPlayerStatsPerDateGraph <- function(selectedTeam, selectedPlayer, per
                 xaxis = list(title=""),
                 yaxis2 = list(overlaying = "y",
                               side = "left",
-                              title = "",
+                              title = "Off/Def Rating",
                               #range = ~c(0, max(meanStat1)+1),
                               zeroline = TRUE,
                               showline = FALSE,
@@ -967,7 +904,7 @@ getPlayerPeriodStatsChart <- function(selectedTeam, selectedPlayer, DTplayer) {
                          marker = list(color = "rgba(255, 99, 71, 0.6)"),
                          texttemplate = ~paste("<b>", PointsPerPeriod, "</b><br>ppq"),
                          hovertemplate = ~paste("Team ppq:<b>", TeamPointsPerPeriod, "<extra></extra>"),
-                         showlegend = TRUE)
+                         showlegend = FALSE)
   
   fig <- plotly::add_bars(p = fig, data = playerPtsMinDT,
                           x = ~period,
@@ -976,7 +913,7 @@ getPlayerPeriodStatsChart <- function(selectedTeam, selectedPlayer, DTplayer) {
                           marker = list(color = "rgba(51, 132, 255, 0.6)"),
                           texttemplate = ~paste("<b>", minPerPeriodMean, "</b><br>mpq"),
                           hovertemplate = ~paste("Number of", period, "played:<b>", totalPeriodPlayed, "</b><extra></extra>"),
-                          showlegend = TRUE)
+                          showlegend = FALSE)
   
   fig <- plotly::add_markers(p = fig, data = playerPtsMinDT, type = "scatter",
                           x = ~period,
@@ -985,7 +922,7 @@ getPlayerPeriodStatsChart <- function(selectedTeam, selectedPlayer, DTplayer) {
                           name = "Teams Diff Points",
                           marker = list(color = "rgba(0, 0, 0, 0.6)"),
                           hovertemplate = ~paste("Team +/- : ", "<b>", ifelse(DiffPointsPerPeriod > 0, "+", ""), DiffPointsPerPeriod, "</b><extra></extra>", sep = ""),
-                          showlegend = TRUE)
+                          showlegend = FALSE)
   
   fig <- layout(p = fig,
                 title = paste("<b>", str_extract_all(selectedPlayer, "(?<=[:space:]).*"), "</b>-", "Average Points and Minutes per period"),

@@ -65,9 +65,21 @@ getShootingCustom <- function(selectedTeam = "All", shootType = "All Shots",
   
   # if a selected team is selected
   if (selectedTeam != "All") {
+    
     shootingFilteredDT <- shootingFilteredDT[team == selectedTeam]
+    
   } else {
-    shootingFilteredDT <- shootingFilteredDT[, .(Total=sum(Total)), by = setdiff(names(shootingFilteredDT), c("team", "Total"))]  
+    
+    playerVect <- unique(shootingFilteredDT$player)
+    uniqueTeam <- unique(shootingFilteredDT[, .(player, team)])
+    teamVect <- sapply(playerVect, function(x) {
+      paste(uniqueTeam[player == x, team], collapse = "-")
+    }, USE.NAMES = FALSE)
+    dicoTeamDT <- data.table(player = playerVect, team = teamVect)
+    
+    shootingFilteredDT <- shootingFilteredDT[, .(Total=sum(Total)), by = setdiff(names(shootingFilteredDT), c("team", "Total"))]
+    shootingFilteredDT <- merge(shootingFilteredDT, unique(dicoTeamDT), by = "player", all.x = TRUE, all.y = FALSE)
+    
   } 
   
   # We separate the made and missed and gather them in a data table
@@ -209,13 +221,12 @@ getStatsCustom <- function(selectedTeam = "All", statType = "Points",
   if (selectedTeam != "All") {
     statFilteredDT <- statFilteredDT[team == selectedTeam]
     statFilteredDT <- statFilteredDT[, statMean := round(Total/TotalGames, 2)]
-    statFilteredDT <- statFilteredDT[, .SD, .SDcols = setdiff(colnames(statFilteredDT), "team")]
     
   } else {
     
     playerVect <- statFilteredDT$player
     teamVect <- sapply(playerVect, function(x) {
-      paste(statFilteredDT[player == x, team], collapse = "|")
+      paste(statFilteredDT[player == x, team], collapse = "-")
     }, USE.NAMES = FALSE)
     dicoTeamDT <- data.table(player = playerVect, team = teamVect)
     
@@ -229,7 +240,7 @@ getStatsCustom <- function(selectedTeam = "All", statType = "Points",
     
     statFilteredDT <- statFilteredDT[, statMean := round(Total/TotalGames, 2)]
     
-    statFilteredDT <- merge(statFilteredDT, dicoTeamDT, by = "player", all)
+    statFilteredDT <- merge(statFilteredDT, unique(dicoTeamDT), by = "player", all.x = TRUE, all.y = FALSE)
     
   }
   

@@ -21,30 +21,43 @@
 #-------------------------------------------------------------------------------
 
 #-------------------------------------------------------------------------------
-getPlayerGlobalShooting <- function(selectedTeam, selectedPlayer, startDate = NULL, endDate = NULL, DT) {
+getPlayerGlobalShooting <- function(selectedTeam, selectedPlayer, startDate = NULL, endDate = NULL, DTcalendar, DT) {
   #-------------------------------------------------------------------------------
   # @ variables :
   # - selectedPlayer : a player to select
   # - DT : where to get datas (default)
-  #-------------------------------------------------------------------------------
-  # We download datas
-  if (is.null(startDate) | is.null(endDate)) {
-    shootingDT <- DT[player == selectedPlayer & team == selectedTeam & event_type %in% c("free throw", "shot"), .(Date, Home, Away, points, type, result)]
-    shootingDT <- shootingDT[, oppTeam := ifelse(Home == selectedTeam, paste("@-", Away, sep = ""), paste("h-", Home, sep = ""))]
-  } else {
-    shootingDT <- DT[player == selectedPlayer & team == selectedTeam & event_type %in% c("free throw", "shot") & Date >= startDate & Date <= endDate, .(Date, Home, Away, points, type, result)]
-    shootingDT <- shootingDT[, oppTeam := ifelse(Home == selectedTeam, paste("@-", Away, sep = ""), paste("h-", Home, sep = ""))]
-  }
-  
+  #------------------------------------------------------------------------------- 
   # Returns object by default
-  if (selectedTeam == "Team" | selectedPlayer == "Player" | nrow(shootingDT) == 0) {
+  if (selectedPlayer == "Player") {
     
-    shootingCalDT <- data.table(Date = "-", Opp = "-", "2PM" = "-", "2PA" = "-", "3PM" = "-", "3PA" = "-", "FTM" = "-", "FTA" = "-")
+    shootingCalDT <- data.table(Date = "-", "W/L" = "-", Opp = "-", "2PM" = "-", "2PA" = "-", "3PM" = "-", "3PA" = "-", "FTM" = "-", "FTA" = "-")
     shootingFinalDT <- data.table(Type = c("2pts Shots", "3pts Shots", "Free Throws", "Effective Shots", "True Shooting"), 
                                   FieldGoal = c(0, 0, 0, 0, 0))
     
     return(list(calDT = shootingCalDT, graphDT = shootingFinalDT))
   }
+  
+  # We filter DT based on dates
+  if (!is.null(startDate) & !is.null(endDate)) {
+    DT <- DT[Date >= startDate & Date <= endDate]
+  }
+  
+  # We take into account games where player was on the floor
+  gamesIds <- unique(DT[(Home == selectedTeam & onFloorHome %like% selectedPlayer) | (Away == selectedTeam & onFloorAway %like% selectedPlayer), game_id])
+  
+  # We stop if no games
+  if (length(gamesIds) == 0) {
+    
+    shootingCalDT <- data.table(Date = "-", "W/L" = "-", Opp = "-", "2PM" = "-", "2PA" = "-", "3PM" = "-", "3PA" = "-", "FTM" = "-", "FTA" = "-")
+    shootingFinalDT <- data.table(Type = c("2pts Shots", "3pts Shots", "Free Throws", "Effective Shots", "True Shooting"), 
+                                  FieldGoal = c(0, 0, 0, 0, 0))
+    
+    return(list(calDT = shootingCalDT, graphDT = shootingFinalDT))
+  }
+  
+  # We download datas and add directly the opponent and the place of the game
+  shootingDT <- DT[player == selectedPlayer & team == selectedTeam & event_type %in% c("free throw", "shot"), .(game_id, Date, Home, Away, points, type, result)]
+  shootingDT <- shootingDT[, oppTeam := ifelse(Home == selectedTeam, paste("@-", Away, sep = ""), paste("h-", Home, sep = ""))]
   
   # We isolate total points of the player
   totPoints <- sum(shootingDT[, "points"])
@@ -54,30 +67,51 @@ getPlayerGlobalShooting <- function(selectedTeam, selectedPlayer, startDate = NU
                                                 no = ifelse(grepl("free throw", type), "Free Throws", "2pt Shots"))]
   
   # We aggregate nb of shots by result and type of shot
-  shootingDT <- shootingDT[, .(Total = .N), by = c("Date", "oppTeam", "typeShot", "result")]
+  shootingDT <- shootingDT[, .(Total = .N), by = c("game_id", "Date", "oppTeam", "typeShot", "result")]
   
   # dcast to provide results by columns
-  shootingDT <- dcast(data = shootingDT, formula = Date + oppTeam ~ typeShot + result, value.var = "Total")
+  shootingDT <- dcast(data = shootingDT, formula = game_id + Date + oppTeam ~ typeShot + result, value.var = "Total")
   
   # We check if all shoot type and results are there, if not, we create and force value to zero
-  missingTypeShots <- setdiff(c("Date", "oppTeam", "2pt Shots_made", "2pt Shots_missed", "3pt Shots_made", "3pt Shots_missed", "Free Throws_made", "Free Throws_missed"), 
+  missingTypeShots <- setdiff(c("game_id", "Date", "oppTeam", "2pt Shots_made", "2pt Shots_missed", "3pt Shots_made", "3pt Shots_missed", "Free Throws_made", "Free Throws_missed"), 
                               colnames(shootingDT))
-  
   if (length(missingTypeShots) > 0) { 
     for (i in seq(1, length(missingTypeShots))) {
       shootingDT <- shootingDT[, missingTypeShots[i] := 0]
     }
   }
   
+  # We find games for which a player played but did not shoot at all
+  missing_gamesShoot <- setdiff(gamesIds, unique(shootingDT[, game_id]))
+  if (length(missing_gamesShoot) > 0) {
+    
+    missing_gamesDT <- unique(DT[game_id %in% missing_gamesShoot, .(game_id, Date, Home, Away)])
+    
+    # Add of opp team varible and columns selection
+    missing_gamesDT <- missing_gamesDT[, oppTeam := ifelse(Home == selectedTeam, paste("@-", Away, sep = ""), paste("h-", Home, sep = ""))]
+    missing_gamesDT <- missing_gamesDT[, .(game_id, Date, oppTeam)]
+    
+    # We fixe values to zero for the added games
+    missing_gamesDT <- missing_gamesDT[, ":=" ("2pt Shots_made" = 0, "2pt Shots_missed" = 0, "3pt Shots_made" = 0, "3pt Shots_missed" = 0, "Free Throws_made" = 0, "Free Throws_missed" = 0)]
+    
+    # We combine the added DT to the main shooting DT
+    shootingDT <- rbind(shootingDT, missing_gamesDT)
+    
+  }
+  
   # We replace NA by zero
   shootingDT[is.na(shootingDT)] <- 0
   
+  # We merge to calendar to get win or loss factor
+  shootingDT <- merge(shootingDT, DTcalendar[, .(game_id, Winner)], by = "game_id", all.x = TRUE, all.y = FALSE)
+  shootingDT <- shootingDT[, resultGame := ifelse(Winner == selectedTeam, "W", "L")]
+  
   # We reorganize columns order
-  shootingDT <- shootingDT[, .SD, .SDcols = c("Date", "oppTeam", "2pt Shots_made", "2pt Shots_missed", "3pt Shots_made", "3pt Shots_missed", "Free Throws_made", "Free Throws_missed")]
+  shootingDT <- shootingDT[, .SD, .SDcols = c("Date", "resultGame", "oppTeam", "2pt Shots_made", "2pt Shots_missed", "3pt Shots_made", "3pt Shots_missed", "Free Throws_made", "Free Throws_missed")]
   
   # shooting calendar dt
   shootingCalDT <- copy(shootingDT)
-  colnames(shootingCalDT) <- c("Date", "Opp", "2PM", "2PA", "3PM", "3PA", "FTM", "FTA")
+  colnames(shootingCalDT) <- c("Date", "W/L", "Opp", "2PM", "2PA", "3PM", "3PA", "FTM", "FTA")
   shootingCalDT <- shootingCalDT[, ":=" ("2PA" = get("2PA") + get("2PM"), "3PA" = get("3PA") + get("3PM"), "FTA" = get("FTA") + get("FTM"))]
   shootingCalDT <- shootingCalDT[order(-Date)]
   

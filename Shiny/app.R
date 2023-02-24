@@ -48,8 +48,7 @@ ui <-
   
   tagList(
     tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "stylesheet.css")),
-    tags$head(tags$script(src = "effect.js"))
-    ,
+    tags$head(tags$script(src = "effect.js")),
     
     navbarPage(title = "Stat-IB",
                
@@ -65,7 +64,8 @@ ui <-
                         <br>Stat-IB is a data analysis project created in 2022.
                         <br>Its main objective is to display NBA statistics in graphical and interactive ways.
                         <br>Statistics are calculated in-live and are based on a specific part of a specific season (playoffs vs. regular season).
-                        <br>So before going further, let's select the season to be exploited.")),
+                        <br>So before going further, let's select the season to be exploited.")
+                        ),
                         h2("Data Selection"),
                         tags$div(class = "container", 
                                  selectInput(inputId = "seasonSelected1", label = "SEASON", choices = c("2020-2021", "2021-2022", "2022-2023"), selected = c("2020-2021")),
@@ -74,7 +74,7 @@ ui <-
                                           tags$div(class = "lineVert"),
                                           tags$div(class = "lineCurvLeftGo"),
                                           tags$div(class = "lineCurvRightGo"),
-                                          actionButton(inputId = "goButton1", label = "GO!", onclick = "$('.nav.navbar-nav>li>a').parent().removeClass('disabled'); document.getElementById('resetButton').disabled = false;document.getElementById('goButton1').disabled = true;")
+                                          actionButton(inputId = "goButton1", label = "GO!", onclick = "$('.nav.navbar-nav>li:nth-of-type(n+2)>a').parent().removeClass('disabled'); document.getElementById('resetButton').disabled = false;document.getElementById('goButton1').disabled = true;")
                                  ),
                                  tags$div(class = "basketball",
                                           tags$div(class = "lineVert"),
@@ -193,11 +193,11 @@ ui <-
                                  tags$div(class = "BlockInstruc",
                                           DT::dataTableOutput(outputId = "playerShotsDT4", width = "40vw"),
                                           verbatimTextOutput(outputId = "playerShotsText4")
-                                          ),
+                                 ),
                                  tags$div(class = "BlockInstruc", 
                                           plotlyOutput(outputId = "playerShotsSum4", width = "35vw", height = "20vw"),
                                           verbatimTextOutput(outputId = "playerShotsSumText4")
-                                          )
+                                 )
                         ),
                         tags$div(class = "basketball",
                                  tags$div(class = "lineVert"),
@@ -293,7 +293,27 @@ ui <-
                                    tags$div(class = "RowDT",
                                             DT::dataTableOutput(outputId = "clutchDT7", width = "70vw")
                                    )
-                          )
+                          ) 
+                          
+               ),
+               tabPanel("Sources",
+                        
+                        ############################################################################
+                        ################################### TAB 8 ##################################
+                        ############################################################################        
+                        
+                        h2("Last Words"),
+                        tags$p(class = "introText", 
+                               HTML("Thank You ! 
+                        <br>This project is not definitive and tends to evoluate through time.
+                        <br>If you have any suggestion regarding the web design or any new analysis idea, please send me an e-mail to:
+                        <br>thibaut.charre.tc@gmail.com"
+                               )
+                        ),
+                        h2("Sources"),
+                        uiOutput(outputId = "sourcesOne8"),
+                        uiOutput(outputId = "sourcesTwo8"),
+                        uiOutput(outputId = "sourcesThree8")
                )
     ),
     
@@ -756,7 +776,7 @@ server <- function(input, output, session) {
                tags$div(class = "BlockInstruc",
                         DT::dataTableOutput("impactFG3", width = "40vw"),
                         verbatimTextOutput(outputId = "impactFGText3")
-                        )
+               )
       ),
       tags$div(class = "Row66",
                tags$div(class = "BlockInstruc",
@@ -766,7 +786,7 @@ server <- function(input, output, session) {
                tags$div(class = "BlockInstruc",
                         plotlyOutput(outputId = "periodBarChart3", width = "35vw", height = "20vw"),
                         verbatimTextOutput(outputId = "periodBarText3")
-                        )
+               )
       )
     )
   })
@@ -1240,6 +1260,22 @@ server <- function(input, output, session) {
     req(scoreSelected7(), minSelected7(), secSelected7(), minGameSelected7())
     getClutchRank(minLeft = minSelected7(), secLeft = secSelected7(), diffScore = scoreSelected7(), minGame = minGameSelected7(), DT = nbaDatasDTmerged())
   }, options = list(pageLength = 10, dom = "tp"))
+  
+  ############################################################################
+  ################################### TAB 8 ##################################
+  ############################################################################
+  
+  output$sourcesOne8 <- renderUI({
+    tagList("Players characteristics (positions, ages, experiences):", a("BasketBall-Reference", href="https://www.basketball-reference.com/"))
+  })
+  
+  output$sourcesTwo8 <- renderUI({
+    tagList("Players salaries:", a("Hoops Hyde", href="https://hoopshype.com/salaries/"))
+  })
+  
+  output$sourcesThree8 <- renderUI({
+    tagList("NBA datas:", a("BigData Ball", href="https://www.bigdataball.com/"))
+  })
   
 }
 

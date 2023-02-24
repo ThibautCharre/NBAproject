@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
 })
 
 document.addEventListener("DOMContentLoaded", function() {	
-	var tab = $(".nav.navbar-nav>li>a").parent().addClass("disabled");
+	var tab = $(".nav.navbar-nav>li:nth-of-type(n+2)>a").parent().addClass("disabled");
 	$(function(){
 	  $(tab.parent()).on("click", "li.disabled", function(e) {
 		e.preventDefault();

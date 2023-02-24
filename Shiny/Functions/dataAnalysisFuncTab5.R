@@ -41,6 +41,17 @@ getShootingCustom <- function(selectedTeam = "All", shootType = "All Shots",
                                         Position %in% position]
   }
   
+  # We correct coordinates for shooting areas purposes
+  DT <- DT[, converted_x_corrected := ifelse(test = converted_y > 47 & shot_distance < 48.5, 
+                                                             yes = 25+(25-converted_x), 
+                                                             no = ifelse(test = converted_y < 47 & shot_distance > 48.5, 
+                                                                         yes = 25+(25-converted_x), no = converted_x))]
+  
+  DT <- DT[, converted_y_corrected := ifelse(test = converted_y > 47 & shot_distance < 48.5, 
+                                                             yes = 47+(47-converted_y), 
+                                                             no = ifelse(test = converted_y < 47 & shot_distance > 48.5, 
+                                                                         yes = 47+(47-converted_y), no = converted_y))]
+  
   # We filter taking all shots excluding FT
   if (shootType == "All Shots") {
     shootingDT <- DT[result %in% c("made", "missed") & !grepl("free throw", type), .(Total=.N), by = .(player, team, result)]
@@ -55,6 +66,43 @@ getShootingCustom <- function(selectedTeam = "All", shootType = "All Shots",
     # Just 2pt shots  
   } else if (shootType == "2pt Shots") {
     shootingDT <- DT[result %in% c("made", "missed") & !grepl("free throw", type) & !grepl("3pt", type), .(Total=.N), by = .(player, team, result)]
+  
+    # We distinguish 3pts Shot types 
+  } else if (shootType == "Long Distance Shot") {
+    shootingDT <- DT[result %in% c("made", "missed") & grepl("3pt", type) & shot_distance > 27 & converted_x_corrected < 25 & converted_y_corrected <= 14, .(Total=.N), by = .(player, team, result)]
+  } else if (shootType == "3pt Left Corner") {
+    shootingDT <- DT[result %in% c("made", "missed") & grepl("3pt", type) & shot_distance <= 27 & converted_x_corrected < 25 & converted_y_corrected <= 14, .(Total=.N), by = .(player, team, result)]
+  } else if (shootType == "3pt Right Corner") {
+    shootingDT <- DT[result %in% c("made", "missed") & grepl("3pt", type) & shot_distance <= 27 & converted_x_corrected > 25 & converted_y_corrected <= 14, .(Total=.N), by = .(player, team, result)]
+  } else if (shootType == "3pt Top Right") {
+    shootingDT <- DT[result %in% c("made", "missed") & grepl("3pt", type) & shot_distance <= 27 & converted_x_corrected >= 35.7 & converted_y_corrected > 14, .(Total=.N), by = .(player, team, result)]
+  } else if (shootType == "3pt Top Left") {
+    shootingDT <- DT[result %in% c("made", "missed") & grepl("3pt", type) & shot_distance <= 27 & converted_x_corrected <= 14.3 & converted_y_corrected > 14, .(Total=.N), by = .(player, team, result)]
+  } else if (shootType == "3pt Middle") {
+    shootingDT <- DT[result %in% c("made", "missed") & grepl("3pt", type) & shot_distance <= 27 & converted_x_corrected > 14.3 & converted_x_corrected < 35.7, .(Total=.N), by = .(player, team, result)]
+    
+    # We distinguish 2pts Shot types 
+  } else if (shootType == "2pt Left Corner") {
+    shootingDT <- DT[result %in% c("made", "missed") & !grepl("free throw", type) & !grepl("3pt", type) 
+                     & converted_x_corrected < 17 & converted_y_corrected <= 14, .(Total=.N), by = .(player, team, result)]
+  } else if (shootType == "2pt Right Corner") {
+    shootingDT <- DT[result %in% c("made", "missed") & !grepl("free throw", type) & !grepl("3pt", type) 
+                     & converted_x_corrected > 33 & converted_y_corrected <= 14, .(Total=.N), by = .(player, team, result)]
+  } else if (shootType == "2pt Top Right") {
+    shootingDT <- DT[result %in% c("made", "missed") & !grepl("free throw", type) & !grepl("3pt", type) 
+                     & converted_x_corrected > 33 & converted_y_corrected > 14, .(Total=.N), by = .(player, team, result)]
+  } else if (shootType == "2pt Top Left") {
+    shootingDT <- DT[result %in% c("made", "missed") & !grepl("free throw", type) & !grepl("3pt", type)
+                     & converted_x_corrected < 17 & converted_y_corrected > 14, .(Total=.N), by = .(player, team, result)]
+  } else if (shootType == "Under The Circle") {
+    shootingDT <- DT[result %in% c("made", "missed") & !grepl("free throw", type) & !grepl("3pt", type)
+                     & converted_x_corrected >= 17 & converted_x_corrected <= 33  & converted_y_corrected <= 9.25, .(Total=.N), by = .(player, team, result)]
+  } else if (shootType == "Short Paint Shot") {
+    shootingDT <- DT[result %in% c("made", "missed") & !grepl("free throw", type) & !grepl("3pt", type)
+                     & converted_x_corrected >= 17 & converted_x_corrected <= 33  & converted_y_corrected > 9.25 & converted_y_corrected <= 19, .(Total=.N), by = .(player, team, result)]
+  } else if (shootType == "Long Paint Shot") {
+    shootingDT <- DT[result %in% c("made", "missed") & !grepl("free throw", type) & !grepl("3pt", type)
+                     & converted_x_corrected >= 17 & converted_x_corrected <= 33  & converted_y_corrected > 19, .(Total=.N), by = .(player, team, result)]
   }
   
   # We filter with selected players

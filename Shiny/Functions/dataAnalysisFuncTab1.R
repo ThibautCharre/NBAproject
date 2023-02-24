@@ -90,7 +90,7 @@ getListRoster <- function(team, DT = dicoPlayerMinute) {
 
 #-------------------------------------------------------------------------------
 cleanDatas <- function(season, seasonType = "Regular Season", filePattern = "combined-stats", 
-                       colDelete = c("date", "remaining_time", "play_length", "play_id", "away", "home", "num", 
+                       colDelete = c("date", "play_length", "play_id", "away", "home", "num", 
                                      "opponent", "outof", "possession", "reason", "original_x", "original_y", "description"), 
 					   path = "CombinedGames",
                        saveDicoPlayers = FALSE) {

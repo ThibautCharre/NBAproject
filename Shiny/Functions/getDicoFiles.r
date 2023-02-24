@@ -29,7 +29,7 @@ getGamesId <-  function(selectedTeam = NULL, selectedPlayer, DT = nbaDatas) {
 
 #-------------------------------------------------------------------------------
 transformDatas <- function(season, seasonType = "Regular Season", filePattern = "combined-stats", 
-                       colDelete = c("date", "remaining_time", "play_length", "play_id", "away", "home", "num", 
+                       colDelete = c("date", "play_length", "play_id", "away", "home", "num", 
                                      "opponent", "outof", "possession", "reason", "original_x", "original_y", "description"),
                        path = "Shiny/CombinedGames") {
   #-------------------------------------------------------------------------------
@@ -204,8 +204,8 @@ getTeamPoss <- function(selectedTeam, DT) {
 }
 
 ####################################################################### INPUTS ################################################################
-season = "2020-2021"
-seasonType = "Playoffs"
+season = "2022-2023"
+seasonType = "Regular Season"
 
 ####################################################################### 1ST : NBA DATAS FILE ################################################################
 # DT where datas are taken

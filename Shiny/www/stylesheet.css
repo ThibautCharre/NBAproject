@@ -65,7 +65,7 @@ div.Row66 {
 	align-items:center;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1050px) {
 	div.Row66 {
 		margin-top: 2vh;
 		margin-bottom: 2vh;
@@ -88,9 +88,11 @@ div.BlockParamDTchart  > div {
 		margin-bottom:2vh;
 }
 
-div.BlockParamDTchart  > div:nth-of-type(1) > div {
+div.BlockInstruc  > div {
 		margin-left:auto;
 		margin-right:auto;
+		margin-top:2vh;
+		margin-bottom:2vh;
 }
 
 div.RowDT {
@@ -314,6 +316,34 @@ th, th.dt-right, td.dt-right {
 }
 
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Instructions -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+div.instruct .form-group.shiny-input-container {
+    margin:auto;
+	text-align: center;
+    font-size: 12px;
+    width: 100px;
+	background-color:transparent;
+	border:0;
+}
+
+div.instruct .form-group.shiny-input-container label {
+    color:black;
+	background-color:transparent;
+	margin-bottom:0;
+	margin-top:0;
+}
+
+div.instruct .form-group.shiny-input-container .selectize-control.single.plugin-selectize-plugin-a11y {
+	margin-bottom:0;
+}
+
+div.instruct .form-group.shiny-input-container .selectize-input.items.has-options.full.has-items {
+	background-color: lightslategrey;
+    color: white;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
 /*-------------------------------------------------------------------------- DIV Loading -----------------------------------------------------------------------
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
 div.busy {
@@ -513,7 +543,7 @@ div.basketball #resetButton {
 }
 
 #calendarDT1 {
-	font-size:clamp(8px, 0.9vw, 10px);
+	font-size:clamp(8px, 0.8vw, 10px);
 }
 
 @media screen and (max-width: 800px) {
@@ -546,6 +576,30 @@ div.basketball #resetButton {
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
 /*-------------------------------------------------------------------------- 2nd tab -----------------------------------------------------------------------
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+#mainText2.shiny-text-output.noplaceholder:empty, #rankText2.shiny-text-output.noplaceholder:empty, #scoreText2.shiny-text-output.noplaceholder:empty, 
+#graph1Text2.shiny-text-output.noplaceholder:empty, #graph2Text2.shiny-text-output.noplaceholder:empty {
+	height: 0;
+    border-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#mainText2, #rankText2, #scoreText2, #graph1Text2, #graph2Text2 {
+	width: clamp(415px, 35vw, 500px);
+    text-align: center;
+    font-family: Bell MT;
+    font-size: clamp(11px, 1.1vw, 13px);
+    background-color: rgb(255 255 255 / 70%);
+    backdrop-filter: blur(8px);
+    color: black;
+    padding: 0.5vw;
+    border: 1px solid black;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    margin-right: auto;
+    margin-left: auto;
+	white-space:pre-line;
+}
 
 #usmap2 {
 	position: relative;
@@ -562,9 +616,9 @@ div.basketball #resetButton {
 	border: 0px solid black;
 }
 
-#teamRank2, #bestGames2 {
-	min-width:450px;
-	font-size:clamp(9px, 0.9vw, 10px);
+#teamRank2, #teamScoring2, #bestGames2 {
+	min-width:415px;
+	font-size:clamp(8px, 0.8vw, 10px);
 }
 
 [data-value = "teamDash"] .form-group.shiny-input-container {
@@ -616,7 +670,7 @@ div.basketball #resetButton {
 }
 
 #teamPieChart2, #teamBarChart2 {
-	min-width: 450px; 
+	min-width: 415px; 
 	min-height: 300px;
 }
 
@@ -630,6 +684,27 @@ div.basketball #resetButton {
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
 /*-------------------------------------------------------------------------- 3rd tab -----------------------------------------------------------------------
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+#mainText3.shiny-text-output.noplaceholder:empty, #sumGamesText3.shiny-text-output.noplaceholder:empty, #sumGraphText3.shiny-text-output.noplaceholder:empty, 
+#dateBarText3.shiny-text-output.noplaceholder:empty, #impactFGText3.shiny-text-output.noplaceholder:empty, #impactPluMinText3.shiny-text-output.noplaceholder:empty, 
+#periodBarText3.shiny-text-output.noplaceholder:empty {
+	height: 0;
+    border-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#mainText3, #sumGamesText3, #sumGraphText3, #dateBarText3, #impactFGText3, #periodBarText3, #impactPluMinText3 {
+	width: clamp(415px, 35vw, 500px);
+    text-align: center;
+    font-family: Bell MT;
+    font-size: clamp(11px, 1.1vw, 13px);
+    background-color: rgb(255 255 255 / 70%);
+    backdrop-filter: blur(8px);
+    color: black;
+    padding: 0.5vw;
+    border: 1px solid black;
+	white-space:pre-line;
+}
 
 /*-------------- Main Panel (works for 4th tab as well) ---------------*/
 div.param34container {
@@ -771,13 +846,13 @@ div.basketball #goButton3 {
 
 /*-------------- DTs size ---------------*/
 #sumGamesDT3, #compGamesDT3, #impactPluMin3, #impactFG3 {
-	min-width:400px;
-	font-size:clamp(9px, 0.8vw, 10px);
+	min-width:415px;
+	font-size:clamp(8px, 0.8vw, 10px);
 }
 
 /*-------------- Graphs sizes & border radius ---------------*/
 #sumGraph3, #dateBarChart3, #periodBarChart3 {
-	min-width: 450px; 
+	min-width: 415px; 
 	min-height: 300px;
 }
 
@@ -792,6 +867,26 @@ div.basketball #goButton3 {
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
 /*-------------------------------------------------------------------------- 4th tab -----------------------------------------------------------------------
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+#mainText4.shiny-text-output.noplaceholder:empty, #playerShotsText4.shiny-text-output.noplaceholder:empty, #playerShotsSumText4.shiny-text-output.noplaceholder:empty, 
+#playerShotsChartText4.shiny-text-output.noplaceholder:empty, #assistsText4.shiny-text-output.noplaceholder:empty {
+	height: 0;
+    border-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#mainText4, #playerShotsText4, #playerShotsSumText4, #playerShotsChartText4, #assistsText4 {
+	width: clamp(415px, 35vw, 500px);
+    text-align: center;
+    font-family: Bell MT;
+    font-size: clamp(11px, 1.1vw, 13px);
+    background-color: rgb(255 255 255 / 70%);
+    backdrop-filter: blur(8px);
+    color: black;
+    padding: 0.5vw;
+    border: 1px solid black;
+	white-space:pre-line;
+}
 
 /*-------------- Basket Button ---------------*/
 [data-value = "kingCourt"] div.basketball {
@@ -816,13 +911,13 @@ div.basketball #goButton4 {
 
 /*-------------- 1st DT size ---------------*/
 #playerShotsDT4 {
-	min-width:450px;
-	font-size:clamp(9px, 0.8vw, 10px);
+	min-width:415px;
+	font-size:clamp(8px, 0.8vw, 10px);
 }
 
 /*-------------- 1st Graph size ---------------*/
 #playerShotsSum4 {
-	min-width: 450px; 
+	min-width: 415px; 
 	min-height: 300px;
 }
 
@@ -920,13 +1015,36 @@ div.basketball #goButton4 {
 }
 
 #detailedAssist4, #globalAssist4 {
-	min-width:400px;
-	font-size:clamp(9px, 0.8vw, 10px);
+	min-width:415px;
+	font-size:clamp(8px, 0.8vw, 10px);
 }
 
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
 /*-------------------------------------------------------------------------- 5th tab -----------------------------------------------------------------------
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+#mainText5.shiny-text-output.noplaceholder:empty, #customGraphText5.shiny-text-output.noplaceholder:empty, #dataPlayerText5.shiny-text-output.noplaceholder:empty {
+	height: 0;
+    border-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#mainText5, #customGraphText5, #dataPlayerText5 {
+	width: clamp(415px, 35vw, 500px);
+    text-align: center;
+    font-family: Bell MT;
+    font-size: clamp(11px, 1.1vw, 13px);
+    background-color: rgb(255 255 255 / 70%);
+    backdrop-filter: blur(8px);
+    color: black;
+    padding: 0.5vw;
+    border: 1px solid black;
+	margin-top: 2vh;
+    margin-bottom: 2vh;
+    margin-right: auto;
+    margin-left: auto;
+	white-space:pre-line;
+}
 
 /*--------- Parameters Container ---------*/ 
 [data-value = "moneyball"] > .param5container {
@@ -1069,7 +1187,6 @@ div.basketball #goButton4 {
 	[data-value = "moneyball"] > .param5container > div:nth-of-type(6) {
 		margin-bottom: 10px;
 	}
-	
 }
 
 [data-value = "moneyball"] div.basketballGo {
@@ -1110,9 +1227,13 @@ div.basketballGo #goButton5 {
 	font-family: digital dream;
     color: springgreen;
     background-color: black;
-    border: 0;
-    border-radius: 50px;
+    border:0;
+    border-radius:50px;
     text-align: center;
+	height: 25px;
+	padding-right: 30px;
+	padding-left: 30px;
+	padding-top:0;
 }
 
 /*--------- Maine Graph Custom ---------*/ 
@@ -1145,8 +1266,8 @@ div.basketballGo #goButton5 {
 
 /*------------ Data Table Customs --------*/
 #playerSalDT5, #playerCarDT5 {
-	min-width:450px;
-	font-size:clamp(9px, 0.9vw, 10px);
+	min-width:415px;
+	font-size:clamp(8px, 0.8vw, 10px);
 }
 
 [data-value = "moneyball"] #playerSalDT5 .dataTables_paginate.paging_simple_numbers {
@@ -1172,11 +1293,33 @@ div.basketballGo #goButton5 {
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
 /*-------------------------------------------------------------------------- 6th tab -----------------------------------------------------------------------
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+#mainText6.shiny-text-output.noplaceholder:empty {
+	height: 0;
+    border-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#mainText6 {
+	width: clamp(415px, 35vw, 500px);
+    text-align: center;
+    font-family: Bell MT;
+    font-size: clamp(11px, 1.1vw, 13px);
+    background-color: rgb(255 255 255 / 70%);
+    backdrop-filter: blur(8px);
+    color: black;
+    padding: 0.5vw;
+    border: 1px solid black;
+	margin-top: 2vh;
+    margin-bottom: 2vh;
+    margin-right: auto;
+    margin-left: auto;
+	white-space:pre-line;
+}
 
 div.param6container {
-	width: 300px;
-    margin: auto;
-    padding: 1px;
+	width: 250px;
+    margin:2vh auto;
     background-color: black;
     border-radius: 10px;
     border: 2px solid white;
@@ -1184,18 +1327,22 @@ div.param6container {
 
 div.param6container > div {
 	text-align:center;
-	margin-top: 5px;
-	margin-bottom:5px;
+	margin-top: 0;
+	margin-bottom:0;
 }
 
 div.param6container > div:nth-of-type(1) {
-	margin-top: 10px;
+	margin-top: 1vh;
+}
+
+div.param6container > div:nth-of-type(2) {
+	margin-bottom: 1vh;
 }
 
 div.param6container > div > label {
 	background-color: green;
     color: white;
-    font-size: 17px;
+    font-size: 13px;
 	line-height: normal;
 }
 
@@ -1205,8 +1352,6 @@ div.param6container > div:nth-of-type(2) > label {
 
 div.param6container .shiny-options-group {
 	font-family: digital dream;
-	padding-top: 5px;
-    padding-bottom: 5px;
     color: springgreen;
 }
 
@@ -1217,16 +1362,124 @@ div.param6container .selectize-input {
 div.param6container .selectize-input {
 	background-color: black;
     font-family: Digital Dream;
-    font-size: 18px;
-	min-height: 0px;
-	border: 0px;
+    font-size: 13px;
+	min-height:0;
+	border:0;
 }
 
 div.param6container .selectize-control.multi.plugin-selectize-plugin-a11y {
-	margin-bottom: 0px;
+	margin-bottom:0;
+	line-height:0.5;
 }
 
 div.param6container .selectize-control.multi.plugin-selectize-plugin-a11y .item {
 	background-color: black;
     color: springgreen;
+}
+
+div.param6container .selectize-control.multi .selectize-input.has-items {
+	padding:0;
+}
+
+#teamStatDT6 {
+	font-size:clamp(8px, 0.8vw, 12px);
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 7th tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+#mainText7.shiny-text-output.noplaceholder:empty {
+	height: 0;
+    border-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#mainText7 {
+	width: clamp(415px, 35vw, 500px);
+    text-align: center;
+    font-family: Bell MT;
+    font-size: clamp(11px, 1.1vw, 13px);
+    background-color: rgb(255 255 255 / 70%);
+    backdrop-filter: blur(8px);
+    color: black;
+    padding: 0.5vw;
+    border: 1px solid black;
+	margin-top: 2vh;
+    margin-bottom: 2vh;
+    margin-right: auto;
+    margin-left: auto;
+	white-space:pre-line;
+}
+
+div.param7container {
+	width: 250px;
+    margin:2vh auto;
+    background-color: black;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+div.param7container > div:nth-of-type(1) {
+	margin-top: 1vh;
+	text-align:center;
+}
+
+div.param7container > div:nth-of-type(3) {
+	margin-bottom: 1vh;
+	text-align:center;
+}
+
+div.param7container > div.minSecRow {
+	display:flex;
+	justify-content:center;
+	width:100%;
+	text-align:center;
+}
+
+div.param7container > div.minSecRow .form-group.shiny-input-container {
+	width:25%;
+}
+
+div.param7container .form-group.shiny-input-container > label {
+	background-color: green;
+    color: white;
+    font-size: 13px;
+	line-height: normal;
+}
+
+div.param7container .form-group {
+	margin-bottom:0;
+}
+
+div.param7container .form-control {
+	padding:0;
+}
+
+div.param7container .form-group.shiny-input-container .form-control.shiny-bound-input {
+	font-family: digital dream;
+    color: springgreen;
+    background-color: black;
+    border:0;
+    border-radius:50px;
+    text-align: center;
+	height: 25px;
+}
+
+div.param7container #diffScore7, div.param7container #minGame7 {
+	padding-right:80px;
+	padding-left:80px;
+}
+
+div.param7container #secLeft7, div.param7container #minLeft7 {
+	padding-right: 7px;
+    padding-left: 7px;
+}
+
+div.param7container #minLeft7-label, div.param7container #secLeft7-label {
+	background-color: red;
+}
+
+#clutchDT7 {
+	font-size:clamp(8px, 0.8vw, 12px);
 }

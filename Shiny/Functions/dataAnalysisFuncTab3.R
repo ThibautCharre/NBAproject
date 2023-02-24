@@ -315,28 +315,24 @@ getPlayerClassicStatsChart <- function(selectedStat = "Points", histDT, histMean
   # We add bars for points
   fig <- plot_ly(data = histDT, type = "bar",
                  x = ~Date, y = ~get(stat, histDT),
+                 marker = list(color = ifelse(get(stat, histDT) >= histMean, "rgba(255, 99, 71, 0.6)", "rgba(51, 132, 255, 0.6)")),
                  texttemplate = ~paste(get(stat, histDT), " ", stat, sep = ""),
                  hovertemplate = ~paste(Date,
                                         "<br>", stat, " : ", get(stat, histDT), "<extra></extra>", sep = ""))
 
   # We plot the mean value
-  fig <- add_trace(p = fig, data = histDT, type = "scatter", mode = "lines", x = ~Date, y = ~mean, 
-                 hovertemplate = ~paste("Mean : ", mean, " ", stat, "<extra></extra>", sep = ""))
+  fig <- add_trace(p = fig, data = histDT, type = "scatter", mode = "markers + lines", 
+                   x = ~Date, y = ~mean,
+                   line = list(color = "rgba(0, 0, 0, 0.6)"),
+                   marker = list(color = "rgba(255, 255, 255, 0.6)"),
+                   hovertemplate = ~paste("Mean : ", mean, " ", stat, "<extra></extra>", sep = ""))
   
   # title and axes format
   fig <- layout(p = fig, 
                 title = paste("Games Played :", histMeanDT[Type == "Games", Period]),
                 showlegend = FALSE,
                 xaxis = list(title=""),
-                # yaxis2 = list(overlaying = "y",
-                #               side = "right",
-                #               title = "",
-                #               zeroline = FALSE,
-                #               showline = FALSE,
-                #               showticklabels = FALSE,
-                #               showgrid = FALSE),
                 yaxis = list(title = selectedStat,
-                             #range = c(0, max(get(stat, histDT)) +  1),
                              zeroline = TRUE,
                              showline = TRUE,
                              showticklabels = TRUE,
@@ -346,7 +342,7 @@ getPlayerClassicStatsChart <- function(selectedStat = "Points", histDT, histMean
   
   fig <- plotly::config(p = fig, displayModeBar = FALSE)
   
-  # Final spider chart
+  # Final chart
   return(fig)
   
 }

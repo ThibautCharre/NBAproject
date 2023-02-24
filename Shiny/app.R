@@ -68,7 +68,7 @@ ui <-
                         <br>So before going further, let's select the season to be exploited.")),
                         h2("Data Selection"),
                         tags$div(class = "container", 
-                                 selectInput(inputId = "seasonSelected1", label = "SEASON", choices = c("2020-2021", "2021-2022"), selected = c("2020-2021")),
+                                 selectInput(inputId = "seasonSelected1", label = "SEASON", choices = c("2020-2021", "2021-2022", "2022-2023"), selected = c("2020-2021")),
                                  selectInput(inputId = "seasonTypeSelected1", label = "TYPE", choices = c("Regular Season", "Playoffs"), selected = c("Regular Season")),
                                  tags$div(class = "basketballGo",
                                           tags$div(class = "lineVert"),
@@ -91,13 +91,16 @@ ui <-
                ),
                
                
-               
                tabPanel("Team Building", value = "teamDash",
                         
                         ############################################################################
                         ################################### TAB 2 ##################################
                         ############################################################################
                         
+                        tags$div(class = "instruct", 
+                                 selectInput(inputId = "instruct2", label = "Need Help ?", choices = c("Yes", "No"), selected = "No")
+                        ),
+                        verbatimTextOutput(outputId = "mainText2"),
                         h2("Team Selection"),
                         leafletOutput(outputId = "usmap2", height = "400px", width = "700px"),
                         verbatimTextOutput(outputId = "selectedTeamText2"),
@@ -105,19 +108,24 @@ ui <-
                         tags$div(class = "RowDT",
                                  DT::dataTableOutput(outputId = "teamRank2", width = "40%"),
                         ),
+                        verbatimTextOutput(outputId = "rankText2"),
+                        h2("Scoring Distribution"),
+                        tags$div(class = "RowDT",
+                                 DT::dataTableOutput(outputId = "teamScoring2", width = "40%"),
+                        ),
+                        verbatimTextOutput(outputId = "scoreText2"),
                         h2("Collective Stats"),
                         tags$div(class = "Row66",
                                  tags$div(class = "BlockParamDTchart",
                                           uiOutput(outputId = "statSelected2"),
-                                          plotlyOutput(outputId = "teamBarChart2", width = "35vw", height = "20vw")
+                                          plotlyOutput(outputId = "teamBarChart2", width = "35vw", height = "20vw"),
+                                          verbatimTextOutput(outputId = "graph1Text2")
                                  ),
                                  tags$div(class = "BlockParamDTchart",
                                           uiOutput(outputId = "nbPlayerChart2"),       
-                                          plotlyOutput(outputId = "teamPieChart2", width = "35vw", height = "20vw")
+                                          plotlyOutput(outputId = "teamPieChart2", width = "35vw", height = "20vw"),
+                                          verbatimTextOutput(outputId = "graph2Text2")
                                  )
-                        ),
-                        tags$div(class = "RowDT",
-                                 DT::dataTableOutput(outputId = "bestGames2", width = "40%")
                         )
                ),
                
@@ -126,7 +134,10 @@ ui <-
                         ############################################################################
                         ################################### TAB 3 ##################################
                         ############################################################################ 
-                        
+                        tags$div(class = "instruct", 
+                                 selectInput(inputId = "instruct3", label = "Need Help ?", choices = c("Yes", "No"), selected = "No")
+                        ),
+                        verbatimTextOutput(outputId = "mainText3"),
                         h2("Parameters"),
                         tags$div(class = "param34container",
                                  selectInput(inputId = "selectedTeam3", label = "TEAM", choices = "Team", selected = "Team"), 
@@ -138,13 +149,15 @@ ui <-
                         h2("Summary"),
                         tags$div(class = "RowDT",
                                  DT::dataTableOutput("sumGamesDT3", width = "40vw")
-                                 ),
+                        ),
+                        verbatimTextOutput(outputId = "sumGamesText3"),
                         tags$div(class = "RowDT",
                                  tags$div(class = "BlockParamDTchart",
                                           selectInput(inputId = "statSelected3", 
                                                       label = "STATS", 
                                                       choices = c("Points", "Assists", "Rebounds", "Blocks", "Steals"), width = "150px"),
-                                          plotlyOutput(outputId = "sumGraph3", width = "60vw", height = "25vw")
+                                          plotlyOutput(outputId = "sumGraph3", width = "60vw", height = "25vw"),
+                                          verbatimTextOutput(outputId = "sumGraphText3")
                                  )
                         ),
                         tags$div(class = "basketball",
@@ -158,13 +171,15 @@ ui <-
                ),
                
                
-               
-               tabPanel("Pros vs. Cons", value = "kingCourt", 
+               tabPanel("Pros./Cons.", value = "kingCourt", 
                         
                         ############################################################################
                         ################################### TAB 4 ##################################
                         ############################################################################
-                        
+                        tags$div(class = "instruct", 
+                                 selectInput(inputId = "instruct4", label = "Need Help ?", choices = c("Yes", "No"), selected = "No")
+                        ),
+                        verbatimTextOutput(outputId = "mainText4"),
                         h2("Parameters"),
                         tags$div(class = "param34container",
                                  selectInput(inputId = "selectedTeam4", label = "TEAM", choices = "Team", selected = "Team"), 
@@ -175,8 +190,14 @@ ui <-
                         ),
                         h2("Summary"),
                         tags$div(class = "Row66",
-                                 DT::dataTableOutput(outputId = "playerShotsDT4", width = "40vw"),
-                                 plotlyOutput(outputId = "playerShotsSum4", width = "35vw", height = "20vw")
+                                 tags$div(class = "BlockInstruc",
+                                          DT::dataTableOutput(outputId = "playerShotsDT4", width = "40vw"),
+                                          verbatimTextOutput(outputId = "playerShotsText4")
+                                          ),
+                                 tags$div(class = "BlockInstruc", 
+                                          plotlyOutput(outputId = "playerShotsSum4", width = "35vw", height = "20vw"),
+                                          verbatimTextOutput(outputId = "playerShotsSumText4")
+                                          )
                         ),
                         tags$div(class = "basketball",
                                  tags$div(class = "lineVert"),
@@ -186,15 +207,19 @@ ui <-
                         ),
                         h2("Shooting Spots"),
                         uiOutput(outputId = "allItems4")
-               ), 
+                        
+               ),
                
                
-               tabPanel("Best Employee", value = "moneyball",
+               tabPanel("Profiling", value = "moneyball",
                         
                         ############################################################################
                         ################################### TAB 5 ##################################
                         ############################################################################
-                        
+                        tags$div(class = "instruct", 
+                                 selectInput(inputId = "instruct5", label = "Need Help ?", choices = c("Yes", "No"), selected = "No")
+                        ),
+                        verbatimTextOutput(outputId = "mainText5"),
                         h2("Floor is Yours"),
                         tags$div(class = "param5container",
                                  selectInput(inputId = "categorySelected5", label = "CATEGORY", choices = c("Classic", "Shooting"), selected = "Classic"),
@@ -211,8 +236,9 @@ ui <-
                                  actionButton(inputId = "goButton5", label = "GO!")
                         ),
                         h2("Bubbles ..."),
-                        numericInput(inputId = "nbPlayerSelected5", label = "NB PLAYERS", value = 15, min = 10, max = 50, step = 1, width = "200px"),
+                        numericInput(inputId = "nbPlayerSelected5", label = "NB PLAYERS", value = 15, min = 10, max = 50, step = 1, width = "150px"),
                         plotlyOutput(outputId = "customGraph5", width = "65vw", height = "50vw"),
+                        verbatimTextOutput(outputId = "customGraphText5"),
                         h2("Player Card"),
                         tags$div(class = "RowDT",
                                  DT::dataTableOutput(outputId = "playerCarDT5", width = "40%"),
@@ -220,28 +246,55 @@ ui <-
                         h2("Player Salary"),
                         tags$div(class = "RowDT",
                                  DT::dataTableOutput(outputId = "playerSalDT5", width = "40%")
-                        )
+                        ),
+                        verbatimTextOutput(outputId = "dataPlayerText5")
                ), 
                
                
-               tabPanel("Bonus", value = "bonus",
-                        
-                        ############################################################################
-                        ################################### TAB 6 ##################################
-                        ############################################################################
-                        
-                        h2("Filtering"), 
-                        tags$div(class = "param6container",
-                          radioButtons(inputId = "teamOpp6", label = "WHO", choices = c("Team", "Opp", "Both"), selected = "Team", inline = TRUE), 
-                          selectInput(inputId = "typeStat6", label = "STATS", choices = c("Possession", "Points", "Assists", "Rebounds", "Steals", "Blocks", "Turnovers", "All FGM", "All FGA", "All FG%", "3FGM", "3FGA", "3FG%"), selected = c("Points"), multiple = TRUE)
-                        ),
-                        tags$div(class = "RowDT",
-                          DT::dataTableOutput(outputId = "teamStatDT6")
-                        )
-               ),
-                        
-                        
-                        
+               navbarMenu("Hierarchy",
+                          
+                          tabPanel("Squad", value = "bonus",
+                                   
+                                   ############################################################################
+                                   ################################### TAB 6 ##################################
+                                   ############################################################################
+                                   tags$div(class = "instruct", 
+                                            selectInput(inputId = "instruct6", label = "Need Help ?", choices = c("Yes", "No"), selected = "No")
+                                   ),
+                                   verbatimTextOutput(outputId = "mainText6"),
+                                   h2("Filtering"), 
+                                   tags$div(class = "param6container",
+                                            radioButtons(inputId = "teamOpp6", label = "WHO", choices = c("Team", "Opp", "Both"), selected = "Team", inline = TRUE), 
+                                            selectInput(inputId = "typeStat6", label = "STATS", choices = c("Possession", "Points", "Assists", "Rebounds", "Steals", "Blocks", "Turnovers", "All FGM", "All FGA", "All FG%", "3FGM", "3FGA", "3FG%"), selected = c("Points"), multiple = TRUE)
+                                   ),
+                                   tags$div(class = "RowDT",
+                                            DT::dataTableOutput(outputId = "teamStatDT6", width = "70vw")
+                                   )
+                          ),
+                          
+                          tabPanel("Clutch", value = "clutch",
+                                   
+                                   ############################################################################
+                                   ################################### TAB 7 ##################################
+                                   ############################################################################
+                                   tags$div(class = "instruct", 
+                                            selectInput(inputId = "instruct7", label = "Need Help ?", choices = c("Yes", "No"), selected = "No")
+                                   ),
+                                   verbatimTextOutput(outputId = "mainText7"),
+                                   h2("Hope Killer"), 
+                                   tags$div(class = "param7container",
+                                            numericInput(inputId = "diffScore7", label = "PTS +/-", value = 4, min = 0, max = 10, step = 1),
+                                            tags$div(class = "minSecRow",
+                                                     numericInput(inputId = "minLeft7", label = "MIN", value = 2, min = 0, max = 11, step = 1), 
+                                                     numericInput(inputId = "secLeft7", label = "SEC", value = 0, min = 0, max = 55, step = 5)
+                                            ),
+                                            numericInput(inputId = "minGame7", label = "MIN GP", value = 3, min = 0, step = 1)
+                                   ),
+                                   tags$div(class = "RowDT",
+                                            DT::dataTableOutput(outputId = "clutchDT7", width = "70vw")
+                                   )
+                          )
+               )
     ),
     
     tags$div(class = "busy", img(src = "Loading/circleWait.gif")),
@@ -352,6 +405,20 @@ server <- function(input, output, session) {
   ################################### TAB 2 ##################################
   ############################################################################
   
+  # - NEED TEXT VARIABLE
+  needText2 <- reactive({
+    input$instruct2
+  })
+  
+  # - EPLICATION TEXT 
+  output$mainText2 <- renderText({
+    req(needText2() == "Yes")
+    "Objectif: Team results & statistics presentations
+     How To: Select a marker representing an NBA team
+     Black Markers: Team is on a loosing streak (a tear is for 5 losses in a row or more)
+     Green Markers: Team is on a winning streak (a flame is for 5 wins in a row or more)"
+  })
+  
   # - US MAP LEAFLET
   output$usmap2 <- renderLeaflet({
     source("USmap/usgeo.R")
@@ -389,14 +456,30 @@ server <- function(input, output, session) {
     getShortTeamName(longName = input$usmap2_marker_click$id)
   })
   
-  # - TEAM LOGO
-  #output$logo2 <- renderImage(list(src = paste("Logos/", shortNameSelected2(), "-min", ".png", sep = ""), contentType = "image/png", height = "250px", width = "auto"), deleteFile = FALSE)
-  
   # - TEAM RANKING DT
   output$teamRank2 <- DT::renderDataTable({
     req(shortNameSelected2())
     getRankingStreakTeam(selectedTeam = shortNameSelected2(), listResultTeam = resultsByTeamList())
   }, options = list(pageLength = 5, dom = "tp"))
+  
+  # - EXPLICATION TEXT 
+  output$rankText2 <- renderText({
+    req(needText2() == "Yes", shortNameSelected2())
+    "Item: Team historical calendar"
+  })
+  
+  # - SCORING DISTRIBUTION DT
+  output$teamScoring2 <- DT::renderDataTable({
+    req(shortNameSelected2())
+    getBenchDistrib(selectedTeam = shortNameSelected2(), DT = nbaDatasDTmerged())
+  }, options = list(dom = "t"))
+  
+  # - EXPLICATION TEXT 
+  output$scoreText2 <- renderText({
+    req(needText2() == "Yes", shortNameSelected2())
+    "Item: Starters & Bench points distributions
+     Hint: Percentages corresponds to FG%"
+  })
   
   # - STAT SELECTION RENDER UI
   output$statSelected2 <- renderUI({
@@ -427,21 +510,47 @@ server <- function(input, output, session) {
     getTeamStatsGraph(selectedTeam = shortNameSelected2(), typeStat = statSelected2(), DT = teamStatSum())
   })
   
+  # - EXPLICATION TEXT 
+  output$graph1Text2 <- renderText({
+    req(needText2() == "Yes", shortNameSelected2())
+    "Item: Team Stats vs. Opp & League Stats
+     Hint: Place cursor on the bar chart to display team rank among the League"
+  })
+  
   # - TEAM PIE CHART GRAPH
   output$teamPieChart2 <- renderPlotly({
     req(statSelected2(), req(nbPlayerChart2()), shortNameSelected2())
     getTeamStatsPerPlayerChart(selectedTeam = shortNameSelected2(), typeStat = statSelected2(), nbPlayers = nbPlayerChart2(), DTroster = dicoPlayerMinute(), DT = nbaDatasDTmerged())
   })
   
-  # - BEST GAMES DT
-  output$bestGames2 <- DT::renderDataTable({
-    req(statSelected2(), shortNameSelected2())
-    getBestGames(selectedTeam = shortNameSelected2(), typeStat = statSelected2(), nbGames = 20, DTroster = dicoPlayerMinute(), DT = nbaDatasDTmerged())
-  }, options = list(pageLength = 5, dom = "tp"))
+  # - EXPLICATION TEXT 
+  output$graph2Text2 <- renderText({
+    req(needText2() == "Yes", shortNameSelected2())
+    "Item: Total Stat selected Distribution
+     Hint: Place cursor on the circle to display players' detailed stats"
+  })
+  
+  # # - BEST GAMES DT
+  # output$bestGames2 <- DT::renderDataTable({
+  #   req(statSelected2(), shortNameSelected2())
+  #   getBestGames(selectedTeam = shortNameSelected2(), typeStat = statSelected2(), nbGames = 20, DTroster = dicoPlayerMinute(), DT = nbaDatasDTmerged())
+  # }, options = list(pageLength = 5, dom = "tp"))
   
   ############################################################################
   ################################### TAB 3 ##################################
   ############################################################################
+  
+  # - NEED TEXT VARIABLE
+  needText3 <- reactive({
+    input$instruct3
+  })
+  
+  # - EPLICATION TEXT 
+  output$mainText3 <- renderText({
+    req(needText3() == "Yes")
+    "Objectif: Historical player performances & impact on its team
+     How To: Select a team, a player, a period and click on GO basket button"
+  })
   
   # UPDATE OF SELECTINPUT BOX TEAM AND ROSTER
   observe({
@@ -483,7 +592,7 @@ server <- function(input, output, session) {
   playerGamesList <- reactive({
     getHistPlayerStats(selectedTeam = shortNameSelected3(), selectedPlayer = playerSelected3(), startDate = dateRange3Min(), endDate = dateRange3Max(), DTcalendar = NBAcalendar(), DT = nbaDatasDTmerged())
   })
-    
+  
   # - SUMMARY GAMES DT
   output$sumGamesDT3 <- DT::renderDataTable({
     tryCatch({
@@ -495,16 +604,12 @@ server <- function(input, output, session) {
     })
   }, options = list(pageLength = 5, dom = "tp"))
   
-  # # - COMPARISON GAMES DT
-  # output$sumGraph3 <- renderPlotly({
-  #   tryCatch({
-  #     getPlayerClassicStatsChart(selectedStat = "Points", histDT = playerGamesList[["historicalDT"]], histMeanDT = playerGamesList[["historicalMeanDT"]])
-  #   }, warning = function(w) {
-  #     NULL
-  #   }, error = function(e) {
-  #     NULL
-  #   })
-  # })
+  # - EXPLICATION TEXT 
+  output$sumGamesText3 <- renderText({
+    req(needText3() == "Yes", playerSelected3())
+    "Item: Player historical stats
+     Hint: Player stats from team & period selected"
+  })
   
   # - STAT SELECTED VARIABLE
   statSelected3 <- reactive({
@@ -515,6 +620,15 @@ server <- function(input, output, session) {
   output$sumGraph3 <- renderPlotly({
     #req(playerSelected3() != "Player", statSelected3())
     getPlayerClassicStatsChart(selectedStat = statSelected3(), histDT = playerGamesList()[["historicalDT"]], histMeanDT = playerGamesList()[["historicalMeanDT"]])
+  })
+  
+  # - EXPLICATION TEXT 
+  output$sumGraphText3 <- renderText({
+    req(needText3() == "Yes", playerSelected3())
+    "Item: Player historical vs. average stats
+     Hint: Horizontal line corresponds to stat mean over the period selected
+     Orange bars: Historical stats above or equal to mean stat
+     Blue bars: Historical stats below mean stat"
   })
   
   # - SHORT NAME TEAM FIXED VARIABLE
@@ -561,12 +675,27 @@ server <- function(input, output, session) {
     }
   })
   
+  # - EXPLICATION TEXT 
+  output$dateBarText3 <- renderText({
+    req(needText3() == "Yes", freqSelected3(), playerDT3())
+    "Item: Impact of player's advanced stats on Team results
+     Hint: Bars display Team W/L when selected player was on the floor
+     Place the cursor on graph circles to reveal Off rating & Usage rate (black) and Def rating (grey)"
+  })
+  
   # - PLAYER PERIOD BAR CHART
   output$periodBarChart3 <- renderPlotly({
     req(playerDT3())
     if (nrow(playerDT3()) > 0) {
       getPlayerPeriodStatsChart(selectedTeam = shortNameSelected3Graph(), selectedPlayer = playerSelected3Graph(), DTplayer = playerDT3())
     }
+  })
+  
+  # - EXPLICATION TEXT 
+  output$periodBarText3 <- renderText({
+    req(needText3() == "Yes", playerDT3())
+    "Item: Distribution of player's points per period
+     Hint: Place the cursor on the circle to get +/- of player's team during a specific period"
   })
   
   # - IMPACT PLAYER DT
@@ -582,10 +711,22 @@ server <- function(input, output, session) {
     listImpactDT3()[["ShootImpact"]]
   }, options = list(dom = "t"))
   
+  # - EXPLICATION TEXT 
+  output$impactFGText3 <- renderText({
+    req(needText3() == "Yes", listImpactDT3())
+    "Item: Team & Opp FG% when player is/is not on the floor"
+  })
+  
   output$impactPluMin3 <- renderDataTable({
     req(listImpactDT3())
     listImpactDT3()[["PointImpact"]]
   }, options = list(dom = "t"))
+  
+  # - EXPLICATION TEXT 
+  output$impactPluMinText3 <- renderText({
+    req(needText3() == "Yes", listImpactDT3())
+    "Item: Team +/- when player is/is not on the floor"
+  })
   
   # - REACTIVE VALUE TO SHOW OR HIDE ITEMS
   hideOrShowItems3 <- reactiveValues(value = FALSE)
@@ -608,14 +749,24 @@ server <- function(input, output, session) {
     tagList(
       tags$div(class = "Row66",
                tags$div(class = "BlockParamDTchart", 
-                        uiOutput("selectedFreq3"),       
-                        plotlyOutput(outputId = "dateBarChart3", width = "35vw", height = "20vw")
+                        uiOutput("selectedFreq3"),
+                        plotlyOutput(outputId = "dateBarChart3", width = "35vw", height = "20vw"),
+                        verbatimTextOutput(outputId = "dateBarText3")
                ), 
-               DT::dataTableOutput("impactFG3", width = "40vw")
+               tags$div(class = "BlockInstruc",
+                        DT::dataTableOutput("impactFG3", width = "40vw"),
+                        verbatimTextOutput(outputId = "impactFGText3")
+                        )
       ),
       tags$div(class = "Row66",
-               DT::dataTableOutput("impactPluMin3", width = "40vw"),
-               plotlyOutput(outputId = "periodBarChart3", width = "35vw", height = "20vw")
+               tags$div(class = "BlockInstruc",
+                        DT::dataTableOutput("impactPluMin3", width = "40vw"),
+                        verbatimTextOutput(outputId = "impactPluMinText3")
+               ),
+               tags$div(class = "BlockInstruc",
+                        plotlyOutput(outputId = "periodBarChart3", width = "35vw", height = "20vw"),
+                        verbatimTextOutput(outputId = "periodBarText3")
+                        )
       )
     )
   })
@@ -623,6 +774,18 @@ server <- function(input, output, session) {
   ############################################################################
   ################################### TAB 4 ##################################
   ############################################################################
+  
+  # - NEED TEXT VARIABLE
+  needText4 <- reactive({
+    input$instruct4
+  })
+  
+  # - EPLICATION TEXT 
+  output$mainText4 <- renderText({
+    req(needText4() == "Yes")
+    "Objectif: Historical shooting stats and analysis of preferential spots
+     How To: Select a team, a player, a period and click on GO basket button"
+  })
   
   # UPDATE OF SELECTINPUT BOX TEAM AND ROSTER
   observe({
@@ -688,6 +851,12 @@ server <- function(input, output, session) {
     })
   }, options = list(pageLength = 5, dom = "tp"))
   
+  # - EXPLICATION TEXT
+  output$playerShotsText4 <- renderText({
+    req(needText4() == "Yes", playerSelected4() != "Player")
+    "Item: Historical shooting stats of NBA games played by a player"
+  })
+  
   # - PLAYER SHOOTING SUMMARY GRAPH
   output$playerShotsSum4 <- renderPlotly({
     tryCatch({
@@ -697,6 +866,12 @@ server <- function(input, output, session) {
     }, error = function(e) {
       NULL
     })
+  })
+  
+  # - EXPLICATION TEXT
+  output$playerShotsSumText4 <- renderText({
+    req(needText4() == "Yes", playerSelected4() != "Player")
+    "Item: 2pts, 3pts, Free Throws, True Shooting, Effective Shooting percentages of a player over a period"
   })
   
   # - GRAPH VARIABLES
@@ -740,6 +915,15 @@ server <- function(input, output, session) {
     }
   })
   
+  # - EXPLICATION TEXT
+  output$playerShotsChartText4 <- renderText({
+    req(needText4() == "Yes", listPlayerShots4())
+    "Item: Shooting positions of all the player's shots over a period (Spots chart) or analysis of the player's FG% per area vs. League FG% (Efficiency chart)
+     Explanation: The more a player shoots in an area, the bigger the circle is
+     The better is the player's FG% vs League FG% in an area, the more the circle gets closer to the red (see legend)
+     Hint: Place the cursor on the differents circles to display detailed stats"
+  })
+  
   # - AREA SELECTED RENDER UI
   output$areaSelected4 <- renderUI({
     req(playerSelected4Graph() != "Player", shortNameSelected4Graph() != "Team", continueCalc$value == TRUE)
@@ -767,6 +951,12 @@ server <- function(input, output, session) {
     listAssists4()[["Detailed"]]
   }, options = list(pageLength = 5, dom = "tp"))
   
+  # - EXPLICATION TEXT
+  output$assistsText4 <- renderText({
+    req(needText4() == "Yes", listPlayerShots4())
+    "Item: Distribution of assisted/non assisted per area of a player's shots over a specified period"
+  })
+  
   # - REACTIVE VALUE TO SHOW OR HIDE ITEMS
   hideOrShowItems4 <- reactiveValues(value = FALSE)
   
@@ -789,12 +979,14 @@ server <- function(input, output, session) {
       tags$div(class = "Row66",
                tags$div(class = "BlockParamDTchart",
                         uiOutput(outputId = "selectedChart4"),
-                        plotlyOutput(outputId = "playerShotsChart4", width = "45.9vw", height = "47vw")
+                        plotlyOutput(outputId = "playerShotsChart4", width = "45.9vw", height = "47vw"),
+                        verbatimTextOutput(outputId = "playerShotsChartText4")
                ),
                tags$div(class = "BlockParamDTchart",
                         uiOutput(outputId = "areaSelected4"),
                         DT::dataTableOutput(outputId = "globalAssist4", width = "30vw"),
-                        DT::dataTableOutput(outputId = "detailedAssist4", width = "30vw")
+                        DT::dataTableOutput(outputId = "detailedAssist4", width = "30vw"), 
+                        verbatimTextOutput(outputId = "assistsText4")
                )
       )
     )
@@ -803,6 +995,18 @@ server <- function(input, output, session) {
   ############################################################################
   ################################### TAB 5 ##################################
   ############################################################################
+  
+  # - NEED TEXT VARIABLE
+  needText5 <- reactive({
+    input$instruct5
+  })
+  
+  # - EPLICATION TEXT 
+  output$mainText5 <- renderText({
+    req(needText5() == "Yes")
+    "Objectif: Ranking of League players by stats 
+     How To: Select a category, a stat, a position, a club or the League, a range of salaries & ages and click on GO basket button"
+  })
   
   # - CATEGORY SELECTED VARIABLE
   categorySelected5 <- reactive({input$categorySelected5})
@@ -817,7 +1021,7 @@ server <- function(input, output, session) {
     if (categorySelected5() == "Classic") {
       c("Points", "Assists", "Rebounds", "Blocks", "Steals")
     } else if (categorySelected5() == "Shooting") {
-      c("All Shots", "2pt Shots", "3pt Shots", "Free Throws")
+      c("All Shots", "2pt Shots", "3pt Shots", "Free Throws", "2pt Left Corner", "2pt Right Corner", "2pt Top Left", "2pt Top Right", "Under The Circle", "Short Paint Shot", "Long Paint Shot", "3pt Left Corner", "3pt Right Corner", "3pt Top Left", "3pt Top Right", "3pt Middle", "Long Distance Shot")
     }
   })
   
@@ -921,6 +1125,16 @@ server <- function(input, output, session) {
     }
   })
   
+  # - EPLICATION TEXT 
+  output$customGraphText5 <- renderText({
+    req(needText5() == "Yes", statsDT5())
+    "Item: 2-dimensional players ranking system 
+     Explanation: Classic category statistics are ranked by stats per game (not mpg) while Shooting category stats are ranked by FG attempted (not FG%)
+     The bigger the circle, the more a player has played games during the season
+     Color code depends on players' salaries (see legend)
+     Hint: Place the cursor on a circle to get detailed stats of a player"
+  })
+  
   # - DATA TABLE CLICK EVENT
   dataPlayer5 <- reactive({event_data("plotly_click")})
   
@@ -939,30 +1153,95 @@ server <- function(input, output, session) {
     ], options = list(dom = "t"))
     
     if (seasonSelected1() == "2022-2023") {
-      tmpDT <- formatCurrency(tmpDT, 1:6, digits = 0)
+      tmpDT <- formatCurrency(tmpDT, 1:4, digits = 0)
     } else {
       tmpDT <- formatCurrency(tmpDT, 1, digits = 0)
     }
+  })
+  
+  # - EPLICATION TEXT 
+  output$dataPlayerText5 <- renderText({
+    req(needText5() == "Yes", statsDT5())
+    "Item: Selected player description and current contract
+     Hint: Click on a circle on the graph to display the selected player's informations"
   })
   
   ############################################################################
   ################################### TAB 6 ##################################
   ############################################################################
   
+  # - NEED TEXT VARIABLE
+  needText6 <- reactive({
+    input$instruct6
+  })
+  
+  # - EPLICATION TEXT 
+  output$mainText6 <- renderText({
+    req(needText6() == "Yes")
+    "Objectif: Team stats & ranking among the League 
+     How To: Choose among team, opp or both stats and select one or multiple stats to be displayed"
+  })
+  
+  # - TYPE TEAM VARIABLE
   teamOpp6 <- reactive({
     input$teamOpp6
   })
   
+  # - STAT VARIABLE
   statSelected6 <- reactive({
     input$typeStat6
   })
   
+  # - TEAM RANK SUMMARY DT
   output$teamStatDT6 <- DT::renderDataTable({
     req(teamOpp6(), statSelected6())
     getTeamCustomDT(typeStat = statSelected6(), teamOpp = teamOpp6(), DT = teamStatSum())
   }, options = list(pageLength = 30, dom = "t"))
   
+  ############################################################################
+  ################################### TAB 7 ##################################
+  ############################################################################
+  
+  # - NEED TEXT VARIABLE
+  needText7 <- reactive({
+    input$instruct7
+  })
+  
+  # - EPLICATION TEXT 
+  output$mainText7 <- renderText({
+    req(needText7() == "Yes")
+    "Objectif: Display clutchest players among the League 
+     How To: Choose a moment during the 4th quarter (time left & teams points differential) from which stats are calculated. Overtime are included in the stats displayed
+     Hint: You can filter by a minimum number of clutch moments played by players"
+  })
+  
+  # - DIFF SCORE VARIABLE
+  scoreSelected7 <- reactive({
+    input$diffScore7
+  })
+  
+  # - MINUTES LEFT VARIABLE
+  minSelected7 <- reactive({
+    input$minLeft7
+  })
+  
+  # - SECS LEFT VARIABLE
+  secSelected7 <- reactive({
+    input$secLeft7
+  })
+  
+  # - MIN GAMES VARIABLE
+  minGameSelected7 <- reactive({
+    input$minGame7
+  })
+  
+  # - PLAYER RANK SUMMARY DT
+  output$clutchDT7 <- DT::renderDataTable({
+    req(scoreSelected7(), minSelected7(), secSelected7(), minGameSelected7())
+    getClutchRank(minLeft = minSelected7(), secLeft = secSelected7(), diffScore = scoreSelected7(), minGame = minGameSelected7(), DT = nbaDatasDTmerged())
+  }, options = list(pageLength = 10, dom = "tp"))
+  
 }
 
+# - LAUNCH APP
 shinyApp(ui, server, options = list(launch.browser = T))
-#shinyApp(ui, server)

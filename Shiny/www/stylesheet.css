@@ -628,7 +628,7 @@ div.basketball #resetButton {
     border:2px solid white;
 	font-size:12px;
 	width:200px;
-	margin-bottom:0;
+	margin:auto;
 }
 
 [data-value = "teamDash"] .form-group.shiny-input-container label {

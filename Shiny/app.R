@@ -351,6 +351,23 @@ server <- function(input, output, session) {
   })
   
   # - TYPE SEASON VARIABLE
+  seasonFilter1 <- reactive({
+    input$seasonSelected1
+  })
+  
+  observe({
+    if (seasonFilter1() == "2022-2023") {
+      updateSelectInput(inputId = "seasonTypeSelected1", label = "TYPE", 
+                        choices = c("Regular Season"), 
+                        selected = "Regular Season")
+    } else {
+      updateSelectInput(inputId = "seasonTypeSelected1", label = "TYPE", 
+                        choices = c("Regular Season", "Playoffs"), 
+                        selected = "Regular Season")
+    }
+    
+  })
+  
   seasonTypeSelected1 <- eventReactive(input$goButton1, {
     input$seasonTypeSelected1
   })

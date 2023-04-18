@@ -35,8 +35,8 @@ getNBAmap <- function(coordFile = "USmap/nbateamsgeo.csv", listResultTeams) {
                      )
                      
   # We customize the map and states according to their coordinates and add legend
-  usMap <- leaflet(data = mapStates, options = leafletOptions(minZoom = 4, maxZoom = 4))
-  usMap <- setView(map = usMap, lng = -97.515, lat = 39.749, zoom = 4)
+  usMap <- leaflet(data = mapStates, options = leafletOptions(minZoom = 3.6, maxZoom = 3.6))
+  usMap <- setView(map = usMap, lng = -97.515, lat = 39.749, zoom = 3.6)
   usMap <- addPolygons(map = usMap,
                    popup = ~paste("State:<b>", names),
                    opacity = 2, fillOpacity = 0.8, 

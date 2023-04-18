@@ -1,18 +1,324 @@
-body {
-    -moz-transform: scale(1, 1); /* Moz-browsers */
-    zoom: 1; /* Other non-webkit browsers */
-    zoom: 100%; /* Webkit browsers */
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Global -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+header {
+	position: absolute;
+	left: 0;
+	height: 100%;
+	width: 100%;
+    top: 0;
+    z-index: -999;
+	background-size: cover;
 }
 
+* {
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	list-style: none;
+}
+
+.tab-pane {
+	margin-top: 70px;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Paragraph -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+h1, h2 {
+    text-align: center;
+    margin: 20px;
+    font-family: Bodoni MT;
+	-webkit-background-clip: text;
+    color: black;
+    background-color: white;
+    -webkit-text-stroke-color: transparent;
+    -webkit-text-stroke-width: 2px;
+}
+
+p, pre {
+	text-align: center;
+    font-family: Bell MT;
+    font-size: 22px;
+    background-color: rgb(255 255 255 / 70%);
+    backdrop-filter: blur(8px);
+	color: black;
+    line-height: 35px;
+    padding: 20px;
+    border: 2px solid black;
+	margin-top:20px;
+	margin-bottom:20px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Rows & Blocks -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+div.Row66 {
+	margin: 20px;
+	display: flex;
+	justify-content: space-evenly;
+	align-items:center;
+}
+
+@media screen and (max-width: 1440px) {
+	div.Row66 {
+		margin: 20px;
+		display: block;
+	}
+	
+	div.Row66 > div {
+		margin-left:auto;
+		margin-right:auto;
+		margin-top:10px;
+		margin-bottom:10px;
+	}
+	
+}
+
+div.BlockParamDTchart  > div {
+		margin-left:auto;
+		margin-right:auto;
+		margin-top:10px;
+		margin-bottom:10px;
+}
+
+div.BlockParamDTchart  > div:nth-of-type(1) > div {
+		margin-left:auto;
+		margin-right:auto;
+		margin-top:10px;
+		margin-bottom:10px;
+}
+
+div.RowDT {
+	margin: 20px;
+}
+
+div.RowDT > div {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Cursor form control -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.selectize-input.items.full.has-options.has-items::after {
+	border-color: white transparent;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Data Table -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.shiny-datatable-output tfoot {
+ display: none;
+}
+
+.display.dataTable.no-footer {
+	text-align: center;
+}
+
+.display.dataTable.no-footer > thead {
+	color: white;
+    background: rgba(0, 0, 0, 0.6);
+	backdrop-filter: blur(8px);
+}
+
+.display.dataTable.no-footer > thead > tr > th:nth-of-type(1) {
+	display: none;
+}
+
+.display.dataTable.no-footer > tbody {
+	color: white;
+}
+
+.display.dataTable.no-footer > tbody > tr > td:nth-of-type(1) {
+	display: none;
+}
+
+.display.dataTable.no-footer > tbody > .odd {
+	background-color: rgba(201, 8, 33, 0.5);
+	backdrop-filter: blur(8px);
+}
+
+.display.dataTable.no-footer > tbody > .even {
+	background-color: rgba(23, 64, 139, 0.5);
+	backdrop-filter: blur(8px);
+}
+
+.dataTables_paginate.paging_simple_numbers {
+	background-color: rgba(255, 255, 255, 0.4);
+	backdrop-filter: blur(8px);
+}
+
+.dataTables_wrapper.no-footer .dataTables_wrapper.dataTables_paginate {
+	padding-top: 0px;
+}
+
+th, th.dt-right, td.dt-right {
+	text-align: center;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Graphs -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.plot-container.plotly {
+	height: 100%;
+}
+
+.user-select-none.svg-container {
+	height: 100%;
+	backdrop-filter: blur(8px);
+	background: rgba(255, 255, 255, 0.15);
+	padding:2px;
+}
+
+.user-select-none.svg-container:hover {
+	background: rgba(255, 255, 255, 0.7);
+	border: 1px solid black;
+	padding:0;
+}
+
+.user-select-none.svg-container > .main-svg:nth-of-type(1) {
+    top: 5%;
+	height: 95%;
+}
+
+.user-select-none.svg-container > .main-svg:nth-of-type(2) {
+    padding-top: 10px;
+}
+
+.user-select-none.svg-container > .main-svg:nth-of-type(3) {
+    top: 5%;
+	height: 95%;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Leaflet -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.leaflet-top.leaflet-left {
+	display: none;
+}
+
+.leaflet-control-attribution.leaflet-control {
+	display: none;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Navigation Bar -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+.hamb {
+	display: none;
+}
+
+.navbar.navbar-default.navbar-static-top {
+	position: unset;
+	background-color: transparent;
+	border: 0;
+}
+
+.navbar-header {
+	float: none;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	margin: 10px;
+	height: 50px;
+	width: 200px;
+	display: flex;
+	justify-content: center;
+}
+
+.navbar-brand {
+	font-size: 45px;
+    font-weight: 600;
+	background-image: linear-gradient(to right, #17408B 0%, #FFFFFF 50%, #C90821 100%);
+	-webkit-text-fill-color: transparent;
+	-moz-text-fill-color: transparent;
+	-webkit-background-clip: text;
+    -moz-background-clip: text;
+}
+
+.nav.navbar-nav {
+	display: flex;
+	float: none;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	height: 50px;
+	margin: 10px;
+	padding: 0;
+}
+
+.nav.navbar-nav > li > a {
+	font-size: 20px;
+    background-color: transparent;
+    color: white;
+}
+
+.nav.navbar-nav > li > a.active {
+    background-color: white;
+    color: black;
+	font-weight: 600;
+}
+
+@media screen and (max-width: 1120px) {
+	.navbar-header {
+		width: 200px;
+	}
+	
+	.nav.navbar-nav  {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+    background-color: rgba(23, 64, 139, 0.8);
+	backdrop-filter: blur(5px);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+	margin: 0;
+	margin-left:-100%;
+	margin-right: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	transition: all 0.5s ease;
+	}
+	
+	.nav.navbar-nav.menu-mobile {
+		margin-left: 0;
+	}
+	
+	.hamb {
+		width: 100px;
+		margin: 0;
+		position: absolute;
+		top: 0;
+		right: 10px;
+		display: block;
+		z-index: 1000;
+	}
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- DIV Loading -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
 div.busy {
   position:absolute;
   top: 0;
   left: 0;
   opacity: 0.8;
-  background: #C90821;
+  background: rgba(0, 0, 0, 0.8);
+  /*
   background: -moz-linear-gradient(left, #C90821 0%, #FFFFFF 50%, #17408B 100%);
   background: -webkit-linear-gradient(left, #C90821 0%, #FFFFFF 50%, #17408B 100%);
   background: linear-gradient(to right, #C90821 0%, #FFFFFF 50%, #17408B 100%);
+  */
   text-align: center;
   padding-top: 20%;
   border-radius: 5px;
@@ -21,424 +327,826 @@ div.busy {
   z-index: 999;
 }
 
-/* Apparence generale */
-.content-wrapper {
- background-color: white;
-}
-
-.skin-blue .main-header .navbar {
-    background-color: #C90821;
-}
-
-.skin-blue .main-sidebar {
-    background-color: #17408B;
-}
-
-.skin-blue .main-header .logo {
-    background-color: Black;
-    color: White;
-	font-family: fantasy;
-}
-
-.skin-blue .sidebar a {
- color: black;
-}
-
-/* Permet de mettre les onglets en noirs quand on passe dessus */
-.sidebar-menu>li {
-	margin-top: 15px;
-}
-
-.sidebar-menu>li:nth-of-type(1) {
-	margin-top: 40px;
-}
-
-.sidebar-menu>li>a {
- background: white;
- color: black;
- font-family: cursive;
- border: 2px solid black;
-    border-top-left-radius: 37px 140px;
-    border-top-right-radius: 23px 130px;
-    border-bottom-left-radius: 110px 19px;
-    border-bottom-right-radius: 120px 24px;
-    font-family: cursive;
-    text-align: center;
-}	
-
-.sidebar-menu>li>a:hover
-{
-  background: black;
-  color: white;
-  font-family: cursive;
-  font-style: italic;
-  border: 2px solid white;
-  border-top-left-radius: 37px 140px;
-  border-top-right-radius: 23px 130px;
-  border-bottom-left-radius: 110px 19px;
-  border-bottom-right-radius: 120px 24px;
-  font-family: cursive;
-  text-align: center;
-}
-
-.sidebar-menu>li.active>a
-{
-  background: black;
-  color: white;
-  font-family: cursive;
-  font-style: italic;
-  border: 2px solid white;
-  border-top-left-radius: 37px 140px;
-  border-top-right-radius: 23px 130px;
-  border-bottom-left-radius: 110px 19px;
-  border-bottom-right-radius: 120px 24px;
-  font-family: cursive;
-  text-align: center;
-}
-
-li.disabled>a {
- cursor: not-allowed;
-}
-
-/* Design des zones de parametrages des graphs */
-.control-label {
- text-align: left;
- font-family: cursive;
- font-style: italic;
-}
-
-.selectize-input {
- border-top-left-radius: 37px 140px;
- border-top-right-radius: 23px 130px;
- border-bottom-left-radius: 110px 19px;
- border-bottom-right-radius: 120px 24px; 
- text-align: center;
- color: black;
- font-family: cursive;
- border: 2px solid black;
- z-index: 0;
-}
-
-.form-control {
- border-top-left-radius: 37px 140px;
- border-top-right-radius: 23px 130px;
- border-bottom-left-radius: 110px 19px;
- border-bottom-right-radius: 120px 24px; 
- text-align: center;
- color: black;
- font-family: cursive;
- border: 2px solid black;
-}
-
-.input-daterange>.form-control:nth-of-type(n) {
- border-top-left-radius: 37px 140px;
- border-top-right-radius: 23px 130px;
- border-bottom-left-radius: 110px 19px;
- border-bottom-right-radius: 120px 24px;
-}
-
-.shiny-options-group {
- font-family: cursive;
-}
-
-/*data table design*/
-.shiny-datatable-output tfoot {
- display: none;
-}
-
-.dataTable>thead { 
- font-family: cursive;
- color: white;
- background-color: black; 
-}
-
-.dataTable>thead>tr>th {
- border-top-left-radius: 37px 140px;
- border-top-right-radius: 23px 130px;
- border-bottom-left-radius: 110px 19px;
- border-bottom-right-radius: 120px 24px;
- border: 1px solid white;
-}
-
-/* GO Button */
-.action-button {
-  align-items: center;
-  background-color: #3DD1E7;
-  border: 1px solid #000000;
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- DIV basket ball -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+div.basketballGo {
+  position: relative;
+  overflow: hidden;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: white;
   box-sizing: border-box;
-  color: #000000;
-  display: flex;
-  font-family: ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-  font-size: 1rem;
-  font-weight: 700;
-  justify-content: center;
-  line-height: 1.75rem;
-  margin: auto;
-  padding: .75rem 1.65rem;
+  border: 2px solid black;
+  margin-left: auto;
+}
+
+div.lineCurvLeftGo {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    left: 70%;
+    border-radius: 50%;
+    top: 0;
+	background-color: blue;
+}
+
+div.lineCurvRightGo {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    right: 70%;
+    transform: scale(-1, -1);
+    border-radius: 50%;
+    top: 0;
+	background-color:red;
+}
+
+div.basketball {
   position: relative;
-  text-align: center;
-  text-decoration: none #000000 solid;
-  text-decoration-thickness: auto;
-  width: 100%;
-  max-width: 460px;
-  position: relative;
-  cursor: pointer;
-  transform: rotate(-2deg);
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-.action-button:focus {
-  outline: 0;
-}
-.action-button:after {
-  content: '';
-  position: absolute;
-  border: 1px solid #000000;
-  bottom: 4px;
-  left: 4px;
-  width: calc(100% - 1px);
-  height: calc(100% - 1px);
-}
-.action-button:hover:after {
-  bottom: 2px;
-  left: 2px;
+  overflow: hidden;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: #e65c00;
+  box-sizing: border-box;
+  border: 2px solid black;
+  margin-right: auto;
 }
 
-/* Design des zones de texte*/
-.shiny-text-output {
- background-color: white;
- border: none;
- text-align: center;
+div.lineVert {
+	content: '';
+    position: absolute;
+    height: 110%;
+    width: 52%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    right: 50%;
+    top: -5%;
 }
 
-/* Titres */
-h1 {
- font-family: fantasy;
- font-size: 30px;
- font-style: bold;
- justify-content: center;
- text-align: center;
+div.lineCurvLeft {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    left: 70%;
+    border-radius: 50%;
+    top: 0;
 }
 
-h2 {
- font-family: fantasy;
- font-size: 22px;
- font-style: bold;
- text-align: center;
+div.lineCurvRight {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 2px solid black;
+    box-sizing: border-box;
+    right: 70%;
+    transform: scale(-1, -1);
+    border-radius: 50%;
+    top: 0;
 }
 
-/* First Tab : INTRO tab */
-#resetButton {
- background-color: #ffd500;
+.btn[disabled] {
+	backdrop-filter: blur(4px);
 }
 
-#introText1 {
- margin-bottom: 50px;
- margin-top: 50px;
- font-family: cursive;
- font-size: 1.4vw;
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 1st tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.introText {
+	max-width: 1200px;
 }
 
 #confirmationText1 {
- font-size: 20px;
- font-family: monospace;
- text-align: left;
+	max-width: 600px;
 }
 
-#shiny-tab-welcome>.row {
- display: flex;
- align-content: stretch;
- margin-top: 50px;
+.container {
+	display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+    grid-column-gap: 30px;
 }
 
-#shiny-tab-welcome>.row>.col-sm-3 {
- margin: auto;
+.container::before {
+	display: none;
 }
 
-/* Second Tab : TEAM tab */
-/* US map design */
-#usmap2 {
- background-color: white;
+[data-value = "welcome"] .form-group.shiny-input-container {
+	width: 250px;
+	background-color: black;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid white;
 }
+
+[data-value = "welcome"] .selectize-control {
+	margin-bottom: 0px;
+}
+
+[data-value = "welcome"] .container > .form-group.shiny-input-container:nth-of-type(1) {
+    margin-left: auto;
+}
+
+[data-value = "welcome"] .container > .form-group.shiny-input-container:nth-of-type(2) {
+    margin-right: auto;
+}
+
+[data-value = "welcome"] .container .form-group.shiny-input-container label {
+	background-color: green;
+    color: white;
+    margin-top: 5px;
+}
+
+[data-value = "welcome"] .container > .form-group.shiny-input-container:nth-of-type(2) label {
+    background-color: red;
+}
+
+[data-value = "welcome"] .container .selectize-input.items.full.has-options.has-items {
+	background-color: black;
+    color: springgreen;
+    font-family: digital dream;
+    border: 0;
+    padding: 0;
+    vertical-align: middle;
+	min-height: 25px;
+	border-radius:10px;
+}
+
+div.basketballGo #goButton1 {
+	top: -5%;
+    position: absolute;
+    left: -5%;
+    width: 110px;
+    height: 110px;
+    background-color: transparent;
+    color: black;
+    font-size: 20px;
+}
+
+div.basketball #resetButton {
+	top: -5%;
+    position: absolute;
+    left: -5%;
+    width: 110px;
+    height: 110px;
+    background-color: transparent;
+    color: white;
+    font-size: 20px;
+}
+
+@media screen and (max-width: 800px) {
+	.container {
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 10px;
+		margin-bottom: 20px;
+	}
 	
+	.container > .form-group.shiny-input-container:nth-of-type(1) { 
+		margin-right: auto;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+
+	.container > .form-group.shiny-input-container:nth-of-type(2) { 
+		margin-left: auto;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	
+	div.basketballGo {
+		margin-right: auto;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	
+	div.basketball {
+		margin-left: auto;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 2nd tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
 #usmap2 {
- transition: all .2s ease-in-out;
-}
-#usmap2:hover {
- transform: scale(1.2);
-}
-#usmap2 .leaflet-control-zoom {
-   display: none;
-}
-
-.leaflet-top, .leaflet-bottom {
- z-index: 0;
+	padding: 20px;
+	position: relative;
+	background-color: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(8px);
+	margin: 20px auto;
+	border-radius: 20px 20px 0 20px;
+	transition: all .2s ease-in-out;
+	max-width: 1000px; 
 }
 
-/* Selection team Text */
+/*
+@media screen and (min-width: 1245px) {
+	#usmap2:hover {
+	 transform: scale(1.2);
+	}
+}
+*/
+
 #selectedTeamText2 {
- margin-bottom: 20px;
- margin-top: 180px;
- font-family: cursive;
- font-size: 20px;
- font-style: bold;
+	max-width: 1000px;
+    margin: 10px auto;
+	border: 0px solid black;
 }
 
-/* Teams LOGO size*/
-#logo2 {
- display: flex;
- justify-content: center;
- align-items: center;
+[data-value = "teamDash"] .form-group.shiny-input-container {
+	background-color: black;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid white;
 }
 
-#selectedPlayerPres3 {
- font-size: 18px;
- font-family: monospace;
+[data-value = "teamDash"] .form-group.shiny-input-container label {
+	background-color: red;
+    color: white;
+    margin-top: 5px;
 }
 
-#selectedPlayerText3, #selectedPlayerText4 {
- margin-bottom: 20px;
- font-family: cursive;
- font-size: 17px;
- font-style: bold;
+#statSelected2  .form-group.shiny-input-container label {
+    background-color: green;
 }
 
-#playerStatText3 {
- font-size : 20px;
- text-align: left;
- font-family: monospace;
+#statSelected2 .selectize-input.items.full.has-options.has-items {
+	background-color: black;
+    color: springgreen;
+    font-family: digital dream;
+    border: 0;
+    padding: 0;
+    vertical-align: middle;
+	min-height: 25px;
+	border-radius:10px;
 }
 
-#shiny-tab-playerDash .row:nth-of-type(1) {
- display: flex;
- align-items: stretch;
+#statSelected2 .selectize-control.single.plugin-selectize-plugin-a11y {
+	margin-bottom: 0px;
 }
 
-#shiny-tab-playerDash .row:nth-of-type(1) .col-sm-5, .col-sm-2 {
- margin: auto;
+#nbPlayerChart2 .form-control.shiny-bound-input {
+	font-family: digital dream;
+    color: springgreen;
+    background-color: black;
+    border: 0;
+    border-radius: 50px;
+    text-align: center;
+	height: 25px;
+	padding-right: 30px;
+	padding-left: 30px;
+	padding-top: 0px;
+}
+#teamPieChart2 > .plot-container.plotly > .user-select-none.svg-container {
+	border-radius: 20px 0px 20px 0px;
+}
+#teamBarChart2 > .plot-container.plotly> .user-select-none.svg-container {
+	border-radius: 0px 20px 0px 20px;
 }
 
-#shiny-tab-playerDash .row:nth-of-type(1) .col-sm-5:nth-of-type(3) {
- padding-left: 200px;
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 3rd tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+div.param34container {
+	width: 300px;
+    margin: auto;
+    padding: 1px;
+    background-color: black;
+    border-radius: 10px;
+    border: 2px solid white;
 }
 
-/* Permet de centrer les inputs dans la colonne, deuxieme onglet */
-#shiny-tab-playerDash .row:nth-of-type(1) .col-sm-6:nth-of-type(1) .shiny-bound-input, .shiny-bound-output, .form-group {
- margin: auto;
+div.param34container > div {
+	text-align:center;
+	margin-top: 0px;
+	margin-bottom:0px;
 }
 
-.well {
- background-color: white;
- border: white;
- padding: 0;
+div.param34container > div:nth-of-type(1) {
+	margin-top: 10px;
 }
 
-.nav, .nav-tabs {
-	justify-content: center;
-	display: flex;
-	border-top-left-radius: 37px 140px;
-	border-top-right-radius: 23px 130px;
-	border-bottom-left-radius: 110px 19px;
-	border-bottom-right-radius: 120px 24px;
-	background-color: #17408B;
+div.param34container label {
+	background-color: red;
+    color: white;
+    font-size: 17px;
+	line-height: normal;
+}
+
+div.param34container .selectize-input.full {
+	background-color: black;
+    color: springgreen;
+    font-family: Digital Dream;
+    font-size: 18px;
+	min-height: 0px;
+	padding-top:10px;
+	padding-bottom:10px;
+	border: 0px;
+}
+
+div.param34container .selectize-control {
+	margin-bottom: 0px;
+}
+
+div.param34container .form-control {
+	background-color: black;
+    font-family: Digital Dream;
+    color: white;
+    border: 0px solid white;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+div.param34container .input-group {
+	margin-bottom: 10px;
+}
+
+div.param34container .input-group-addon {
+	background-color: black;
+    border: 0px;
+    font-family: Digital Dream;
+    color: white;
+}
+
+#spiderChart3 > .plot-container.plotly > .user-select-none.svg-container {
+	background-color: transparent;	
+	backdrop-filter: none;
+}
+
+[data-value = "teamPlayer"] div.basketball {
+	margin-left: auto;
+}
+
+div.basketball #goButton3 {
+	top: -5%;
+    position: absolute;
+    left: -5%;
+    width: 110px;
+    height: 110px;
+    background-color: transparent;
+    color: black;
+    font-size: 20px;
+}
+
+/*---------------- Selected Chart Option ------------*/
+
+#selectedFreq3In {
+	text-align: center;
+	background-color: black;
+    width: 200px;
+    margin-right: auto;
+    margin-left: auto;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+#selectedFreq3In > .control-label {
+	background-color: green;
+    color: white;
+    margin-top: 5px;
+}
+
+#selectedFreq3In .shiny-options-group {
+	font-family: digital dream;
+    color: springgreen;
+    margin-top: 5px;
+	margin-bottom: 5px;
+    text-align: center;
+}
+
+#dateBarChart3 > .plot-container.plotly > .user-select-none.svg-container {
+	border-radius: 20px 0px 20px 0px;
+}
+
+#periodBarChart3 > .plot-container.plotly > .user-select-none.svg-container {
+	border-radius: 0px 20px 0px 20px;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 4th tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+/*-------------- Basket Button ---------------*/
+
+[data-value = "kingCourt"] div.basketball {
+	margin-left: auto;
+}
+
+div.basketball #goButton4 {
+	top: -5%;
+    position: absolute;
+    left: -5%;
+    width: 110px;
+    height: 110px;
+    background-color: transparent;
+    color: black;
+    font-size: 20px;
+}
+
+[data-value = "kingCourt"] div.param34container label {
+	background-color: green;
+}
+
+/*---------------- Selected Chart Option ------------*/
+
+#selectedChart4In {
+	text-align: center;
+	background-color: black;
+    width: 200px;
+    margin-right: auto;
+    margin-left: auto;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+#selectedChart4In > .control-label {
+	background-color: red;
+    color: white;
+    margin-top: 5px;
+}
+
+#selectedChart4In .shiny-options-group {
+	font-family: digital dream;
+    color: springgreen;
+    margin-top: 5px;
+	margin-bottom: 5px;
+    text-align: center;
+}
+
+
+/* -------------- Area Selected Option ---------------*/
+
+#areaSelected4 > .form-group.shiny-input-container {
+	margin: auto;
+	background-color: black;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+#areaSelected4 > .form-group.shiny-input-container label {
+	color: white;
+    background-color: red;
+    margin-top: 5px;
+}
+
+#areaSelected4 .selectize-input.items.full.has-options.has-items {
+	background-color: black;
+    color: springgreen;
+    font-family: digital dream;
+    border: 0;
+    padding: 0;
+    vertical-align: middle;
+	min-height: 25px;
+	border-radius:10px;
+}
+
+#areaSelected4 .selectize-control.single.plugin-selectize-plugin-a11y {
+	margin-bottom: 0px;
+}
+
+/* --------------------------------------------------*/
+
+#globalAssist4 {
+	margin-top: 20px;
 	margin-bottom: 20px;
 }
 
-.nav-tabs>li>a {
-	color: black;
-	background-color: white;
-    font-family: cursive;
-	border-top-left-radius: 37px 140px;
-	border-top-right-radius: 23px 130px;
-	border-bottom-left-radius: 110px 19px;
-	border-bottom-right-radius: 120px 24px;
-	border: 2px solid black;
+#playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(1) {
+    top: 10px;
+	height: 840px;
+	left:-25px;
 }
 
-.nav-tabs>li.active>a {
+#playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(2) {
+    padding-top: 10px;
+	height: 850px;
+	left:-25px;
+}
+
+#playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(3) {
+    padding-top: 10px;
+	top: 0px;
+	height: 850px;
+	left:-25px;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 5th tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+/*--------- Parameters Container ---------*/ 
+[data-value = "moneyball"] > .param5container {
+	display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-left: auto;
+	margin-right: auto;
+    grid-column-gap: 30px;
+	padding: 1px;
+    background-color: black;
+    border-radius: 10px;
+    border: 2px solid white;
+	width: 500px;
+}
+
+[data-value = "moneyball"] > .param5container::before {
+	display: none;
+}
+
+[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n+1) { 
+    width: 200px;
+    margin-left: auto;
+}
+
+[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n) { 
+    width: 200px;
+    margin-right: auto;
+}
+
+[data-value = "moneyball"] > .param5container > div {
+	text-align:center;
+	margin-top: 0px;
+	margin-bottom:0px;
+}
+
+[data-value = "moneyball"] > .param5container > div:nth-of-type(1) {
+	margin-top: 10px;
+}
+
+[data-value = "moneyball"] > .param5container > div:nth-of-type(2) {
+	margin-top: 10px;
+}
+
+[data-value = "moneyball"] > .param5container > div:nth-of-type(6) {
+	margin-bottom: 10px;
+}
+
+[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n)> label { 
+    background-color: red;
+}
+
+[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n+1)> label { 
+    background-color: green;
+}
+
+[data-value = "moneyball"] > .param5container label {
+    color: white;
+    font-size: 17px;
+	line-height: normal;
+}
+
+[data-value = "moneyball"] > .param5container .selectize-input.full {
+	background-color: black;
+    color: springgreen;
+    font-family: Digital Dream;
+    font-size: 18px;
+	min-height: 0px;
+	padding-top:10px;
+	padding-bottom:10px;
+	border: 0px;
+}
+
+[data-value = "moneyball"] > .param5container .selectize-input {
+    background-color: black;
+	font-family: Digital Dream;
+    font-size: 18px;
+	min-height: 0px;
+	padding-top:10px;
+	padding-bottom:10px;
+	border: 0px;
+}
+
+[data-value = "moneyball"] > .param5container .selectize-input > div {
+	background-color: black;
+    color: springgreen;
+}
+
+[data-value = "moneyball"] > .param5container .selectize-control {
+	margin-bottom: 0px;
+}
+
+[data-value = "moneyball"] > .param5container .form-control {
+	background-color: black;
+    font-family: Digital Dream;
+    color: white;
+    border: 0px solid white;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+[data-value = "moneyball"] > .param5container .input-group {
+	margin-bottom: 10px;
+}
+
+[data-value = "moneyball"] > .param5container .input-group-addon {
+	background-color: black;
+    border: 0px;
+    font-family: Digital Dream;
+    color: white;
+}
+
+[data-value = "moneyball"] > .param5container .irs-grid-text {
 	color: white;
-    font-family: cursive;
-	background-color: #C90821;
-	border-top-left-radius: 37px 140px;
-	border-top-right-radius: 23px 130px;
-	border-bottom-left-radius: 110px 19px;
-	border-bottom-right-radius: 120px 24px;
-	border: 2px solid black;
+	font-family: Digital Dream;
 }
 
-.nav-tabs>li>a:hover {
-	color: white;
-    font-family: cursive;
-	background-color: #C90821;
-	border-top-left-radius: 37px 140px;
-	border-top-right-radius: 23px 130px;
-	border-bottom-left-radius: 110px 19px;
-	border-bottom-right-radius: 120px 24px;
-	border: 2px solid black;
+[data-value = "moneyball"] > .param5container .irs-bar {
+	background: white;
 }
 
-.nav-tabs>li.active>a:hover {
-	color: white;
-    font-family: cursive;
-	background-color: #C90821;
-	border-top-left-radius: 37px 140px;
-	border-top-right-radius: 23px 130px;
-	border-bottom-left-radius: 110px 19px;
-	border-bottom-right-radius: 120px 24px;
-	border: 2px solid black;
+[data-value = "moneyball"] > .param5container .irs--shiny .irs-handle {
+	background-color: black;
 }
 
-.nav-tabs>li.active>a:focus {
-	color: white;
-    font-family: cursive;
-	background-color: #C90821;
-	border-top-left-radius: 37px 140px;
-	border-top-right-radius: 23px 130px;
-	border-bottom-left-radius: 110px 19px;
-	border-bottom-right-radius: 120px 24px;
-	border: 2px solid black;
+@media screen and (max-width: 800px) {
+	[data-value = "moneyball"] > .param5container {
+		display: block;
+		width: 300px;
+	}
+	
+	[data-value = "moneyball"] > .param5container > div {
+		margin: auto;
+	}
+	
+	[data-value = "moneyball"] > .param5container > div:nth-of-type(1) {
+		margin-top: 10px;
+	}
+
+	[data-value = "moneyball"] > .param5container > div:nth-of-type(6) {
+		margin-bottom: 10px;
+	}
+	
 }
 
-#shiny-tab-kingCourt>.row:nth-of-type(1)>.col-sm-4>.row:nth-of-type(1) {
-	margin-top: 80px;
-}
-#shiny-tab-kingCourt>.row:nth-of-type(1)>.col-sm-4>.row:nth-of-type(2) {
-	margin-bottom: 20px;
-}
-#shiny-tab-kingCourt>.row:nth-of-type(1)>.col-sm-4>.row:nth-of-type(5) {
-	margin-top: 70px;
+[data-value = "moneyball"] div.basketballGo {
+	margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-#shiny-tab-moneyball>.row:nth-of-type(1)>.col-sm-4>.row:nth-of-type(1) {
-	margin-top: 50px;
-}
-#shiny-tab-moneyball>.row:nth-of-type(1)>.col-sm-4>.row:nth-of-type(2) {
-	margin-bottom: 50px;
-}
-#shiny-tab-moneyball>.row:nth-of-type(1)>.col-sm-4>.row:nth-of-type(4) {
-	margin-bottom: 50px;
-}
-#shiny-tab-moneyball>.row:nth-of-type(1)>.col-sm-4>.row:nth-of-type(6) {
-	margin-bottom: 50px;
+div.basketballGo #goButton5 {
+	top: -5%;
+    position: absolute;
+    left: -5%;
+    width: 110px;
+    height: 110px;
+    background-color: transparent;
+    color: black;
+    font-size: 20px;
 }
 
-.pagination>.active>a {
- border-top-left-radius: 37px 140px;
- border-top-right-radius: 23px 130px;
- border-bottom-left-radius: 110px 19px;
- border-bottom-right-radius: 120px 24px;	
- font-family: cursive;
- background-color: black;
+/* ------ Graph Option Nb Players -------- */
+
+[data-value = "moneyball"] > .form-group.shiny-input-container {
+	width: 200px;
+    margin: auto;
+    background-color: black;
+    text-align: center;
+    border: 2px solid white;
+    border-radius: 10px;
 }
 
-.pagination>li>a {
- border-top-left-radius: 37px 140px;
- border-top-right-radius: 23px 130px;
- border-bottom-left-radius: 110px 19px;
- border-bottom-right-radius: 120px 24px;	
- font-family: cursive;
- border: 1px solid black;
+[data-value = "moneyball"] > .form-group.shiny-input-container label {
+	background-color: green;
+    color: white;
+    margin-top: 5px;
+}	
+
+[data-value = "moneyball"] > .form-group.shiny-input-container .form-control.shiny-bound-input {
+	font-family: digital dream;
+    color: springgreen;
+    background-color: black;
+    border: 0;
+    border-radius: 50px;
+    text-align: center;
 }
 
+/*--------- Maine Graph Custom ---------*/ 
+[data-value = "moneyball"] > #customGraph5 {
+	margin: auto;
+	margin-top: 10px;
+	min-width: 600px;
+}
 
+[data-value = "moneyball"] > #customGraph5 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(1) {
+    top: 0;
+	height: 100%;
+}
+
+[data-value = "moneyball"] > #customGraph5 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(2) {
+    padding-top: 0px;
+}
+
+[data-value = "moneyball"] > #customGraph5 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(3) {
+    top: 0%;
+	height: 100%;
+}
+
+[data-value = "moneyball"] .user-select-none.svg-container:hover {
+	background: rgba(255, 255, 255, 0.15);
+	border: 0;
+}
+
+/*------------ Data Table Customs --------*/
+
+[data-value = "moneyball"] #playerSalDT5 .dataTables_paginate.paging_simple_numbers {
+	display: none;
+}
+
+[data-value = "moneyball"] #playerSalDT5 .dataTables_length {
+	display: none;
+}
+
+[data-value = "moneyball"] #playerSalDT5 .dataTables_filter {
+	display: none;
+}
+
+[data-value = "moneyball"] #playerSalDT5 .dataTables_info {
+	display: none;
+}
+
+[data-value = "moneyball"] #playerSalDT5 tbody .dt-right, [data-value = "moneyball"] #playerSalDT5 thead .dt-right.sorting {
+	text-align: center;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 6th tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+div.param6container {
+	width: 300px;
+    margin: auto;
+    padding: 1px;
+    background-color: black;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+div.param6container > div {
+	text-align:center;
+	margin-top: 5px;
+	margin-bottom:5px;
+}
+
+div.param6container > div:nth-of-type(1) {
+	margin-top: 10px;
+}
+
+div.param6container > div > label {
+	background-color: green;
+    color: white;
+    font-size: 17px;
+	line-height: normal;
+}
+
+div.param6container > div:nth-of-type(2) > label {
+	background-color: red;
+}
+
+div.param6container .shiny-options-group {
+	font-family: digital dream;
+	padding-top: 5px;
+    padding-bottom: 5px;
+    color: springgreen;
+}
+
+div.param6container .selectize-input {
+	margin-bottom: 0px;
+}
+
+div.param6container .selectize-input {
+	background-color: black;
+    font-family: Digital Dream;
+    font-size: 18px;
+	min-height: 0px;
+	border: 0px;
+}
+
+div.param6container .selectize-control.multi.plugin-selectize-plugin-a11y {
+	margin-bottom: 0px;
+}
+
+div.param6container .selectize-control.multi.plugin-selectize-plugin-a11y .item {
+	background-color: black;
+    color: springgreen;
+}

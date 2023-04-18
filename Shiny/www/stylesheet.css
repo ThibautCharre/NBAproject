@@ -1,11 +1,6 @@
-/* Global */
-body {
-    -moz-transform: scale(1, 1); /* Moz-browsers */
-    zoom: 1; /* Other non-webkit browsers */
-    zoom: 100%; /* Webkit browsers */
-	font-family: "Poppins";
-	
-}
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Global -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 header {
 	position: absolute;
@@ -24,30 +19,103 @@ header {
 	list-style: none;
 }
 
-.tab-pane {
-	margin-top: 100px;
-}
-
-/* Paragraph*/
-h1, h2 {
-    text-align: center;
-    margin: 20px;
-    font-family: Bell MT;
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Paragraph -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+h2 {
+    font-size:clamp(20px, 2.3vw, 26px);
+	text-align: center;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    margin-right: 1vw;
+    margin-left: 1vw;
+    font-family: Bodoni MT;
+	-webkit-background-clip: text;
+    color: black;
+    background-color: white;
+    -webkit-text-stroke-color: transparent;
+    -webkit-text-stroke-width: 3px;
 }
 
 p, pre {
+	width: clamp(500px, 60vw, 900px);
 	text-align: center;
     font-family: Bell MT;
-    font-size: 22px;
+    font-size: clamp(12px, 1.1vw, 14px);
     background-color: rgb(255 255 255 / 70%);
     backdrop-filter: blur(8px);
 	color: black;
     line-height: 35px;
-    padding: 20px;
+    padding: 0.5vw;
     border: 2px solid black;
+	margin-top: 2vh;
+    margin-bottom: 2vh;
+	margin-right: auto;
+	margin-left: auto;
 }
 
-/*data table design*/
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Rows & Blocks -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+div.Row66 {
+	margin-top: 2vh;
+	margin-bottom: 2vh;
+	display: flex;
+	justify-content: space-evenly;
+	align-items:center;
+}
+
+@media screen and (max-width: 1050px) {
+	div.Row66 {
+		margin-top: 2vh;
+		margin-bottom: 2vh;
+		display: block;
+	}
+	
+	div.Row66 > div {
+		margin-left:auto;
+		margin-right:auto;
+		margin-top:2vh;
+		margin-bottom:2vh;
+	}
+	
+}
+
+div.BlockParamDTchart  > div {
+		margin-left:auto;
+		margin-right:auto;
+		margin-top:2vh;
+		margin-bottom:2vh;
+}
+
+div.BlockInstruc  > div {
+		margin-left:auto;
+		margin-right:auto;
+		margin-top:2vh;
+		margin-bottom:2vh;
+}
+
+div.RowDT {
+	margin-top: 2vh;
+	margin-bottom: 2vh;
+	
+}
+
+div.RowDT > div {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Cursor form control -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.selectize-input.items.full.has-options.has-items::after {
+	border-color: white transparent;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Data Table -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
 .shiny-datatable-output tfoot {
  display: none;
 }
@@ -58,21 +126,29 @@ p, pre {
 
 .display.dataTable.no-footer > thead {
 	color: white;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.6);
 	backdrop-filter: blur(8px);
+}
+
+.display.dataTable.no-footer > thead > tr > th:nth-of-type(1) {
+	display: none;
 }
 
 .display.dataTable.no-footer > tbody {
 	color: white;
 }
 
+.display.dataTable.no-footer > tbody > tr > td:nth-of-type(1) {
+	display: none;
+}
+
 .display.dataTable.no-footer > tbody > .odd {
-	background-color: rgba(201, 8, 33, 0.3);
+	background-color: rgba(201, 8, 33, 0.5);
 	backdrop-filter: blur(8px);
 }
 
 .display.dataTable.no-footer > tbody > .even {
-	background-color: rgba(23, 64, 139, 0.3);
+	background-color: rgba(23, 64, 139, 0.5);
 	backdrop-filter: blur(8px);
 }
 
@@ -81,15 +157,17 @@ p, pre {
 	backdrop-filter: blur(8px);
 }
 
-.dataTables_wrapper.dataTables_paginate {
-	padding-top: 0px;
+.dataTables_wrapper.no-footer .dataTables_wrapper.dataTables_paginate {
+	padding-top:0;
 }
 
 th, th.dt-right, td.dt-right {
 	text-align: center;
 }
 
-/* Graph background*/
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Graphs -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
 .plot-container.plotly {
 	height: 100%;
 }
@@ -98,6 +176,13 @@ th, th.dt-right, td.dt-right {
 	height: 100%;
 	backdrop-filter: blur(8px);
 	background: rgba(255, 255, 255, 0.15);
+	padding:2px;
+}
+
+.user-select-none.svg-container:hover {
+	background: rgba(255, 255, 255, 0.7);
+	border: 1px solid black;
+	padding:0;
 }
 
 .user-select-none.svg-container > .main-svg:nth-of-type(1) {
@@ -114,7 +199,21 @@ th, th.dt-right, td.dt-right {
 	height: 95%;
 }
 
-/* Nav Bar */
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Leaflet -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.leaflet-top.leaflet-left {
+	display: none;
+}
+
+.leaflet-control-attribution.leaflet-control {
+	display: none;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Navigation Bar -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
 .hamb {
 	display: none;
 }
@@ -123,22 +222,25 @@ th, th.dt-right, td.dt-right {
 	position: unset;
 	background-color: transparent;
 	border: 0;
+	height:0;
 }
 
 .navbar-header {
 	float: none;
 	position: absolute;
-	top: 10px;
 	left: 10px;
+	height:50px;
 	margin: 10px;
-	height: 50px;
-	width: 200px;
 	display: flex;
 	justify-content: center;
 }
 
+.container-fluid > .navbar-header {
+	margin: 10px;
+}
+
 .navbar-brand {
-	font-size: 45px;
+	font-size: 40px;
     font-weight: 600;
 	background-image: linear-gradient(to right, #17408B 0%, #FFFFFF 50%, #C90821 100%);
 	-webkit-text-fill-color: transparent;
@@ -152,14 +254,13 @@ th, th.dt-right, td.dt-right {
 	float: none;
 	position: absolute;
 	right: 10px;
-	top: 10px;
 	height: 50px;
 	margin: 10px;
 	padding: 0;
 }
 
 .nav.navbar-nav > li > a {
-	font-size: 20px;
+	font-size:15px;
     background-color: transparent;
     color: white;
 }
@@ -170,46 +271,7 @@ th, th.dt-right, td.dt-right {
 	font-weight: 600;
 }
 
-/*
-@media screen and (max-width: 1460px) {
-	.nav.navbar-nav {
-		right: 100px;
-	}
-}
-
-
-@media screen and (max-width: 1300px) {
-	.navbar-header {
-		width: 200px;
-	}
-}
-*/
-
-@media screen and (max-width: 1120px) {
-	.navbar-header {
-		width: 200px;
-	}
-	
-	/*
-	.nav.navbar-nav {
-	position: absolute;
-	display: flex;
-	flex-direction: column;
-    background-color: rgba(255, 255, 255, 0.8);
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-	margin: 0;
-	margin-right:-100%;
-	margin-left: 0;
-	margin-top: 0;
-	margin-bottom: 0;
-	}
-	*/
+@media screen and (max-width: 1000px) {
 	
 	.nav.navbar-nav  {
 	position: absolute;
@@ -229,772 +291,93 @@ th, th.dt-right, td.dt-right {
 	margin-right: 0;
 	margin-top: 0;
 	margin-bottom: 0;
-	transition: all 0.5s ease;
+	transition: all 0s ease;
 	}
-	
 	
 	.nav.navbar-nav.menu-mobile {
 		margin-left: 0;
 	}
 	
 	.hamb {
-		width: 100px;
+		top:0;
+		right: 20px;
 		margin: 0;
 		position: absolute;
-		top: 0;
-		right: 10px;
 		display: block;
 		z-index: 1000;
 	}
 }
 
-/* 1st tab */
-.introText, #confirmationText1 {
-	margin:auto;
-}
-
-.introText {
-	max-width: 1200px;
-}
-
-#confirmationText1 {
-	max-width: 600px;
-	margin-top: 40px;
-}
-
-.container {
-	display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    margin-left: auto;
-	margin-right: auto;
-	margin-top: 20px;
-	margin-bottom: 20px;
-    grid-column-gap: 30px;
-}
-
-.container::before {
-	display: none;
-}
-
-.container > .form-group.shiny-input-container:nth-of-type(1) { 
-    width: 200px;
-    margin-left: auto;
-}
-
-.container > .form-group.shiny-input-container:nth-of-type(2) { 
-    width: 200px;
-    margin-right: auto;
-}
-
-/*
-#goButton1 {
-	margin-left: auto;
-	width: 200px;
-}
-*/
-
-/*
-#resetButton {
-	margin-right: auto;
-	width: 200px;
-}
-*/
-
-@media screen and (max-width: 800px) {
-	.container {
-		display: grid;
-		grid-template-columns: repeat(1, 1fr);
-		margin-left: auto;
-		margin-right: auto;
-		margin-top: 20px;
-		margin-bottom: 20px;
-	}
-	
-	.container > .form-group.shiny-input-container:nth-of-type(1) { 
-		width: 200px;
-		margin: auto;
-	}
-
-	.container > .form-group.shiny-input-container:nth-of-type(2) { 
-		width: 200px;
-		margin: auto;
-	}
-
-	#goButton1 {
-		margin: auto;
-		width: 200px;
-	}
-
-	#resetButton {
-		margin: auto;
-		width: 200px;
-	}
-}
-
-/* 2nd tab */
-#usmap2 {
-	padding: 20px;
-	position: relative;
-	background-color: rgba(255, 255, 255, 0.15);
-	backdrop-filter: blur(8px);
-	margin: 20px auto;
-	border-radius: 20px 20px 0 20px;
-	transition: all .2s ease-in-out;
-	max-width: 1000px; 
-}
-
-@media screen and (min-width: 1245px) {
-	#usmap2:hover {
-	 transform: scale(1.2);
-	}
-}
-
-.leaflet-top.leaflet-left {
-	display: none;
-}
-
-.leaflet-control-attribution.leaflet-control {
-	display: none;
-}
-
-#selectedTeamText2 {
-	max-width: 1000px;
-    margin: 10px auto;
-	border: 0px solid black;
-}
-
-[data-value = "teamDash"] > .row {
-	margin: 20px;
-}
-
-[data-value = "teamDash"] > .paramCharts {
-    display: flex;
-    margin: 20px;
-    justify-content: space-evenly;
-	margin-bottom: 0px;
-}
-
-[data-value = "teamDash"] > .row:nth-of-type(2) {
-    display: flex;
-    margin: 20px;
-    justify-content: space-evenly;
-	margin-bottom: 0px;
-	align-items: center;
-}
-
-[data-value = "teamDash"] > .row:nth-of-type(2) > #teamRank2 {
-	max-width: 750px;
-	min-width: 600px;
-}	
-
-@media screen and (max-width: 1410px) {
-	[data-value = "teamDash"] > .row:nth-of-type(2) {
-		display: block;
-	}
-	
-	[data-value = "teamDash"] > .row:nth-of-type(2) > #logo2 {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	
-	[data-value = "teamDash"] > .row:nth-of-type(2) > #teamRank2 {
-		margin: auto;
-	}
-	
-}
-
-[data-value = "teamDash"] > .row:nth-of-type(4) {
-	display: flex;
-    justify-content: space-between;
-	align-items: center;
-	margin: 10px;
-	margin-top: 0px;
-}
-
-[data-value = "teamDash"] > .row:nth-of-type(4) > .col-sm-6 {
-    max-width: 800px;
-	min-width: 650px;
-	margin: 10px;
-	padding:0px;
-}
-
-@media screen and (max-width: 1710px) {
-	[data-value = "teamDash"] > .row:nth-of-type(4) {
-		display: block;
-		margin:10px;
-	}
-
-	[data-value = "teamDash"] > .row:nth-of-type(4) > .col-sm-6 {
-		width: 100%;
-		max-width: 900px;
-		min-width: 600px;
-		float: unset;
-		margin: auto;
-	}
-	
-	[data-value = "teamDash"] > .row:nth-of-type(4) > .col-sm-6:nth-of-type(2) {
-		margin-top: 20px;
-	}
-}
-
-[data-value = "teamDash"] > .row:nth-of-type(4) > .col-sm-6 > #teamPieChart2 > .plot-container.plotly > .user-select-none.svg-container {
-	border-radius: 20px 0px 20px 0px;
-}
-
-[data-value = "teamDash"] > .row:nth-of-type(4) > .col-sm-6 > #teamBarChart2 > .plot-container.plotly> .user-select-none.svg-container {
-	border-radius: 0px 20px 0px 20px;
-}
-
-[data-value = "teamDash"] > .row:nth-of-type(5) {
-	display: flex;
-    justify-content: center;
-	margin: 10px;
-}
-
-[data-value = "teamDash"] > .row:nth-of-type(5) > #bestGames2 {
-	max-width: 900px;
-	min-width: 600px;
-	margin: 10px;
-	padding:0px;
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Tab Content Pos -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.tab-content {
+	margin-top:40px;
 }
 
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
-/*-------------------------------------------------------------------------- 3rd tab -----------------------------------------------------------------------
+/*-------------------------------------------------------------------------- Instructions -----------------------------------------------------------------------
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-[data-value = "teamPlayer"] > .param3container {
-	width: 300px;
-    margin: auto;
-    padding: 1px;
-    background-color: black;
-    border-radius: 10px;
-    border: 2px solid white;
-}
-
-[data-value = "teamPlayer"] > .param3container > div {
-	text-align:center;
-	margin-top: 0px;
-	margin-bottom:0px;
-}
-
-[data-value = "teamPlayer"] > .param3container > div:nth-of-type(1) {
-	margin-top: 10px;
-}
-
-[data-value = "teamPlayer"] > .param3container label {
-	background-color: red;
-    color: white;
-    font-size: 17px;
-    padding-bottom: 2px;
-}
-
-[data-value = "teamPlayer"] > .param3container .selectize-input.full {
-	background-color: black;
-    color: springgreen;
-    font-family: Digital Dream;
-    font-size: 18px;
-	min-height: 0px;
-	padding-top:10px;
-	padding-bottom:10px;
-	border: 0px;
-}
-
-[data-value = "teamPlayer"] > .param3container .selectize-control {
-	margin-bottom: 0px;
-}
-
-[data-value = "teamPlayer"] > .param3container .form-control {
-	background-color: black;
-    font-family: Digital Dream;
-    color: white;
-    border: 0px solid white;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-[data-value = "teamPlayer"] > .param3container .input-group {
-	margin-bottom: 10px;
-}
-
-[data-value = "teamPlayer"] > .param3container .input-group-addon {
-	background-color: black;
-    border: 0px;
-    font-family: Digital Dream;
-    color: white;
-}
-
-[data-value = "teamPlayer"] > .row:nth-of-type(2) {
-	display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 20px;
-    flex-wrap: wrap;
-}
-
-[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6 > #spiderChart3 > .plot-container.plotly > .user-select-none.svg-container {
-	background-color: transparent;	
-	backdrop-filter: none;
-}
-
-[data-value = "teamPlayer"] > .row:nth-of-type(2) {
-	display: flex;
-    justify-content: space-between;
-	align-items: center;
-	margin: 10px;
-	margin-top: 0px;
-}
-
-[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6 {
-    max-width: 800px;
-	min-width: 650px;
-	margin: 10px;
-	padding:0px;
-}
-
-@media screen and (max-width: 1710px) {
-	[data-value = "teamPlayer"] > .row:nth-of-type(2) {
-		display: block;
-		margin: 10px;
-	}
-
-	[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6 {
-		width: 100%;
-		max-width: 900px;
-		min-width: 600px;
-		float: unset;
-		margin: auto;
-	}
-	
-	[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6:nth-of-type(1) {
-		margin-top: 50px;
-	}
-	
-	[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6:nth-of-type(2) {
-		margin-top: 20px;
-	}
-	
-	[data-value = "teamPlayer"] > .row:nth-of-type(2) > .col-sm-6:nth-of-type(2) > #spiderChart3 {
-		margin: auto;
-	}
-}
-
-[data-value = "teamPlayer"] > #allItems3 > .row {
-	display: flex;
-    justify-content: space-between;
-	align-items: center;
-	margin: 10px;
-	margin-top: 0px;
-}
-
-[data-value = "teamPlayer"] > #allItems3 > .row > .col-sm-6 {
-    max-width: 800px;
-	min-width: 650px;
-	margin: 10px;
-	padding:0px;
-}
-
-@media screen and (max-width: 1710px) {
-	[data-value = "teamPlayer"] > #allItems3 > .row {
-		display: block;
-		margin:10px;
-	}
-
-	[data-value = "teamPlayer"] > #allItems3 > .row > .col-sm-6 {
-		width: 100%;
-		max-width: 900px;
-		min-width: 600px;
-		float: unset;
-		margin: auto;
-	}
-	
-	[data-value = "teamPlayer"] > #allItems3 > .row > .col-sm-6:nth-of-type(2) {
-		margin-top: 20px;
-	}
-}
-
-[data-value = "teamPlayer"] > #allItems3 > .row:nth-of-type(2) > .col-sm-6 > #dateBarChart3 > .plot-container.plotly > .user-select-none.svg-container {
-	border-radius: 20px 0px 20px 0px;
-}
-
-[data-value = "teamPlayer"] > #allItems3 > .row:nth-of-type(3) > .col-sm-6 > #periodBarChart3 > .plot-container.plotly > .user-select-none.svg-container {
-	border-radius: 0px 20px 0px 20px;
-}
-
-/*----------------------------------------------------------------------------------------------------------------------------------------------------------
-/*-------------------------------------------------------------------------- 4th tab -----------------------------------------------------------------------
-/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-/*-------------- Parameters Containers --------------*/
-[data-value = "kingCourt"] > .param4container {
-	width: 300px;
-    margin: auto;
-    padding: 1px;
-    background-color: black;
-    border-radius: 10px;
-    border: 2px solid white;
-}
-
-[data-value = "kingCourt"] > .param4container > div {
-	text-align:center;
-	margin-top: 0px;
-	margin-bottom:0px;
-}
-
-[data-value = "kingCourt"] > .param4container > div:nth-of-type(1) {
-	margin-top: 10px;
-}
-
-[data-value = "kingCourt"] > .param4container label {
-	background-color: red;
-    color: white;
-    font-size: 17px;
-    padding-bottom: 2px;
-}
-
-[data-value = "kingCourt"] > .param4container .selectize-input.full {
-	background-color: black;
-    color: springgreen;
-    font-family: Digital Dream;
-    font-size: 18px;
-	min-height: 0px;
-	padding-top:10px;
-	padding-bottom:10px;
-	border: 0px;
-}
-
-[data-value = "kingCourt"] > .param4container .selectize-control {
-	margin-bottom: 0px;
-}
-
-[data-value = "kingCourt"] > .param4container .form-control {
-	background-color: black;
-    font-family: Digital Dream;
-    color: white;
-    border: 0px solid white;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-[data-value = "kingCourt"] > .param4container .input-group {
-	margin-bottom: 10px;
-}
-
-[data-value = "kingCourt"] > .param4container .input-group-addon {
-	background-color: black;
-    border: 0px;
-    font-family: Digital Dream;
-    color: white;
-}
-
-/* -------------- First Row Custom --------------*/
-[data-value = "kingCourt"] > .row {
-	display: flex;
-    justify-content: space-between;
-	align-items: center;
-	margin: 10px;
-	margin-top: 0px;
-}
-
-[data-value = "kingCourt"] > .row:nth-of-type(2) > .col-sm-6 {
-    max-width: 800px;
-	min-width: 650px;
-	margin: 10px;
-	padding:0px;
-}
-
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(1) {
-	padding: 0px;
-}
-
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(1) > #selectedChart4 {
+div.instruct .form-group.shiny-input-container {
+    margin:auto;
 	text-align: center;
+    font-size: 12px;
+    width: 100px;
+	background-color:transparent;
+	border:0;
 }
 
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(1) > #playerShotsChart4 {
-	margin: auto;
+div.instruct .form-group.shiny-input-container label {
+    color:black;
+	background-color:transparent;
+	margin-bottom:0;
+	margin-top:0;
 }
 
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(2) {
-    max-width: 800px;
-	min-width: 650px;
-	margin: 10px;
-	padding:0px;
+div.instruct .form-group.shiny-input-container .selectize-control.single.plugin-selectize-plugin-a11y {
+	margin-bottom:0;
 }
 
-@media screen and (max-width: 1710px) {
-	[data-value = "kingCourt"] > .row:nth-of-type(2) {
-		display: block;
-		margin: 10px;
-	}
-
-	[data-value = "kingCourt"] > .row:nth-of-type(2) > .col-sm-6 {
-		width: 100%;
-		max-width: 900px;
-		min-width: 600px;
-		float: unset;
-		margin: auto;
-	}
-	
-	[data-value = "kingCourt"] > .row:nth-of-type(2) > .col-sm-6:nth-of-type(2) {
-		margin-top: 20px;
-	}
-}
-
-@media screen and (max-width: 1755px) {
-	[data-value = "kingCourt"] > .row:nth-of-type(3) {
-		display: block;
-		margin: 10px;
-	}
-
-	[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(1) {
-		width: 100%;
-		float: unset;
-		margin: auto;
-	}
-	
-	[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(2) {
-		width: 100%;
-		max-width: 900px;
-		min-width: 600px;
-		float: unset;
-		margin: auto;
-		margin-top: 20px;
-	}
-}
-
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(2) > #selectedChart4 {
-	text-align: center;
-}
-
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(2) > #areaSelected4 > .form-group.shiny-input-container {
-	margin: auto;
-}
-
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6:nth-of-type(2) > #globalAssist4 {
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
-
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6 > #playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(1) {
-    top: 0;
-	height: 100%;
-}
-
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6 > #playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(2) {
-    padding-top: 0px;
-}
-
-[data-value = "kingCourt"] > .row:nth-of-type(3) > .col-sm-6 > #playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(3) {
-    top: 0%;
-	height: 100%;
+div.instruct .form-group.shiny-input-container .selectize-input.items.has-options.full.has-items {
+	background-color: lightslategrey;
+    color: white;
 }
 
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------
-/*-------------------------------------------------------------------------- 5th tab -----------------------------------------------------------------------
+/*-------------------------------------------------------------------------- DIV Loading -----------------------------------------------------------------------
 /*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-/*--------- Parameters Container ---------*/ 
-[data-value = "moneyball"] > .param5container {
-	display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    margin-left: auto;
-	margin-right: auto;
-    grid-column-gap: 30px;
-	padding: 1px;
-    background-color: black;
-    border-radius: 10px;
-    border: 2px solid white;
-	width: 500px;
+div.busy {
+  position:absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.8;
+  background: rgba(0, 0, 0, 0.8);
+  /*
+  background: -moz-linear-gradient(left, #C90821 0%, #FFFFFF 50%, #17408B 100%);
+  background: -webkit-linear-gradient(left, #C90821 0%, #FFFFFF 50%, #17408B 100%);
+  background: linear-gradient(to right, #C90821 0%, #FFFFFF 50%, #17408B 100%);
+  */
+  text-align: center;
+  padding-top: 20%;
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
 }
 
-[data-value = "moneyball"] > .param5container::before {
-	display: none;
-}
-
-[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n+1) { 
-    width: 200px;
-    margin-left: auto;
-}
-
-[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n) { 
-    width: 200px;
-    margin-right: auto;
-}
-
-[data-value = "moneyball"] > .param5container > div {
-	text-align:center;
-	margin-top: 0px;
-	margin-bottom:0px;
-}
-
-[data-value = "moneyball"] > .param5container > div:nth-of-type(1) {
-	margin-top: 10px;
-}
-
-[data-value = "moneyball"] > .param5container > div:nth-of-type(2) {
-	margin-top: 10px;
-}
-
-[data-value = "moneyball"] > .param5container > div:nth-of-type(6) {
-	margin-bottom: 10px;
-}
-
-[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n)> label { 
-    background-color: red;
-}
-
-[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n+1)> label { 
-    background-color: green;
-}
-
-[data-value = "moneyball"] > .param5container label {
-    color: white;
-    font-size: 17px;
-    padding-bottom: 2px;
-}
-
-[data-value = "moneyball"] > .param5container .selectize-input.full {
-	background-color: black;
-    color: springgreen;
-    font-family: Digital Dream;
-    font-size: 18px;
-	min-height: 0px;
-	padding-top:10px;
-	padding-bottom:10px;
-	border: 0px;
-}
-
-[data-value = "moneyball"] > .param5container .selectize-input {
-    background-color: black;
-	font-family: Digital Dream;
-    font-size: 18px;
-	min-height: 0px;
-	padding-top:10px;
-	padding-bottom:10px;
-	border: 0px;
-}
-
-[data-value = "moneyball"] > .param5container .selectize-input > div {
-	background-color: black;
-    color: springgreen;
-}
-
-[data-value = "moneyball"] > .param5container .selectize-control {
-	margin-bottom: 0px;
-}
-
-[data-value = "moneyball"] > .param5container .form-control {
-	background-color: black;
-    font-family: Digital Dream;
-    color: white;
-    border: 0px solid white;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-[data-value = "moneyball"] > .param5container .input-group {
-	margin-bottom: 10px;
-}
-
-[data-value = "moneyball"] > .param5container .input-group-addon {
-	background-color: black;
-    border: 0px;
-    font-family: Digital Dream;
-    color: white;
-}
-
-[data-value = "moneyball"] > .param5container .irs-grid-text {
-	color: white;
-	font-family: Digital Dream;
-}
-
-[data-value = "moneyball"] > .param5container .irs-bar {
-	background: white;
-}
-
-[data-value = "moneyball"] > .param5container .irs--shiny .irs-handle {
-	background-color: black;
-}
-
-@media screen and (max-width: 800px) {
-	[data-value = "moneyball"] > .param5container {
-		display: block;
-		width: 300px;
-	}
-	
-	[data-value = "moneyball"] > .param5container > div {
-		margin: auto;
-	}
-	
-	[data-value = "moneyball"] > .param5container > div:nth-of-type(1) {
-		margin-top: 10px;
-	}
-
-	[data-value = "moneyball"] > .param5container > div:nth-of-type(6) {
-		margin-bottom: 10px;
-	}
-	
-}
-
-/*--------- Maine Graph Custom ---------*/ 
-[data-value = "moneyball"] > #customGraph5 {
-	margin: auto;
-	margin-top: 20px;
-	min-width: 600px;
-}
-
-[data-value = "moneyball"] > #customGraph5 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(1) {
-    top: 0;
-	height: 100%;
-}
-
-[data-value = "moneyball"] > #customGraph5 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(2) {
-    padding-top: 0px;
-}
-
-[data-value = "moneyball"] > #customGraph5 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(3) {
-    top: 0%;
-	height: 100%;
-}
-
-[data-value = "moneyball"] > .row:nth-of-type(4), .row:nth-of-type(5) {
-	display: flex;
-	justify-content:center;
-	margin: 10px;
-}
-
-[data-value = "moneyball"] > .row:nth-of-type(4) > #playerCarDT5 {
-	max-width: 900px;
-	min-width: 600px;
-	margin: 10px;
-	padding:0px;
-}
-
-[data-value = "moneyball"] > .row:nth-of-type(5) > #playerSalDT5 {
-	max-width: 900px;
-	min-width: 600px;
-	margin: 10px;
-	padding:0px;
-}
-
-[data-value = "moneyball"] > .row:nth-of-type(5) > #playerSalDT5 > .dataTables_paginate.paging_simple_numbers {
-	display: none;
-}
-
-
-
-
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- DIV basket ball -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
 div.basketballGo {
   position: relative;
   overflow: hidden;
-  height: 100px;
-  width: 100px;
+  height: 90px;
+  width: 90px;
   border-radius: 50%;
   background-color: white;
   box-sizing: border-box;
   border: 2px solid black;
-  	margin-left: auto;
+  margin-left: auto;
 }
 
 div.lineCurvLeftGo {
@@ -1024,30 +407,20 @@ div.lineCurvRightGo {
 	background-color:red;
 }
 
-div.basketballGo #goButton1 {
-	top: -5%;
-    position: absolute;
-    left: -5%;
-    width: 110px;
-    height: 110px;
-    background-color: transparent;
-    color: black;
-    font-size: 20px;
-}
-
 div.basketball {
   position: relative;
   overflow: hidden;
-  height: 100px;
-  width: 100px;
+  height: 90px;
+  width: 90px;
   border-radius: 50%;
   background-color: #e65c00;
   box-sizing: border-box;
   border: 2px solid black;
+  margin-right: auto;
 }
 
 div.lineVert {
-content: '';
+	content: '';
     position: absolute;
     height: 110%;
     width: 52%;
@@ -1082,34 +455,1031 @@ div.lineCurvRight {
     top: 0;
 }
 
+.btn[disabled] {
+	backdrop-filter: blur(4px);
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 1st tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.container {
+	display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-left: auto;
+	margin-right: auto;
+	margin-top: 2vh;
+	margin-bottom: 2vh;
+    grid-gap: 10px;
+}
+
+.container::before {
+	display: none;
+}
+
+[data-value = "welcome"] .form-group.shiny-input-container {
+	font-size: 12px;
+	width: 200px;
+	background-color: black;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+[data-value = "welcome"] .selectize-control {
+	margin-bottom: 0;
+}
+
+[data-value = "welcome"] .container > .form-group.shiny-input-container:nth-of-type(1) {
+    margin-left: auto;
+	margin-bottom: 0;
+}
+
+[data-value = "welcome"] .container > .form-group.shiny-input-container:nth-of-type(2) {
+    margin-right: auto;
+	margin-bottom: 0;
+}
+
+[data-value = "welcome"] .container .form-group.shiny-input-container label {
+	background-color: green;
+    color: white;
+    margin-top: 5px;
+}
+
+[data-value = "welcome"] .container > .form-group.shiny-input-container:nth-of-type(2) label {
+    background-color: red;
+}
+
+[data-value = "welcome"] .container .selectize-input.items.full.has-options.has-items {
+	background-color: black;
+    color: springgreen;
+    font-family: digital dream;
+    border: 0;
+    padding: 0;
+    vertical-align: middle;
+	min-height: 25px;
+	border-radius:10px;
+}
+
+div.basketballGo #goButton1 {
+	top: -5%;
+    position: absolute;
+    left: -5%;
+    width: 100px;
+    height: 100px;
+    background-color: transparent;
+    color: black;
+    font-size: 20px;
+}
+
 div.basketball #resetButton {
 	top: -5%;
     position: absolute;
     left: -5%;
-    width: 110px;
-    height: 110px;
+    width: 100px;
+    height: 100px;
     background-color: transparent;
     color: white;
     font-size: 20px;
 }
 
-.btn[disabled] {
-	backdrop-filter: blur(4px);
+#calendarDT1 {
+	font-size:clamp(8px, 0.8vw, 10px);
 }
 
-div.busy {
-  position:absolute;
-  top: 0;
-  left: 0;
-  opacity: 0.8;
-  background: #C90821;
-  background: -moz-linear-gradient(left, #C90821 0%, #FFFFFF 50%, #17408B 100%);
-  background: -webkit-linear-gradient(left, #C90821 0%, #FFFFFF 50%, #17408B 100%);
-  background: linear-gradient(to right, #C90821 0%, #FFFFFF 50%, #17408B 100%);
-  text-align: center;
-  padding-top: 20%;
-  border-radius: 5px;
-  width: 100%;
-  height: 100%;
-  z-index: 999;
+@media screen and (max-width: 800px) {
+	.container {
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 2vh;
+		margin-bottom: 2vh;
+	}
+	
+	.container > .form-group.shiny-input-container:nth-of-type(1) { 
+		margin-right: auto;
+	}
+
+	.container > .form-group.shiny-input-container:nth-of-type(2) { 
+		margin-left: auto;
+	}
+	
+	div.basketballGo {
+		margin-right: auto;
+	}
+	
+	div.basketball {
+		margin-left: auto;
+	}
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 2nd tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+#mainText2.shiny-text-output.noplaceholder:empty, #rankText2.shiny-text-output.noplaceholder:empty, #scoreText2.shiny-text-output.noplaceholder:empty, 
+#graph1Text2.shiny-text-output.noplaceholder:empty, #graph2Text2.shiny-text-output.noplaceholder:empty {
+	height: 0;
+    border-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#mainText2, #rankText2, #scoreText2, #graph1Text2, #graph2Text2 {
+	width: clamp(415px, 35vw, 500px);
+    text-align: center;
+    font-family: Bell MT;
+    font-size: clamp(11px, 1.1vw, 13px);
+    background-color: rgb(255 255 255 / 70%);
+    backdrop-filter: blur(8px);
+    color: black;
+    padding: 0.5vw;
+    border: 1px solid black;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    margin-right: auto;
+    margin-left: auto;
+	white-space:pre-line;
+}
+
+#usmap2 {
+	position: relative;
+	background-color: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(8px);
+	margin: 2vh auto;
+	border-radius: 20px 20px 0 20px;
+	transition: all .2s ease-in-out;
+}
+
+#selectedTeamText2 {
+	width: max(500px, 40vw);
+    margin: 2vh auto;
+	border: 0px solid black;
+}
+
+#teamRank2, #teamScoring2, #bestGames2 {
+	min-width:415px;
+	font-size:clamp(8px, 0.8vw, 10px);
+}
+
+[data-value = "teamDash"] .form-group.shiny-input-container {
+	background-color: black;
+    text-align: center;
+    border-radius: 10px;
+    border:2px solid white;
+	font-size:12px;
+	width:200px;
+	margin:auto;
+}
+
+[data-value = "teamDash"] .form-group.shiny-input-container label {
+	background-color: red;
+    color: white;
+    margin-top: 5px;
+}
+
+#statSelected2  .form-group.shiny-input-container label {
+    background-color: green;
+}
+
+#statSelected2 .selectize-input.items.full.has-options.has-items {
+	background-color: black;
+    color: springgreen;
+    font-family: digital dream;
+    border: 0;
+    padding: 0;
+    vertical-align: middle;
+	min-height: 25px;
+	border-radius:10px;
+}
+
+#statSelected2 .selectize-control.single.plugin-selectize-plugin-a11y {
+	margin-bottom: 0;
+}
+
+#nbPlayerChart2 .form-control.shiny-bound-input {
+	font-family: digital dream;
+    color: springgreen;
+    background-color: black;
+    border: 0;
+    border-radius: 50px;
+    text-align: center;
+	height: 25px;
+	padding-right: 30px;
+	padding-left: 30px;
+	padding-top: 0px;
+}
+
+#teamPieChart2, #teamBarChart2 {
+	min-width: 415px; 
+	min-height: 300px;
+}
+
+#teamPieChart2 > .plot-container.plotly > .user-select-none.svg-container {
+	border-radius: 20px 0px 20px 0px;
+}
+#teamBarChart2 > .plot-container.plotly> .user-select-none.svg-container {
+	border-radius: 0px 20px 0px 20px;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 3rd tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+#mainText3.shiny-text-output.noplaceholder:empty, #sumGamesText3.shiny-text-output.noplaceholder:empty, #sumGraphText3.shiny-text-output.noplaceholder:empty, 
+#dateBarText3.shiny-text-output.noplaceholder:empty, #impactFGText3.shiny-text-output.noplaceholder:empty, #impactPluMinText3.shiny-text-output.noplaceholder:empty, 
+#periodBarText3.shiny-text-output.noplaceholder:empty {
+	height: 0;
+    border-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#mainText3, #sumGamesText3, #sumGraphText3, #dateBarText3, #impactFGText3, #periodBarText3, #impactPluMinText3 {
+	width: clamp(415px, 35vw, 500px);
+    text-align: center;
+    font-family: Bell MT;
+    font-size: clamp(11px, 1.1vw, 13px);
+    background-color: rgb(255 255 255 / 70%);
+    backdrop-filter: blur(8px);
+    color: black;
+    padding: 0.5vw;
+    border: 1px solid black;
+	white-space:pre-line;
+}
+
+/*-------------- Main Panel (works for 4th tab as well) ---------------*/
+div.param34container {
+	width: 250px;
+    margin:2vh auto;
+    background-color: black;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+div.param34container > div {
+	text-align:center;
+	margin-top: 0;
+	margin-bottom:0;
+}
+
+div.param34container > div:nth-of-type(1) {
+	margin-top: 1vh;
+}
+
+div.param34container > div:nth-of-type(3) {
+	margin-bottom: 1vh;
+}
+
+div.param34container label {
+	background-color: red;
+    color: white;
+    font-size: 13px;
+	line-height: normal;
+}
+
+div.param34container .selectize-input.full {
+	background-color: black;
+    color: springgreen;
+    font-family: Digital Dream;
+    font-size: 13px;
+	min-height: 0;
+	padding-top:0;
+	padding-bottom:0;
+	border: 0;
+}
+
+div.param34container .selectize-control {
+	margin-bottom: 0;
+}
+
+div.param34container .form-control {
+	background-color: black;
+    font-family: Digital Dream;
+    color: white;
+    border:0;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+div.param34container .input-group-addon {
+	background-color: black;
+    border:0;
+    font-family: Digital Dream;
+    color: white;
+}
+
+/*-------------- Selected Stat Button ---------------*/
+[data-value = "teamPlayer"] .RowDT .BlockParamDTchart .form-group.shiny-input-container {
+	font-size:13px;
+	text-align: center;
+	background-color: black;
+    width: 150px;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 10px;
+	border:2px solid white;
+}
+
+[data-value = "teamPlayer"] .RowDT .BlockParamDTchart .form-group.shiny-input-container label {
+    background-color: green;
+	color: white;
+    margin-top: 1vh;
+	margin-bottom:5px;
+}
+
+[data-value = "teamPlayer"] .RowDT .BlockParamDTchart .selectize-input.items.full.has-options.has-items {
+	background-color: black;
+    color: springgreen;
+    font-family: digital dream;
+    border: 0;
+    padding: 0;
+    vertical-align: middle;
+	min-height: 25px;
+	border-radius:10px;
+}
+
+[data-value = "teamPlayer"] .RowDT .BlockParamDTchart .form-group.shiny-input-container .selectize-control {
+	margin-bottom:0;
+}
+
+/*-------------- Basket Button ---------------*/
+[data-value = "teamPlayer"] div.basketball {
+	margin-left: auto;
+}
+
+div.basketball #goButton3 {
+	top: -5%;
+    position: absolute;
+    left: -5%;
+    width: 100px;
+    height: 100px;
+    background-color: transparent;
+    color: black;
+    font-size: 20px;
+}
+
+/*---------------- Selected Chart Option ------------*/
+#selectedFreq3In {
+	font-size:13px;
+	text-align: center;
+	background-color: black;
+    width: 150px;
+    margin-right: auto;
+    margin-left: auto;
+	margin-bottom:0;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+#selectedFreq3In .control-label {
+	background-color: green;
+    color: white;
+    margin-top: 1vh;
+	margin-bottom:5px;
+}
+
+#selectedFreq3In .shiny-options-group {
+	font-family: digital dream;
+    color: springgreen;
+	margin-bottom: 1vh;
+    text-align: center;
+}
+
+/*-------------- DTs size ---------------*/
+#sumGamesDT3, #compGamesDT3, #impactPluMin3, #impactFG3 {
+	min-width:415px;
+	font-size:clamp(8px, 0.8vw, 10px);
+}
+
+/*-------------- Graphs sizes & border radius ---------------*/
+#sumGraph3, #dateBarChart3, #periodBarChart3 {
+	min-width: 415px; 
+	min-height: 300px;
+}
+
+#dateBarChart3 > .plot-container.plotly > .user-select-none.svg-container {
+	border-radius: 20px 0px 20px 0px;
+}
+
+#periodBarChart3 > .plot-container.plotly > .user-select-none.svg-container {
+	border-radius: 0px 20px 0px 20px;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 4th tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+#mainText4.shiny-text-output.noplaceholder:empty, #playerShotsText4.shiny-text-output.noplaceholder:empty, #playerShotsSumText4.shiny-text-output.noplaceholder:empty, 
+#playerShotsChartText4.shiny-text-output.noplaceholder:empty, #assistsText4.shiny-text-output.noplaceholder:empty {
+	height: 0;
+    border-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#mainText4, #playerShotsText4, #playerShotsSumText4, #playerShotsChartText4, #assistsText4 {
+	width: clamp(415px, 35vw, 500px);
+    text-align: center;
+    font-family: Bell MT;
+    font-size: clamp(11px, 1.1vw, 13px);
+    background-color: rgb(255 255 255 / 70%);
+    backdrop-filter: blur(8px);
+    color: black;
+    padding: 0.5vw;
+    border: 1px solid black;
+	white-space:pre-line;
+}
+
+/*-------------- Basket Button ---------------*/
+[data-value = "kingCourt"] div.basketball {
+	margin-left: auto;
+}
+
+div.basketball #goButton4 {
+	top: -5%;
+    position: absolute;
+    left: -5%;
+    width: 100px;
+    height: 100px;
+    background-color: transparent;
+    color: black;
+    font-size: 20px;
+}
+
+/*-------------- Label main panel colors ---------------*/
+[data-value = "kingCourt"] div.param34container label {
+	background-color: green;
+}
+
+/*-------------- 1st DT size ---------------*/
+#playerShotsDT4 {
+	min-width:415px;
+	font-size:clamp(8px, 0.8vw, 10px);
+}
+
+/*-------------- 1st Graph size ---------------*/
+#playerShotsSum4 {
+	min-width: 415px; 
+	min-height: 300px;
+}
+
+/*---------------- Selected Chart Option ------------*/
+#selectedChart4In {
+	font-size:13px;
+	text-align: center;
+	background-color: black;
+    width: 150px;
+    margin-right: auto;
+    margin-left: auto;
+	margin-bottom:0;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+#selectedChart4In > .control-label {
+	background-color: red;
+    color: white;
+    margin-top: 1vh;
+	margin-bottom:5px;
+}
+
+#selectedChart4In .shiny-options-group {
+	font-family: digital dream;
+    color: springgreen;
+	margin-bottom: 1vh;
+    text-align: center;
+}
+
+/* -------------- Shooting Chart ---------------*/
+#playerShotsChart4 {
+	min-height:425px;
+	min-width:415px;
+}
+
+#playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(1) {
+    top: 0.55vw;
+	height: 46.4vw;
+	min-height:420px;
+	left:-1.39vw;
+}
+
+#playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(2) {
+    padding-top:0.55vw;
+	height: 47vw;
+	min-height:425px;
+	left:-1.39vw;
+}
+
+#playerShotsChart4 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(3) {
+    padding-top:0.55vw;
+	top:0;
+	height:47vw;
+	min-height:425px;
+	left:-1.39vw;
+}
+
+/* -------------- Area Selected Option ---------------*/
+#areaSelected4 > .form-group.shiny-input-container {
+	width:250px;
+	font-size:13px;
+	margin: auto;
+	background-color: black;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+#areaSelected4 > .form-group.shiny-input-container label {
+	color: white;
+    background-color: red;
+    margin-top: 1vh;
+}
+
+#areaSelected4 .selectize-input.items.full.has-options.has-items {
+	background-color: black;
+    color: springgreen;
+    font-family: digital dream;
+    border: 0;
+    padding: 0;
+    vertical-align: middle;
+	min-height:0;
+	border-radius:10px;
+}
+
+#areaSelected4 .selectize-control.single.plugin-selectize-plugin-a11y {
+	margin-bottom: 1vh;
+}
+
+/* -------------- Area Selected DT definition ---------------*/
+#globalAssist4 {
+	margin-top: 2vh;
+	margin-bottom: 2vh;
+}
+
+#detailedAssist4, #globalAssist4 {
+	min-width:415px;
+	font-size:clamp(8px, 0.8vw, 10px);
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 5th tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+#mainText5.shiny-text-output.noplaceholder:empty, #customGraphText5.shiny-text-output.noplaceholder:empty, #dataPlayerText5.shiny-text-output.noplaceholder:empty {
+	height: 0;
+    border-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#mainText5, #customGraphText5, #dataPlayerText5 {
+	width: clamp(415px, 35vw, 500px);
+    text-align: center;
+    font-family: Bell MT;
+    font-size: clamp(11px, 1.1vw, 13px);
+    background-color: rgb(255 255 255 / 70%);
+    backdrop-filter: blur(8px);
+    color: black;
+    padding: 0.5vw;
+    border: 1px solid black;
+	margin-top: 2vh;
+    margin-bottom: 2vh;
+    margin-right: auto;
+    margin-left: auto;
+	white-space:pre-line;
+}
+
+/*--------- Parameters Container ---------*/ 
+[data-value = "moneyball"] > .param5container {
+	display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-left: auto;
+	margin-right: auto;
+    grid-column-gap: 10px;
+    background-color: black;
+    border-radius: 10px;
+    border: 2px solid white;
+	width: 350px;
+}
+
+[data-value = "moneyball"] > .param5container::before {
+	display: none;
+}
+
+[data-value = "moneyball"] > .param5container > div {
+	text-align:center;
+	margin-top: 0;
+	margin-bottom:0;
+}
+
+[data-value = "moneyball"] > .param5container > div:nth-of-type(1) {
+	margin-top: 1vh;
+}
+
+[data-value = "moneyball"] > .param5container > div:nth-of-type(2) {
+	margin-top: 1vh;
+}
+
+[data-value = "moneyball"] > .param5container > div:nth-of-type(5) {
+	margin-bottom: 1vh;
+}
+
+[data-value = "moneyball"] > .param5container > div:nth-of-type(6) {
+	margin-bottom: 1vh;
+}
+
+[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n+1) { 
+    width: 150px;
+    margin-left: auto;
+}
+
+[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n) { 
+    width: 150px;
+    margin-right: auto;
+}
+
+[data-value = "moneyball"] > .param5container label {
+    color: white;
+    font-size: 13px;
+	line-height: normal;
+	margin-bottom:5px;
+}
+
+[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n)> label { 
+    background-color: red;
+}
+
+[data-value = "moneyball"] > .param5container > .form-group.shiny-input-container:nth-of-type(2n+1)> label { 
+    background-color: green;
+}
+
+[data-value = "moneyball"] > .param5container .selectize-input.full {
+	background-color: black;
+    color: springgreen;
+    font-family: Digital Dream;
+    font-size: 13px;
+	min-height: 0px;
+	border: 0px;
+}
+
+[data-value = "moneyball"] > .param5container .selectize-input {
+    background-color: black;
+	font-family: Digital Dream;
+    font-size: 13px;
+	min-height: 0;
+	border: 0;
+	padding:0;
+}
+
+[data-value = "moneyball"] > .param5container .selectize-input > div {
+	background-color: black;
+    color: springgreen;
+}
+
+[data-value = "moneyball"] > .param5container .selectize-control {
+	margin-bottom: 0;
+}
+
+[data-value = "moneyball"] > .param5container .form-control {
+	background-color: black;
+    font-family: Digital Dream;
+    color: white;
+    border: 0;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+[data-value = "moneyball"] > .param5container .input-group {
+	margin-bottom: 10px;
+}
+
+[data-value = "moneyball"] > .param5container .input-group-addon {
+	background-color: black;
+    border:0;
+    font-family: Digital Dream;
+    color: white;
+}
+
+[data-value = "moneyball"] > .param5container .irs-grid-text {
+	color: white;
+	font-family: Digital Dream;
+}
+
+[data-value = "moneyball"] > .param5container .irs-bar {
+	background: white;
+}
+
+[data-value = "moneyball"] > .param5container .irs--shiny .irs-handle {
+	background-color: black;
+}
+
+@media screen and (max-width: 800px) {
+	[data-value = "moneyball"] > .param5container {
+		display: block;
+		width: 200px;
+	}
+	
+	[data-value = "moneyball"] > .param5container > div {
+		margin: auto;
+	}
+	
+	[data-value = "moneyball"] > .param5container > div:nth-of-type(1) {
+		margin-top: 10px;
+	}
+
+	[data-value = "moneyball"] > .param5container > div:nth-of-type(6) {
+		margin-bottom: 10px;
+	}
+}
+
+[data-value = "moneyball"] div.basketballGo {
+	margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+div.basketballGo #goButton5 {
+	top: -5%;
+    position: absolute;
+    left: -5%;
+    width: 100px;
+    height: 100px;
+    background-color: transparent;
+    color: black;
+    font-size: 20px;
+}
+
+/* ------ Graph Option Nb Players -------- */
+[data-value = "moneyball"] > .form-group.shiny-input-container {
+	width: 150px;
+	font-size:13px;
+    margin: auto;
+    background-color: black;
+    text-align: center;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+[data-value = "moneyball"] > .form-group.shiny-input-container label {
+	background-color: green;
+    color: white;
+    margin-top: 1vh;
+}	
+
+[data-value = "moneyball"] > .form-group.shiny-input-container .form-control.shiny-bound-input {
+	font-family: digital dream;
+    color: springgreen;
+    background-color: black;
+    border:0;
+    border-radius:50px;
+    text-align: center;
+	height: 25px;
+	padding-right: 30px;
+	padding-left: 30px;
+	padding-top:0;
+}
+
+/*--------- Maine Graph Custom ---------*/ 
+[data-value = "moneyball"] > #customGraph5 {
+	margin: auto;
+	margin-top: 2vh;
+	margin-bottom:2vh;
+	min-width: 600px;
+	min-height:461px;
+}
+
+[data-value = "moneyball"] > #customGraph5 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(1) {
+    top: 0;
+	height: 100%;
+}
+
+[data-value = "moneyball"] > #customGraph5 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(2) {
+    padding-top:0;
+}
+
+[data-value = "moneyball"] > #customGraph5 > .plot-container.plotly > .user-select-none.svg-container > .main-svg:nth-of-type(3) {
+    top: 0%;
+	height: 100%;
+}
+
+[data-value = "moneyball"] .user-select-none.svg-container:hover {
+	background: rgba(255, 255, 255, 0.15);
+	border: 0;
+}
+
+/*------------ Data Table Customs --------*/
+#playerSalDT5, #playerCarDT5 {
+	min-width:415px;
+	font-size:clamp(8px, 0.8vw, 10px);
+}
+
+[data-value = "moneyball"] #playerSalDT5 .dataTables_paginate.paging_simple_numbers {
+	display: none;
+}
+
+[data-value = "moneyball"] #playerSalDT5 .dataTables_length {
+	display: none;
+}
+
+[data-value = "moneyball"] #playerSalDT5 .dataTables_filter {
+	display: none;
+}
+
+[data-value = "moneyball"] #playerSalDT5 .dataTables_info {
+	display: none;
+}
+
+[data-value = "moneyball"] #playerSalDT5 tbody .dt-right, [data-value = "moneyball"] #playerSalDT5 thead .dt-right.sorting {
+	text-align: center;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 6th tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+#mainText6.shiny-text-output.noplaceholder:empty {
+	height: 0;
+    border-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#mainText6 {
+	width: clamp(415px, 35vw, 500px);
+    text-align: center;
+    font-family: Bell MT;
+    font-size: clamp(11px, 1.1vw, 13px);
+    background-color: rgb(255 255 255 / 70%);
+    backdrop-filter: blur(8px);
+    color: black;
+    padding: 0.5vw;
+    border: 1px solid black;
+	margin-top: 2vh;
+    margin-bottom: 2vh;
+    margin-right: auto;
+    margin-left: auto;
+	white-space:pre-line;
+}
+
+div.param6container {
+	width: 250px;
+    margin:2vh auto;
+    background-color: black;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+div.param6container > div {
+	text-align:center;
+	margin-top: 0;
+	margin-bottom:0;
+}
+
+div.param6container > div:nth-of-type(1) {
+	margin-top: 1vh;
+}
+
+div.param6container > div:nth-of-type(2) {
+	margin-bottom: 1vh;
+}
+
+div.param6container > div > label {
+	background-color: green;
+    color: white;
+    font-size: 13px;
+	line-height: normal;
+}
+
+div.param6container > div:nth-of-type(2) > label {
+	background-color: red;
+}
+
+div.param6container .shiny-options-group {
+	font-family: digital dream;
+    color: springgreen;
+}
+
+div.param6container .selectize-input {
+	margin-bottom: 0px;
+}
+
+div.param6container .selectize-input {
+	background-color: black;
+    font-family: Digital Dream;
+    font-size: 13px;
+	min-height:0;
+	border:0;
+}
+
+div.param6container .selectize-control.multi.plugin-selectize-plugin-a11y {
+	margin-bottom:0;
+	line-height:0.5;
+}
+
+div.param6container .selectize-control.multi.plugin-selectize-plugin-a11y .item {
+	background-color: black;
+    color: springgreen;
+}
+
+div.param6container .selectize-control.multi .selectize-input.has-items {
+	padding:0;
+}
+
+#teamStatDT6 {
+	font-size:clamp(8px, 0.8vw, 12px);
+}
+
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------
+/*-------------------------------------------------------------------------- 7th tab -----------------------------------------------------------------------
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+#mainText7.shiny-text-output.noplaceholder:empty {
+	height: 0;
+    border-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#mainText7 {
+	width: clamp(415px, 35vw, 500px);
+    text-align: center;
+    font-family: Bell MT;
+    font-size: clamp(11px, 1.1vw, 13px);
+    background-color: rgb(255 255 255 / 70%);
+    backdrop-filter: blur(8px);
+    color: black;
+    padding: 0.5vw;
+    border: 1px solid black;
+	margin-top: 2vh;
+    margin-bottom: 2vh;
+    margin-right: auto;
+    margin-left: auto;
+	white-space:pre-line;
+}
+
+div.param7container {
+	width: 250px;
+    margin:2vh auto;
+    background-color: black;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+div.param7container > div:nth-of-type(1) {
+	margin-top: 1vh;
+	text-align:center;
+}
+
+div.param7container > div:nth-of-type(3) {
+	margin-bottom: 1vh;
+	text-align:center;
+}
+
+div.param7container > div.minSecRow {
+	display:flex;
+	justify-content:center;
+	width:100%;
+	text-align:center;
+}
+
+div.param7container > div.minSecRow .form-group.shiny-input-container {
+	width:25%;
+}
+
+div.param7container .form-group.shiny-input-container > label {
+	background-color: green;
+    color: white;
+    font-size: 13px;
+	line-height: normal;
+}
+
+div.param7container .form-group {
+	margin-bottom:0;
+}
+
+div.param7container .form-control {
+	padding:0;
+}
+
+div.param7container .form-group.shiny-input-container .form-control.shiny-bound-input {
+	font-family: digital dream;
+    color: springgreen;
+    background-color: black;
+    border:0;
+    border-radius:50px;
+    text-align: center;
+	height: 25px;
+}
+
+div.param7container #diffScore7, div.param7container #minGame7 {
+	padding-right:80px;
+	padding-left:80px;
+}
+
+div.param7container #secLeft7, div.param7container #minLeft7 {
+	padding-right: 7px;
+    padding-left: 7px;
+}
+
+div.param7container #minLeft7-label, div.param7container #secLeft7-label {
+	background-color: red;
+}
+
+#clutchDT7 {
+	font-size:clamp(8px, 0.8vw, 12px);
 }

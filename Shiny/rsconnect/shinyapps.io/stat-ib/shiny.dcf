@@ -1,0 +1,11 @@
+name: shiny
+title:
+username:
+account: stat-ib
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 7942259
+bundleId: 6925589
+url: https://stat-ib.shinyapps.io/shiny/
+when: 1678189760.16721
+lastSyncTime: 1678189760.16721

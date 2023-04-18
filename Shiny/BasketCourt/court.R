@@ -6,14 +6,12 @@
 # - selectedPlayer : Can be null in ranking system
 # - onlyMade : Display only made shots ?
 #-------------------------------------------------------------------------------
-getShotChart <- function(selectedPlayer = NULL, selectedTeam = NULL, shootingDatas = "EmptyChart", distLongShot = 27, startDate = NULL, endDate = NULL, DT) {
+getShotChart <- function(selectedPlayer, selectedTeam, shootingDatas = "EmptyChart", playerShotsDT) {
   
   if (shootingDatas == "PlayerChart") {
-    # We download shooting datas
-    shootingDT <- getShotsPlayerCoordinates(selectedPlayer, selectedTeam, startDate, endDate, DT)
     
     # We include datas in a chart
-    fig <- plot_ly(data = shootingDT, type = "scatter", mode="markers",
+    fig <- plot_ly(data = playerShotsDT, type = "scatter", mode="markers",
                    x = ~converted_x_corrected, y = ~converted_y_corrected,
                    color = ~result,
                    colors = brewer.pal(9, "Set1")[c(2, 7)],
@@ -21,18 +19,20 @@ getShotChart <- function(selectedPlayer = NULL, selectedTeam = NULL, shootingDat
                    marker = list(size = 15, opacity = 0.6))
     
   # End if   
+    
   } else if (shootingDatas == "EfficientChart") {
+    
     # We download shooting datas
-    shootingDT <- getShotsPlayerVsLeague(selectedPlayer, selectedTeam, distLongShot, startDate, endDate, DT)
+    playerShotsDT <- playerShotsDT
     
     # We remove datas with NA as players did not shoot from there
-    shootingDT <- shootingDT[!is.na(diffFG)]
+    playerShotsDT <- playerShotsDT[!is.na(diffFG)]
     
     # We create a variable for attempted shots we will display on sizes of bubbles
-    shootingDT <- shootingDT[, TotalPlayerAttempted := TotalPlayerMissed + TotalPlayerMade]
+    playerShotsDT <- playerShotsDT[, TotalPlayerAttempted := TotalPlayerMissed + TotalPlayerMade]
     
     # We create a variable under FG League or above we will display in a color
-    shootingDT <- shootingDT[, vsLeague := sapply(diffFG, function(x) {
+    playerShotsDT <- playerShotsDT[, vsLeague := sapply(diffFG, function(x) {
       
       if (x < -10) {
         "Diff FG < -10%"
@@ -50,12 +50,12 @@ getShotChart <- function(selectedPlayer = NULL, selectedTeam = NULL, shootingDat
       
     })]
     
-    shootingDT$vsLeague <- factor(x = shootingDT$vsLeague, 
+    playerShotsDT$vsLeague <- factor(x = playerShotsDT$vsLeague, 
                                   levels = c("Diff FG < -10%", "-10% <= Diff FG < -5%", "-5% <= Diff FG <- 0%", 
                                              "0% <= Diff FG <- +5%", "+5% <= Diff FG <- +10%", "Diff FG >= +10%"))
     
     # We pre define a figure with only markers for hoverinfo
-    shootingDT <- shootingDT[, xMarker := sapply(area, function(x) {
+    playerShotsDT <- playerShotsDT[, xMarker := sapply(area, function(x) {
       
       dataShots <- data.table(xsi=c(1.5, 48.5, 10, 40, 10, 40, 25, 25, 25, 25, 6, 44, 25), 
                               ysi=c(7, 7, 7, 7, 19, 19, 5.25, 14.125, 24, 30.5, 22.5, 22.5, 37),
@@ -70,7 +70,7 @@ getShotChart <- function(selectedPlayer = NULL, selectedTeam = NULL, shootingDat
     })]
     
     # We pre define a figure with only markers for hoverinfo
-    shootingDT <- shootingDT[, yMarker := sapply(area, function(x) {
+    playerShotsDT <- playerShotsDT[, yMarker := sapply(area, function(x) {
       
       dataShots <- data.table(xsi=c(1.5, 48.5, 10, 40, 10, 40, 25, 25, 25, 25, 6, 44, 25), 
                               ysi=c(7, 7, 7, 7, 19, 19, 5.25, 14.125, 24, 30.5, 22.5, 22.5, 37),
@@ -84,12 +84,12 @@ getShotChart <- function(selectedPlayer = NULL, selectedTeam = NULL, shootingDat
       # end of sapply
     })]
     
-    fig <- plot_ly(data = shootingDT, type = "scatter", mode = "markers",
+    fig <- plot_ly(data = playerShotsDT, type = "scatter", mode = "markers",
                    x = ~xMarker, y = ~yMarker,
                    color = ~vsLeague,
                    colors = "Reds",
                    size = ~TotalPlayerAttempted,
-                   #marker = list(sizeref = 0.005, sizemode = "area", line = list(line.width = 0)),
+                   fill = ~"",
                    marker = list(sizeref = 0.005, sizemode = "area"),
                    hovertemplate = ~paste("Area :<b>", area, 
                                           "<br></b>Total Attempted :<b>", TotalPlayerAttempted,

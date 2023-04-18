@@ -1,36 +1,31 @@
 library(data.table)
 library(stringr)
 
-seasonSelected1 <- "2020-2021"
+source("Shiny/Functions/dataAnalysisFuncTab1.R")
+source("Shiny/Functions/dataAnalysisFuncTab2.R")
+source("Shiny/Functions/dataAnalysisFuncTab3.R")
+source("Shiny/Functions/dataAnalysisFuncTab4.R")
+source("Shiny/Functions/dataAnalysisFuncTab5.R")
+source("Shiny/Functions/dataAnalysisFuncTab6.R")
+source("Shiny/BasketCourt/court.R")
+
+seasonSelected1 <- "2022-2023"
 seasonTypeSelected1 <- "Regular Season"
 
-dicoPlayerFich <- gePlayersFich(season = "2020-2021", seasonType = "Regular Season")
+teamStats <- fread(file = paste("Shiny/Dictionary/", seasonSelected1, "/", seasonTypeSelected1, "/teamStatSummary.csv", sep = ""))
+dicoPlayerFich <- fread(file = paste("Shiny/Dictionary/", seasonSelected1, "/", seasonTypeSelected1, "/playersSummary.csv", sep = ""))
 dicoPlayerMinute <- fread(file = paste("Shiny/Dictionary/", seasonSelected1, "/", seasonTypeSelected1, "/minutesSummary.csv", sep = ""))
 listDatas <- cleanDatas(season = seasonSelected1, seasonType = seasonTypeSelected1, path = "Shiny/CombinedGames")
 nbaDatas <- listDatas[["nbaDatas"]]
 
 NBAcalendar <- getNBAcalendar(season = seasonSelected1, DT = nbaDatas, path = "Shiny/AllGames")
-nbaDatas <- merge(nbaDatas, NBAcalendar[, .(game_id, Date, Home, Away)], by = "game_id")
+nbaDatas <- merge(nbaDatas, NBAcalendar[, .(game_id, Date, Home, Away)], by = c("game_id"))
 
 
-subteam <- "GSW"
-DTteam <- nbaDatas[Home == subteam|Away == subteam]
-DTstarting <- DTteam[period == 1 & event_type == "start of period", .(game_id, team, onFloorHome, Home, onFloorAway, Away)]
-DTstarting <- DTstarting[, onFloorTeam := ifelse(Away == subteam, onFloorAway, onFloorHome)]
-DTstarting <- DTstarting[, .(game_id, onFloorTeam)]
 
-DTteam <- merge(DTteam, DTstarting, by = "game_id", all.x = TRUE, all.y = FALSE)
-benchDT <- DTteam[points %in% c(1, 2, 3) & team == subteam]
-benchDT <- benchDT[, isStarterScoring := mapply(FUN = function(x, y) {
-  if (y %like% x) {
-    TRUE
-  } else {
-    FALSE
-  }
-}, benchDT$player, benchDT$onFloorTeam)]
 
-benchDT <- benchDT[isStarterScoring == FALSE]
-benchScoreDT <- benchDT[, .(benchPts = sum(points)), by = player]
 
-tituDT <- benchDT[isStarterScoring == TRUE]
-tituScoreDT <- tituDT[, .(benchPts = sum(points)), by = player]
+
+
+
+

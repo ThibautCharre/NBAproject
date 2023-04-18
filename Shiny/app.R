@@ -61,10 +61,16 @@ ui <-
                         h2("First Words"),
                         tags$p(class = "introText", 
                                HTML("Welcome ! 
-                        <br>Stat-IB is a data analysis project created in 2022.
-                        <br>Its main objective is to display NBA statistics in graphical and interactive ways.
-                        <br>Statistics are calculated in-live and are based on a specific part of a specific season (playoffs vs. regular season).
-                        <br>So before going further, let's select the season to be exploited.")
+                        <br>Stat-IB is a data analysis project created in 2022 and Its main objective is to display NBA statistics in graphical and interactive ways.
+                        <br>The idea behing is to download a large dataset of a season plays and to create customized NBA teams & players statistics based on it.  
+                        <br>How does it work ?
+                        <br>The Different tabs located in the top right corner are accessible as soon as you select an NBA season to be exploited.
+                        <br>If you want to change the selected season, you need reset the app first by clicking on 'RESET' button in the welcome page.
+                        <br>Have in mind that by clicking on the refresh button of your navigator will reset the whole application from the beginning.
+                        <br>Tips :
+                        <br>Do not hesitate to use each web pages instructions by selecting 'Yes' to the 'Need Help ?' sections.
+                        <br>Enough talking, now enjoy the experience end meet me at the 'Sources' tab to communicate with me!
+                        <br>Last Update is 15/02/2023")
                         ),
                         h2("Data Selection"),
                         tags$div(class = "container", 
@@ -336,15 +342,6 @@ server <- function(input, output, session) {
     session$reload()
   })
   
-  # - INTRO TEXT
-  output$introText1 <- renderText({
-    "Welcome ! 
-    \nStat-IB is a data analysis project created in 2022.
-    \nIts main objective is to display NBA statistics in graphical and interactive ways.
-    \nStatistics are calculated in-live and are based on a specific part of a specific season (playoffs vs. regular season).
-    \nSo before going further, let's select the season to be exploited."
-  }) 
-  
   # - SEASON VARIABLE
   seasonSelected1 <- eventReactive(input$goButton1, {
     input$seasonSelected1
@@ -502,7 +499,7 @@ server <- function(input, output, session) {
   # - EXPLICATION TEXT 
   output$rankText2 <- renderText({
     req(needText2() == "Yes", shortNameSelected2())
-    "Item: Team historical calendar"
+    "Item: Team historical reults"
   })
   
   # - SCORING DISTRIBUTION DT
@@ -515,7 +512,7 @@ server <- function(input, output, session) {
   output$scoreText2 <- renderText({
     req(needText2() == "Yes", shortNameSelected2())
     "Item: Starters & Bench points distributions
-     Hint: Percentages corresponds to FG%"
+     Hint: Percentages correspond to FG%"
   })
   
   # - STAT SELECTION RENDER UI
@@ -550,7 +547,7 @@ server <- function(input, output, session) {
   # - EXPLICATION TEXT 
   output$graph1Text2 <- renderText({
     req(needText2() == "Yes", shortNameSelected2())
-    "Item: Team Stats vs. Opp & League Stats
+    "Item: Team vs. Opp stats & League Stats
      Hint: Place cursor on the bar chart to display team rank among the League"
   })
   
@@ -644,7 +641,7 @@ server <- function(input, output, session) {
   # - EXPLICATION TEXT 
   output$sumGamesText3 <- renderText({
     req(needText3() == "Yes", playerSelected3())
-    "Item: Player historical stats
+    "Item: Historical player stats
      Hint: Player stats from team & period selected"
   })
   
@@ -662,7 +659,7 @@ server <- function(input, output, session) {
   # - EXPLICATION TEXT 
   output$sumGraphText3 <- renderText({
     req(needText3() == "Yes", playerSelected3())
-    "Item: Player historical vs. average stats
+    "Item: Historical vs. average stats
      Hint: Horizontal line corresponds to stat mean over the period selected
      Orange bars: Historical stats above or equal to mean stat
      Blue bars: Historical stats below mean stat"
@@ -715,7 +712,7 @@ server <- function(input, output, session) {
   # - EXPLICATION TEXT 
   output$dateBarText3 <- renderText({
     req(needText3() == "Yes", freqSelected3(), playerDT3())
-    "Item: Impact of player's advanced stats on Team results
+    "Item: Impact of advanced stats on the theam of the selected player
      Hint: Bars display Team W/L when selected player was on the floor
      Place the cursor on graph circles to reveal Off rating & Usage rate (black) and Def rating (grey)"
   })
@@ -731,7 +728,7 @@ server <- function(input, output, session) {
   # - EXPLICATION TEXT 
   output$periodBarText3 <- renderText({
     req(needText3() == "Yes", playerDT3())
-    "Item: Distribution of player's points per period
+    "Item: Distribution of points per period
      Hint: Place the cursor on the circle to get +/- of player's team during a specific period"
   })
   
@@ -955,7 +952,7 @@ server <- function(input, output, session) {
   # - EXPLICATION TEXT
   output$playerShotsChartText4 <- renderText({
     req(needText4() == "Yes", listPlayerShots4())
-    "Item: Shooting positions of all the player's shots over a period (Spots chart) or analysis of the player's FG% per area vs. League FG% (Efficiency chart)
+    "Item: Shooting positions of all shots taken by a player over a period (Spots chart) or analysis of the player's FG% per area vs. League FG% (Efficiency chart)
      Explanation: The more a player shoots in an area, the bigger the circle is
      The better is the player's FG% vs League FG% in an area, the more the circle gets closer to the red (see legend)
      Hint: Place the cursor on the differents circles to display detailed stats"
@@ -991,7 +988,7 @@ server <- function(input, output, session) {
   # - EXPLICATION TEXT
   output$assistsText4 <- renderText({
     req(needText4() == "Yes", listPlayerShots4())
-    "Item: Distribution of assisted/non assisted per area of a player's shots over a specified period"
+    "Item: Distribution of assisted/non assisted per area of shots over a specified period"
   })
   
   # - REACTIVE VALUE TO SHOW OR HIDE ITEMS
@@ -1169,7 +1166,7 @@ server <- function(input, output, session) {
      Explanation: Classic category statistics are ranked by stats per game (not mpg) while Shooting category stats are ranked by FG attempted (not FG%)
      The bigger the circle, the more a player has played games during the season
      Color code depends on players' salaries (see legend)
-     Hint: Place the cursor on a circle to get detailed stats of a player"
+     Hint: Place the cursor on a circle to get detailed stats of a specific player"
   })
   
   # - DATA TABLE CLICK EVENT
@@ -1200,7 +1197,7 @@ server <- function(input, output, session) {
   output$dataPlayerText5 <- renderText({
     req(needText5() == "Yes", statsDT5())
     "Item: Selected player description and current contract
-     Hint: Click on a circle on the graph to display the selected player's informations"
+     Hint: Click on a circle on the graph to display the selected player informations"
   })
   
   ############################################################################

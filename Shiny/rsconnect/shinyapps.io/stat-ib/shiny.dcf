@@ -5,7 +5,7 @@ account: stat-ib
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 7942259
-bundleId: 6925589
+bundleId: 7203462
 url: https://stat-ib.shinyapps.io/shiny/
-when: 1678189760.16721
-lastSyncTime: 1678189760.16721
+when: 1683795242.68545
+lastSyncTime: 1683795242.68545

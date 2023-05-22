@@ -2,12 +2,12 @@ library(data.table)
 library(stringr)
 
 #-------------------------------------------------------------------------------
-getGamesId <-  function(selectedTeam = NULL, selectedPlayer, DT = nbaDatas) {
+getGamesId <-  function(selectedTeam = NULL, selectedPlayer, DT = nbaData) {
   #-------------------------------------------------------------------------------
   # @ variables :
   # - selectedTeam : team the player played for
   # - selectedPlayer : selectedPlayer
-  # - DT : data tabke where to find datas (default)
+  # - DT : data tabke where to find Data (default)
   #-------------------------------------------------------------------------------
   # We get game id where selected player played for the team
   gamesIdDT <- DT[(onFloorHome %like% selectedPlayer|onFloorAway %like% selectedPlayer),
@@ -16,7 +16,7 @@ getGamesId <-  function(selectedTeam = NULL, selectedPlayer, DT = nbaDatas) {
   # We identify the team the player played for 
   gamesIdDT <- gamesIdDT[, team := ifelse(grepl(selectedPlayer, onFloorHome), Home, Away)]
   
-  # We only conserve datas related to selectedTeam, not old team or new team
+  # We only conserve Data related to selectedTeam, not old team or new team
   if (!is.null(selectedTeam)) {  
     gamesId <- unique(gamesIdDT[team == selectedTeam, game_id])
   } else {
@@ -28,7 +28,7 @@ getGamesId <-  function(selectedTeam = NULL, selectedPlayer, DT = nbaDatas) {
 }
 
 #-------------------------------------------------------------------------------
-transformDatas <- function(season, seasonType = "Regular Season", filePattern = "combined-stats", 
+transformData <- function(season, seasonType = "Regular Season", filePattern = "combined-stats", 
                        colDelete = c("date", "play_length", "play_id", "away", "home", "num", 
                                      "opponent", "outof", "possession", "reason", "original_x", "original_y", "description"),
                        path = "Shiny/CombinedGames") {
@@ -68,14 +68,14 @@ getNBAcalendar <- function(season, DT, path = "Shiny/AllGames") {
   # - DT : Generic data table (default)
   #-------------------------------------------------------------------------------
   # we list files in the directory 
-  filesName <- list.files(paste(path, "/", season, sep = ""))
+  gamesVect <- fread(paste(path, "/", season, "/games.csv", sep = ""), header = FALSE)
   
   # operations to identify each games gathered in a DT
-  Games <- unlist(str_extract_all(string = filesName, pattern = ".{7}(?=.csv)"))
+  Games <- unlist(str_extract_all(string = gamesVect, pattern = ".{7}(?=.csv)"))
   Home <- unlist(str_extract_all(string = Games, pattern = "[A-Z]{3}$"))
   Away <- unlist(str_extract_all(string = Games, pattern = "^[A-Z]{3}"))
-  Dates <- unlist(str_extract_all(string = filesName, pattern = "[0-9]{4}-[0-9]{2}-[0-9]{2}"))
-  Id <- unlist(str_extract_all(string = filesName, pattern = "[0-9]{8}(?=-)"))
+  Dates <- unlist(str_extract_all(string = gamesVect, pattern = "[0-9]{4}-[0-9]{2}-[0-9]{2}"))
+  Id <- unlist(str_extract_all(string = gamesVect, pattern = "[0-9]{8}(?=-)"))
   
   CalendarDT <- data.table(game_id = as.integer(Id),
                            Date = as.Date(Dates, '%Y-%m-%d'),
@@ -103,17 +103,17 @@ getNBAcalendar <- function(season, DT, path = "Shiny/AllGames") {
   
 }
 
-getPlayerMinutesManual <- function(selectedTeam, selectedPlayer, nbaDT = nbaDatasDT) {
+getPlayerMinutesManual <- function(selectedTeam, selectedPlayer, nbaDT = nbaDataDT) {
   #-------------------------------------------------------------------------------
   # @ variables :
   # - selectedTeam : selecte a team
   # - selectedPlayer : select a player
-  # - DT : data table where to look for the datas (default)
+  # - DT : data table where to look for the Data (default)
   #-------------------------------------------------------------------------------
   # We get game id where selected player played for the team
   gamesId <- getGamesId(selectedTeam, selectedPlayer, nbaDT)
   
-  # we filter the nbaDatas
+  # we filter the nbaData
   playerTimeDT <- nbaDT[((entered == selectedPlayer | left == selectedPlayer & event_type == "substitution") | 
                         (event_type %in% c("start of period", "timeout", "end of period"))) & 
                        game_id %in% gamesId, 
@@ -127,7 +127,7 @@ getPlayerMinutesManual <- function(selectedTeam, selectedPlayer, nbaDT = nbaData
                + as.integer(str_sub(string = elapsed,start =  3, end =  4)) * 60 
                + as.integer(str_sub(string = elapsed, 6, 7))]
   
-  # we simplify the dataset
+  # we simplify the Dataet
   playerTimeDT <- playerTimeDT[, .(game_id, period, time, isStarter, entered, left)]
   
   # We create a new variable where we shift values of time played to calculate a difference for the length of each play
@@ -153,9 +153,9 @@ getTeamPoss <- function(selectedTeam, DT) {
   #-------------------------------------------------------------------------------
   # @ variables :
   # - selectedTeam : team to be selected
-  # - DT : data table where to look for the datas
+  # - DT : data table where to look for the Data
   #-------------------------------------------------------------------------------
-  # We filter datas
+  # We filter Data
   gamesId <- unique(DT[team %like% selectedTeam, game_id])
   DTteam <- DT[game_id %in% gamesId]
   
@@ -204,24 +204,24 @@ getTeamPoss <- function(selectedTeam, DT) {
 }
 
 ####################################################################### INPUTS ################################################################
-season = "2022-2023"
+season = "2020-2021"
 seasonType = "Regular Season"
 
-####################################################################### 1ST : NBA DATAS FILE ################################################################
-# DT where datas are taken
-nbaDatasDT <- transformDatas(season = season, seasonType = seasonType)
+####################################################################### 1ST : NBA Data FILE ################################################################
+# DT where Data are taken
+nbaDataDT <- transformData(season = season, seasonType = seasonType)
 
 # We save the modified file
-saveRDS(nbaDatasDT, paste("Shiny/Dictionary/", season, "/", seasonType, "/nbaDatas.rds", sep = ""))
+saveRDS(nbaDataDT, paste("Shiny/Dictionary/", season, "/", seasonType, "/nbaData.rds", sep = ""))
 
 ####################################################################### 2ND : NBA CALENDAR ################################################################
-nbaCalendarDT <- getNBAcalendar(season, nbaDatasDT)
+nbaCalendarDT <- getNBAcalendar(season, nbaDataDT)
 
 # We save the modified file
 saveRDS(nbaCalendarDT, paste("Shiny/Dictionary/", season, "/", seasonType, "/nbaCalendar.rds", sep = ""))
 
-# We merge datasets
-nbaDatasDT <- merge(nbaDatasDT, nbaCalendarDT[, .(game_id, Date, Home, Away)], by = "game_id")
+# We merge Dataets
+nbaDataDT <- merge(nbaDataDT, nbaCalendarDT[, .(game_id, Date, Home, Away)], by = "game_id")
 
 ####################################################################### 3RD : MINUTES FILE ################################################################
 # DT where players and teams vectors are taken
@@ -242,10 +242,10 @@ fwrite(x = finalMinDT, file = paste("Shiny/Dictionary/", season, "/", seasonType
 
 ####################################################################### 4TH : TEAM STATS FILE ################################################################
 # script to calculate ranks per stats for teams
-teamPart <- unique(nbaDatasDT[team != "", team])
+teamPart <- unique(nbaDataDT[team != "", team])
 teamStats <- lapply(X = teamPart, FUN = function(x) {
 
-    tmpDT <- nbaDatasDT[(Home %like% x | Away %like% x)]
+    tmpDT <- nbaDataDT[(Home %like% x | Away %like% x)]
     nbGames <- length(unique(tmpDT[, game_id]))
     
     ptsTeam <- round(sum(tmpDT[team == x & points %in% c(1, 2, 3), points])/nbGames, 2)

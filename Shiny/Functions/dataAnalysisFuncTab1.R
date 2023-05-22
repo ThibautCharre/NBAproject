@@ -133,7 +133,7 @@ cleanDatas <- function(season, seasonType = "Regular Season", filePattern = "com
 }
 
 #-------------------------------------------------------------------------------
-getNBAcalendar <- function(season, path = "AllGames", DT = nbaDatas) {
+getNBAcalendar <- function(season, path = "AllGames", fileGames = "games.csv", DT = nbaDatas) {
   #-------------------------------------------------------------------------------
   # @ variables :
   # - path : Path where to find all files of each NBA games (default)
@@ -141,14 +141,14 @@ getNBAcalendar <- function(season, path = "AllGames", DT = nbaDatas) {
   # - DT : Generic data table (default)
   #-------------------------------------------------------------------------------
   # we list files in the directory 
-  filesName <- list.files(paste(path, "/", season, sep = ""))
+  gamesVect <- fread(paste(path, "/", season, "/", fileGames, sep = ""), header = FALSE)
   
   # operations to identify each games gathered in a DT
-  Games <- unlist(str_extract_all(string = filesName, pattern = ".{7}(?=.csv)"))
+  Games <- unlist(str_extract_all(string = gamesVect, pattern = ".{7}(?=.csv)"))
   Home <- unlist(str_extract_all(string = Games, pattern = "[A-Z]{3}$"))
   Away <- unlist(str_extract_all(string = Games, pattern = "^[A-Z]{3}"))
-  Dates <- unlist(str_extract_all(string = filesName, pattern = "[0-9]{4}-[0-9]{2}-[0-9]{2}"))
-  Id <- unlist(str_extract_all(string = filesName, pattern = "[0-9]{8}(?=-)"))
+  Dates <- unlist(str_extract_all(string = gamesVect, pattern = "[0-9]{4}-[0-9]{2}-[0-9]{2}"))
+  Id <- unlist(str_extract_all(string = gamesVect, pattern = "[0-9]{8}(?=-)"))
   
   CalendarDT <- data.table(game_id = as.integer(Id),
                            Date = as.Date(Dates, '%Y-%m-%d'),

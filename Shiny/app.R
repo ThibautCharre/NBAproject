@@ -61,20 +61,15 @@ ui <-
                         h2("First Words"),
                         tags$p(class = "introText", 
                                HTML("Welcome ! 
-                        <br>Stat-IB is a data analysis project created in 2022 and Its main objective is to display NBA statistics in graphical and interactive ways.
-                        <br>The idea behing is to download a large dataset of a season plays and to create customized NBA teams & players statistics based on it.  
+                        <br>Stat-IB is a data analysis project
                         <br>How does it work ?
-                        <br>The Different tabs located in the top right corner are accessible as soon as you select an NBA season to be exploited.
-                        <br>If you want to change the selected season, you need reset the app first by clicking on 'RESET' button in the welcome page.
-                        <br>Have in mind that by clicking on the refresh button of your navigator will reset the whole application from the beginning.
-                        <br>Tips :
-                        <br>Do not hesitate to use each web pages instructions by selecting 'Yes' to the 'Need Help ?' sections.
-                        <br>Enough talking, now enjoy the experience end meet me at the 'Sources' tab to communicate with me!
-                        <br>Last Update is 15/02/2023")
+                        <br>Select a season to download a Dataset and explore statistics & graphs via the different tabs 
+                        <br>!! Click on 'RESET' button below before changing and downloading another season Dataset !!
+                        ")
                         ),
                         h2("Data Selection"),
                         tags$div(class = "container", 
-                                 selectInput(inputId = "seasonSelected1", label = "SEASON", choices = c("2020-2021", "2021-2022", "2022-2023"), selected = c("2020-2021")),
+                                 selectInput(inputId = "seasonSelected1", label = "SEASON", choices = c("2020-2021"), selected = c("2020-2021")),
                                  selectInput(inputId = "seasonTypeSelected1", label = "TYPE", choices = c("Regular Season", "Playoffs"), selected = c("Regular Season")),
                                  tags$div(class = "basketballGo",
                                           tags$div(class = "lineVert"),
@@ -311,7 +306,7 @@ ui <-
                         h2("Last Words"),
                         tags$p(class = "introText", 
                                HTML("Thank You ! 
-                        <br>This project is not definitive and tends to evoluate through time.
+                        <br>This project is not definitive and tends to evolve through time.
                         <br>If you have any suggestion regarding the web design or any new analysis idea, please send me an e-mail to:
                         <br>thibaut.charre.tc@gmail.com"
                                )
@@ -355,7 +350,7 @@ server <- function(input, output, session) {
   observe({
     if (seasonFilter1() == "2022-2023") {
       updateSelectInput(inputId = "seasonTypeSelected1", label = "TYPE", 
-                        choices = c("Regular Season"), 
+                        choices = c("Regular Season", "Playoffs"), 
                         selected = "Regular Season")
     } else {
       updateSelectInput(inputId = "seasonTypeSelected1", label = "TYPE", 
@@ -369,8 +364,8 @@ server <- function(input, output, session) {
     input$seasonTypeSelected1
   })
   
-  # --------------------------- DATAS DOWNLOAD --------------------------------- 
-  # - DATAS DOWNLOADED : DT PLAYER MINUTE
+  # --------------------------- Data DOWNLOAD --------------------------------- 
+  # - Data DOWNLOADED : DT PLAYER MINUTE
   teamStatSum <- reactive({
     fread(file = paste("Dictionary/", seasonSelected1(), "/", seasonTypeSelected1(), "/teamStatSummary.csv", sep = ""))
   })
@@ -379,34 +374,34 @@ server <- function(input, output, session) {
     fread(file = paste("Dictionary/", seasonSelected1(), "/", seasonTypeSelected1(), "/minutesSummary.csv", sep = ""))
   })
   
-  # - DATAS DOWNLOADED : Vector of NBA teams
+  # - Data DOWNLOADED : Vector of NBA teams
   nbaTeams <- reactive({
     sort(sapply(dicoPlayerMinute()$team, FUN = getLongTeamName, USE.NAMES = FALSE))
   })
   
-  # - DATAS DOWNLOADED : Vector of NBA players
+  # - Data DOWNLOADED : Vector of NBA players
   nbaPlayers <- reactive({
     dicoPlayerMinute()$player
   })
   
-  # - DATAS DOWNLOADED : DT with players characteristics (position, salary, age)
+  # - Data DOWNLOADED : DT with players characteristics (position, salary, age)
   dicoPlayerFich <- reactive({
     fread(paste("Dictionary/", seasonSelected1(), "/", seasonTypeSelected1(), "/playersSummary.csv", sep = ""))
   })
   
-  # - DATAS DOWNLOADED : LIST of vector players and nbaDatas DT
-  nbaDatasDT <- reactive({
-    readRDS(paste("Dictionary/", seasonSelected1(), "/", seasonTypeSelected1(), "/nbaDatas.rds", sep = ""))
+  # - Data DOWNLOADED : LIST of vector players and nbaData DT
+  nbaDataDT <- reactive({
+    readRDS(paste("Dictionary/", seasonSelected1(), "/", seasonTypeSelected1(), "/nbaData.rds", sep = ""))
   })
   
-  # - DATAS DOWNLOADED : DT NBA Calendar
+  # - Data DOWNLOADED : DT NBA Calendar
   NBAcalendar <- reactive({
     readRDS(paste("Dictionary/", seasonSelected1(), "/", seasonTypeSelected1(), "/nbaCalendar.rds", sep = ""))
   })
   
-  # - DATAS DOWNLOADED : DT merge nbaDatasDT & NBAcalendar
-  nbaDatasDTmerged <- reactive({
-    merge(nbaDatasDT(), NBAcalendar()[, .(game_id, Date, Home, Away)], by = "game_id")
+  # - Data DOWNLOADED : DT merge nbaDataDT & NBAcalendar
+  nbaDataDTmerged <- reactive({
+    merge(nbaDataDT(), NBAcalendar()[, .(game_id, Date, Home, Away)], by = "game_id")
   })
   
   # - We download the ranking streak for all league
@@ -414,15 +409,15 @@ server <- function(input, output, session) {
     getRankingStreakLeague(NBAcalendar())
   })
   
-  # ------------------------- END DATAS DOWNLOAD -------------------------------
+  # ------------------------- END Data DOWNLOAD -------------------------------
   
   # - CONFIRMATION DL TEXT
   output$confirmationText1 <- renderText({
     if (input$goButton1 == 0) {
-      "No Datas Selected\n!! Click on Go Button !!"
+      "No Data Selected\n!! Click on Go Button !!"
     } else {
       if (length(resultsByTeamList()) > 0) {
-        paste("Datas Selected : OK !!\nSeason : ", seasonSelected1(), "\nPeriod : ", seasonTypeSelected1(), sep = "")
+        paste("Data Selected : OK !!\nSeason : ", seasonSelected1(), "\nPeriod : ", seasonTypeSelected1(), sep = "")
       }
     }
   })
@@ -447,7 +442,7 @@ server <- function(input, output, session) {
   # - EPLICATION TEXT 
   output$mainText2 <- renderText({
     req(needText2() == "Yes")
-    "Objectif: Team results & statistics presentations
+    "Team results & statistics
      How To: Select a marker representing an NBA team
      Black Markers: Team is on a loosing streak (a tear is for 5 losses in a row or more)
      Green Markers: Team is on a winning streak (a flame is for 5 wins in a row or more)"
@@ -505,13 +500,13 @@ server <- function(input, output, session) {
   # - SCORING DISTRIBUTION DT
   output$teamScoring2 <- DT::renderDataTable({
     req(shortNameSelected2())
-    getBenchDistrib(selectedTeam = shortNameSelected2(), DT = nbaDatasDTmerged())
+    getBenchDistrib(selectedTeam = shortNameSelected2(), DT = nbaDataDTmerged())
   }, options = list(dom = "t"))
   
   # - EXPLICATION TEXT 
   output$scoreText2 <- renderText({
     req(needText2() == "Yes", shortNameSelected2())
-    "Item: Starters & Bench points distributions
+    "Starters & Bench points distribution
      Hint: Percentages correspond to FG%"
   })
   
@@ -547,27 +542,27 @@ server <- function(input, output, session) {
   # - EXPLICATION TEXT 
   output$graph1Text2 <- renderText({
     req(needText2() == "Yes", shortNameSelected2())
-    "Item: Team vs. Opp stats & League Stats
-     Hint: Place cursor on the bar chart to display team rank among the League"
+    "Team vs. Opp stats & League Stats
+     Hint: Place cursor on the bar chart to display among all other teams"
   })
   
   # - TEAM PIE CHART GRAPH
   output$teamPieChart2 <- renderPlotly({
     req(statSelected2(), req(nbPlayerChart2()), shortNameSelected2())
-    getTeamStatsPerPlayerChart(selectedTeam = shortNameSelected2(), typeStat = statSelected2(), nbPlayers = nbPlayerChart2(), DTroster = dicoPlayerMinute(), DT = nbaDatasDTmerged())
+    getTeamStatsPerPlayerChart(selectedTeam = shortNameSelected2(), typeStat = statSelected2(), nbPlayers = nbPlayerChart2(), DTroster = dicoPlayerMinute(), DT = nbaDataDTmerged())
   })
   
   # - EXPLICATION TEXT 
   output$graph2Text2 <- renderText({
     req(needText2() == "Yes", shortNameSelected2())
-    "Item: Total Stat selected Distribution
+    "Total Stat selected Distribution
      Hint: Place cursor on the circle to display players' detailed stats"
   })
   
   # # - BEST GAMES DT
   # output$bestGames2 <- DT::renderDataTable({
   #   req(statSelected2(), shortNameSelected2())
-  #   getBestGames(selectedTeam = shortNameSelected2(), typeStat = statSelected2(), nbGames = 20, DTroster = dicoPlayerMinute(), DT = nbaDatasDTmerged())
+  #   getBestGames(selectedTeam = shortNameSelected2(), typeStat = statSelected2(), nbGames = 20, DTroster = dicoPlayerMinute(), DT = nbaDataDTmerged())
   # }, options = list(pageLength = 5, dom = "tp"))
   
   ############################################################################
@@ -582,8 +577,8 @@ server <- function(input, output, session) {
   # - EPLICATION TEXT 
   output$mainText3 <- renderText({
     req(needText3() == "Yes")
-    "Objectif: Historical player performances & impact on its team
-     How To: Select a team, a player, a period and click on GO basket button"
+    "Historical player performances and impacts on his team
+     How To: Select a team, a player, a period and click on GO button"
   })
   
   # UPDATE OF SELECTINPUT BOX TEAM AND ROSTER
@@ -611,7 +606,7 @@ server <- function(input, output, session) {
   
   # - UPDATE DATE RANGE OUTPUT
   observe({
-    updateDateRangeInput(inputId = "dateRange3", start = min(nbaDatasDTmerged()$Date), end = max(nbaDatasDTmerged()$Date), min =  min(nbaDatasDTmerged()$Date), max = max(nbaDatasDTmerged()$Date))
+    updateDateRangeInput(inputId = "dateRange3", start = min(nbaDataDTmerged()$Date), end = max(nbaDataDTmerged()$Date), min =  min(nbaDataDTmerged()$Date), max = max(nbaDataDTmerged()$Date))
   })
   
   # - CALENDAR RANGE VARIABLES
@@ -624,7 +619,7 @@ server <- function(input, output, session) {
   
   # - PLAYER GAMES LIST
   playerGamesList <- reactive({
-    getHistPlayerStats(selectedTeam = shortNameSelected3(), selectedPlayer = playerSelected3(), startDate = dateRange3Min(), endDate = dateRange3Max(), DTcalendar = NBAcalendar(), DT = nbaDatasDTmerged())
+    getHistPlayerStats(selectedTeam = shortNameSelected3(), selectedPlayer = playerSelected3(), startDate = dateRange3Min(), endDate = dateRange3Max(), DTcalendar = NBAcalendar(), DT = nbaDataDTmerged())
   })
   
   # - SUMMARY GAMES DT
@@ -659,10 +654,10 @@ server <- function(input, output, session) {
   # - EXPLICATION TEXT 
   output$sumGraphText3 <- renderText({
     req(needText3() == "Yes", playerSelected3())
-    "Item: Historical vs. average stats
-     Hint: Horizontal line corresponds to stat mean over the period selected
-     Orange bars: Historical stats above or equal to mean stat
-     Blue bars: Historical stats below mean stat"
+    "Historical vs. average stats
+     Hint: Horizontal line corresponds to the statistical mean over the period selected
+     Orange bars: Historical stats above or equal to the statistical mean
+     Blue bars: Historical stats below to the statistical mean"
   })
   
   # - SHORT NAME TEAM FIXED VARIABLE
@@ -683,10 +678,10 @@ server <- function(input, output, session) {
     input$dateRange3[2]
   })
   
-  # - nbaDatasDT PLAYER
+  # - nbaDataDT PLAYER
   playerDT3 <- eventReactive(input$goButton3, {
     req(playerSelected3Graph() != "Player", shortNameSelected3Graph() != "Team", dateRange3MinGraph(), dateRange3MaxGraph())
-    getPlayerDT(shortNameSelected3Graph(), playerSelected3Graph(), startDate = dateRange3MinGraph(), endDate = dateRange3MaxGraph(), DT = nbaDatasDTmerged())
+    getPlayerDT(shortNameSelected3Graph(), playerSelected3Graph(), startDate = dateRange3MinGraph(), endDate = dateRange3MaxGraph(), DT = nbaDataDTmerged())
   })
   
   
@@ -712,8 +707,8 @@ server <- function(input, output, session) {
   # - EXPLICATION TEXT 
   output$dateBarText3 <- renderText({
     req(needText3() == "Yes", freqSelected3(), playerDT3())
-    "Item: Impact of advanced stats on the theam of the selected player
-     Hint: Bars display Team W/L when selected player was on the floor
+    "Impact of advanced stats on the selected player's team
+     Hint: Bars display Team W/L when the selected player was on the floor
      Place the cursor on graph circles to reveal Off rating & Usage rate (black) and Def rating (grey)"
   })
   
@@ -728,8 +723,8 @@ server <- function(input, output, session) {
   # - EXPLICATION TEXT 
   output$periodBarText3 <- renderText({
     req(needText3() == "Yes", playerDT3())
-    "Item: Distribution of points per period
-     Hint: Place the cursor on the circle to get +/- of player's team during a specific period"
+    "Distribution of points per period
+     Hint: Place the cursor on the circle to get the scoring difference over a period between the player's team and opposite teams"
   })
   
   # - IMPACT PLAYER DT
@@ -748,7 +743,7 @@ server <- function(input, output, session) {
   # - EXPLICATION TEXT 
   output$impactFGText3 <- renderText({
     req(needText3() == "Yes", listImpactDT3())
-    "Item: Team & Opp FG% when player is/is not on the floor"
+    "Team & Opp FG% when player is/is not on the floor"
   })
   
   output$impactPluMin3 <- renderDataTable({
@@ -817,7 +812,7 @@ server <- function(input, output, session) {
   # - EPLICATION TEXT 
   output$mainText4 <- renderText({
     req(needText4() == "Yes")
-    "Objectif: Historical shooting stats and analysis of preferential spots
+    "Historical shooting stats and analysis of preferential spots
      How To: Select a team, a player, a period and click on GO basket button"
   })
   
@@ -836,7 +831,7 @@ server <- function(input, output, session) {
   
   # - UPDATE DATE RANGE OUTPUT
   observe({
-    updateDateRangeInput(inputId = "dateRange4", start = min(nbaDatasDTmerged()$Date), end = max(nbaDatasDTmerged()$Date), min =  min(nbaDatasDTmerged()$Date), max = max(nbaDatasDTmerged()$Date))
+    updateDateRangeInput(inputId = "dateRange4", start = min(nbaDataDTmerged()$Date), end = max(nbaDataDTmerged()$Date), min =  min(nbaDataDTmerged()$Date), max = max(nbaDataDTmerged()$Date))
   })
   
   # - SHORT NAME TEAM VARIABLE
@@ -860,7 +855,7 @@ server <- function(input, output, session) {
   # - PLAYER SHOOTING LIST
   shootingList4 <- reactive({
     req(shortNameSelected4(), playerSelected4(), dateRange4Min(), dateRange4Max())
-    getPlayerGlobalShooting(shortNameSelected4(), playerSelected4(), dateRange4Min(), dateRange4Max(), NBAcalendar(), nbaDatasDTmerged())
+    getPlayerGlobalShooting(shortNameSelected4(), playerSelected4(), dateRange4Min(), dateRange4Max(), NBAcalendar(), nbaDataDTmerged())
   })
   
   # - REACTIVE VALUE TO DISPLAY ALL ITEMS
@@ -936,7 +931,7 @@ server <- function(input, output, session) {
   # - PLAYER SHOOTING LIST CHARTS
   listPlayerShots4 <- reactive({
     req(playerSelected4Graph() != "Player", shortNameSelected4Graph() != "Team", dateRange4MinGraph(), dateRange4MaxGraph(), continueCalc$value == TRUE)
-    getPlayerShotDT(selectedPlayer = playerSelected4Graph(), selectedTeam = shortNameSelected4Graph(), startDate = dateRange4MinGraph(), endDate = dateRange4MaxGraph(), DT = nbaDatasDTmerged())
+    getPlayerShotDT(selectedPlayer = playerSelected4Graph(), selectedTeam = shortNameSelected4Graph(), startDate = dateRange4MinGraph(), endDate = dateRange4MaxGraph(), DT = nbaDataDTmerged())
   })
   
   # - PLAYER CHARTS
@@ -952,7 +947,7 @@ server <- function(input, output, session) {
   # - EXPLICATION TEXT
   output$playerShotsChartText4 <- renderText({
     req(needText4() == "Yes", listPlayerShots4())
-    "Item: Shooting positions of all shots taken by a player over a period (Spots chart) or analysis of the player's FG% per area vs. League FG% (Efficiency chart)
+    "Shooting positions of all shots taken by a player over a period (Spots chart) or analysis of the player's FG% per area vs. League FG% (Efficiency chart)
      Explanation: The more a player shoots in an area, the bigger the circle is
      The better is the player's FG% vs League FG% in an area, the more the circle gets closer to the red (see legend)
      Hint: Place the cursor on the differents circles to display detailed stats"
@@ -988,7 +983,7 @@ server <- function(input, output, session) {
   # - EXPLICATION TEXT
   output$assistsText4 <- renderText({
     req(needText4() == "Yes", listPlayerShots4())
-    "Item: Distribution of assisted/non assisted per area of shots over a specified period"
+    "Distribution of assisted/non assisted shots per area over a specified period"
   })
   
   # - REACTIVE VALUE TO SHOW OR HIDE ITEMS
@@ -1038,7 +1033,7 @@ server <- function(input, output, session) {
   # - EPLICATION TEXT 
   output$mainText5 <- renderText({
     req(needText5() == "Yes")
-    "Objectif: Ranking of League players by stats 
+    "Players ranking by stats 
      How To: Select a category, a stat, a position, a club or the League, a range of salaries & ages and click on GO basket button"
   })
   
@@ -1138,13 +1133,13 @@ server <- function(input, output, session) {
                      salaryLow = salaryLow5() * 1000000, salaryHigh = salaryHigh5() * 1000000, 
                      ageLow = ageLow5(), ageHigh = ageHigh5(), 
                      nbPlayer = nbPlayerSelected5(), 
-                     DTgamesPlayed = dicoPlayerMinute(), DTplayerPres = dicoPlayerFich(), DT = nbaDatasDTmerged())
+                     DTgamesPlayed = dicoPlayerMinute(), DTplayerPres = dicoPlayerFich(), DT = nbaDataDTmerged())
     } else if (categorySelected5Graph() == "Shooting") {
       getShootingCustom(selectedTeam = teamSelected5(), shootType = statSelected5(), position = positionSelected5(), 
                         salaryLow = salaryLow5() * 1000000, salaryHigh = salaryHigh5() * 1000000, 
                         ageLow = ageLow5(), ageHigh = ageHigh5(), 
                         nbPlayer = nbPlayerSelected5(), 
-                        DTgamesPlayed = dicoPlayerMinute(), DTplayerPres = dicoPlayerFich(), DT = nbaDatasDTmerged())
+                        DTgamesPlayed = dicoPlayerMinute(), DTplayerPres = dicoPlayerFich(), DT = nbaDataDTmerged())
     }
   })
   
@@ -1162,7 +1157,7 @@ server <- function(input, output, session) {
   # - EPLICATION TEXT 
   output$customGraphText5 <- renderText({
     req(needText5() == "Yes", statsDT5())
-    "Item: 2-dimensional players ranking system 
+    "2-dimensional players ranking system 
      Explanation: Classic category statistics are ranked by stats per game (not mpg) while Shooting category stats are ranked by FG attempted (not FG%)
      The bigger the circle, the more a player has played games during the season
      Color code depends on players' salaries (see legend)
@@ -1196,8 +1191,8 @@ server <- function(input, output, session) {
   # - EPLICATION TEXT 
   output$dataPlayerText5 <- renderText({
     req(needText5() == "Yes", statsDT5())
-    "Item: Selected player description and current contract
-     Hint: Click on a circle on the graph to display the selected player informations"
+    "Selected player description and current contract
+     Hint: Click on a circle on the graph to display the selected player's informations"
   })
   
   ############################################################################
@@ -1244,7 +1239,7 @@ server <- function(input, output, session) {
   # - EPLICATION TEXT 
   output$mainText7 <- renderText({
     req(needText7() == "Yes")
-    "Objectif: Display clutchest players among the League 
+    "Display clutchest players among the League 
      How To: Choose a moment during the 4th quarter (time left & teams points differential) from which stats are calculated. Overtime are included in the stats displayed
      Hint: You can filter by a minimum number of clutch moments played by players"
   })
@@ -1272,7 +1267,7 @@ server <- function(input, output, session) {
   # - PLAYER RANK SUMMARY DT
   output$clutchDT7 <- DT::renderDataTable({
     req(scoreSelected7(), minSelected7(), secSelected7(), minGameSelected7())
-    getClutchRank(minLeft = minSelected7(), secLeft = secSelected7(), diffScore = scoreSelected7(), minGame = minGameSelected7(), DT = nbaDatasDTmerged())
+    getClutchRank(minLeft = minSelected7(), secLeft = secSelected7(), diffScore = scoreSelected7(), minGame = minGameSelected7(), DT = nbaDataDTmerged())
   }, options = list(pageLength = 10, dom = "tp"))
   
   ############################################################################
@@ -1288,7 +1283,7 @@ server <- function(input, output, session) {
   })
   
   output$sourcesThree8 <- renderUI({
-    tagList("NBA datas:", a("BigData Ball", href="https://www.bigdataball.com/"))
+    tagList("NBA Data:", a("BigData Ball", href="https://www.bigdataball.com/"))
   })
   
 }
